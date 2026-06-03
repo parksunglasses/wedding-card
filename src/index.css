@@ -1,0 +1,67 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 기본 테마 변수 (JS에서 덮어쓰여짐) */
+:root {
+  --theme-bg: #F5F0E8;
+  --theme-bg-alt: #EDE6D8;
+  --theme-bg-dark: #1F1B17;
+  --theme-text: #2A2520;
+  --theme-text-muted: #8B7E6E;
+  --theme-accent: #A68B5B;
+  --theme-accent-light: #C4A574;
+  --theme-border: #D9CFBE;
+  --theme-font-heading: 'Cormorant Garamond', serif;
+  --theme-font-body: 'Pretendard', sans-serif;
+  --theme-font-script: 'Great Vibes', cursive;
+}
+
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+html, body {
+  font-family: var(--theme-font-body);
+  background: #1F1B17;
+  color: var(--theme-text);
+}
+
+#root {
+  max-width: 480px;
+  margin: 0 auto;
+  background: var(--theme-bg);
+  min-height: 100vh;
+  position: relative;
+}
+
+@media (min-width: 480px) {
+  #root {
+    box-shadow: 0 0 60px rgba(0,0,0,0.2);
+  }
+}
+
+::-webkit-scrollbar { display: none; }
+
+/* 테마 유틸 클래스 */
+.theme-bg { background: var(--theme-bg); }
+.theme-bg-alt { background: var(--theme-bg-alt); }
+.theme-bg-dark { background: var(--theme-bg-dark); }
+.theme-text { color: var(--theme-text); }
+.theme-text-muted { color: var(--theme-text-muted); }
+.theme-accent { color: var(--theme-accent); }
+.theme-accent-light { color: var(--theme-accent-light); }
+.theme-border { border-color: var(--theme-border); }
+
+.font-heading { font-family: var(--theme-font-heading); }
+.font-script { font-family: var(--theme-font-script); }
+
+/* 애니메이션 */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.fade-in {
+  animation: fadeIn 0.8s ease-out forwards;
+}
