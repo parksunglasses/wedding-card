@@ -35,7 +35,8 @@ export default function Share({ data, theme }: Props) {
       const dateKor = `${formatDate(data.date)} ${getDayOfWeek(data.date)} ${formatTime(data.time)}`
       // 썸네일: 메인 사진(없으면 첫 갤러리 사진)
       const photo = data.mainPhoto || data.galleryPhotos[0] || ''
-      const imageUrl = photo ? getOptimizedUrl(photo, { width: 800, height: 800, dpr: false }) : ''
+      // 원본 비율 유지 (정사각형 강제 시 세로 사진이 눌려 보임)
+      const imageUrl = photo ? getOptimizedUrl(photo, { width: 800, dpr: false }) : ''
       const mapUrl = `https://map.kakao.com/link/map/${encodeURIComponent(data.venue)},${data.lat},${data.lng}`
       const link = { mobileWebUrl: shareUrl, webUrl: shareUrl }
 
