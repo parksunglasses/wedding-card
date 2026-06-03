@@ -37,7 +37,9 @@ export default function Share({ data, theme }: Props) {
       const photo = data.mainPhoto || data.galleryPhotos[0] || ''
       // 원본 비율 유지 (정사각형 강제 시 세로 사진이 눌려 보임)
       const imageUrl = photo ? getOptimizedUrl(photo, { width: 800, dpr: false }) : ''
-      const mapUrl = `https://map.kakao.com/link/map/${encodeURIComponent(data.venue)},${data.lat},${data.lng}`
+      // 버튼 링크는 모두 등록된 도메인(우리 사이트)이어야 카카오가 버튼을 표시함
+      const baseUrl = shareUrl.split('#')[0]
+      const locationUrl = `${baseUrl}#location`
       const link = { mobileWebUrl: shareUrl, webUrl: shareUrl }
 
       Kakao.Share.sendDefault({
@@ -50,7 +52,7 @@ export default function Share({ data, theme }: Props) {
         },
         buttons: [
           { title: '청첩장 보기', link },
-          { title: '위치 보기', link: { mobileWebUrl: mapUrl, webUrl: mapUrl } },
+          { title: '위치 보기', link: { mobileWebUrl: locationUrl, webUrl: locationUrl } },
         ],
       })
     } catch (e) {

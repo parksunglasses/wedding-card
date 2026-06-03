@@ -38,7 +38,7 @@ export default function Location({ data, theme }: Props) {
   }, [data.lat, data.lng])
 
   return (
-    <section className="theme-bg-dark py-16 px-8" style={{ color: theme.colors.bg }}>
+    <section id="location" className="theme-bg-dark py-16 px-8" style={{ color: theme.colors.bg }}>
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
