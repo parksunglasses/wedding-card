@@ -48,7 +48,7 @@ export interface WeddingData {
   flowerLink: string
 
   // 테마
-  theme: 'elegant' | 'minimal' | 'flower' | 'dark' | 'natural'
+  theme: 'elegant' | 'minimal' | 'flower' | 'dark' | 'natural' | 'hyundai'
 }
 
 export interface GuestbookEntry {

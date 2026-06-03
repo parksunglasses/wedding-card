@@ -1,6 +1,6 @@
 // 테마 시스템
 
-export type ThemeId = 'elegant' | 'minimal' | 'flower' | 'dark' | 'natural'
+export type ThemeId = 'elegant' | 'minimal' | 'flower' | 'dark' | 'natural' | 'hyundai'
 
 export interface Theme {
   id: ThemeId
@@ -28,6 +28,8 @@ export interface Theme {
     rounded: 'none' | 'sm' | 'md' | 'lg' | 'full'
     introOverlay: 'dark' | 'light' | 'none'
     introTextStyle: 'script' | 'serif' | 'sans'
+    introLayout: 'classic' | 'minimal' | 'magazine' | 'frame'
+    introTitle: string          // 인트로 대표 문구
     sectionDivider: 'line' | 'dots' | 'none'
     accentDecoration: 'minimal' | 'floral' | 'bold'
   }
@@ -35,11 +37,11 @@ export interface Theme {
 
 export const themes: Record<ThemeId, Theme> = {
 
-  // 1. 샹파뉴 — 아이보리 + 딥골드, 최고급 호텔 웨딩
+  // 1. 샹파뉴 — 아이보리 + 딥골드, 클래식 스크립트 인트로
   elegant: {
     id: 'elegant',
     name: '샹파뉴',
-    description: '아이보리 & 딥골드 — 호텔 웨딩',
+    description: '아이보리 & 딥골드 · 클래식 스크립트',
     colors: {
       bg: '#FAF7F2',
       bgAlt: '#F0E9DC',
@@ -59,19 +61,21 @@ export const themes: Record<ThemeId, Theme> = {
       rounded: 'none',
       introOverlay: 'dark',
       introTextStyle: 'script',
+      introLayout: 'classic',
+      introTitle: 'Wedding Day',
       sectionDivider: 'line',
       accentDecoration: 'minimal',
     },
   },
 
-  // 2. 블랑 — 퓨어화이트 + 웜블랙, 하이패션 미니멀
+  // 2. 블랑 — 퓨어화이트 + 웜블랙, 미니멀 매거진
   minimal: {
     id: 'minimal',
     name: '블랑',
-    description: '퓨어화이트 & 웜블랙 — 하이패션',
+    description: '퓨어화이트 & 웜블랙 · 하이패션 미니멀',
     colors: {
       bg: '#FEFCFA',
-      bgAlt: '#F5F2EE',
+      bgAlt: '#F4F1ED',
       bgDark: '#141210',
       text: '#141210',
       textMuted: '#7A7570',
@@ -80,15 +84,17 @@ export const themes: Record<ThemeId, Theme> = {
       border: '#E8E4DF',
     },
     fonts: {
-      heading: '"Playfair Display", serif',
+      heading: '"Tenor Sans", sans-serif',
       body: 'Pretendard, sans-serif',
       script: '"Playfair Display", serif',
     },
     style: {
       rounded: 'none',
       introOverlay: 'light',
-      introTextStyle: 'serif',
-      sectionDivider: 'line',
+      introTextStyle: 'sans',
+      introLayout: 'minimal',
+      introTitle: 'JUST MARRIED',
+      sectionDivider: 'none',
       accentDecoration: 'minimal',
     },
   },
@@ -97,39 +103,41 @@ export const themes: Record<ThemeId, Theme> = {
   flower: {
     id: 'flower',
     name: '로즈',
-    description: '더스티로즈 & 버건디 — 프렌치 로맨틱',
+    description: '더스티로즈 & 버건디 · 프렌치 로맨틱',
     colors: {
-      bg: '#FBF5F2',
-      bgAlt: '#F5E8E4',
+      bg: '#FBF4F2',
+      bgAlt: '#F4E4E0',
       bgDark: '#3D1F22',
       text: '#2C1518',
-      textMuted: '#A08080',
-      accent: '#8B3D42',
-      accentLight: '#C47A7F',
-      border: '#EDD8D4',
+      textMuted: '#A88084',
+      accent: '#9B4A50',
+      accentLight: '#C97A80',
+      border: '#EDD5D2',
     },
     fonts: {
-      heading: '"Cormorant Garamond", serif',
+      heading: '"Bodoni Moda", serif',
       body: 'Pretendard, sans-serif',
-      script: '"Great Vibes", cursive',
+      script: '"Pinyon Script", cursive',
     },
     style: {
-      rounded: 'sm',
+      rounded: 'lg',
       introOverlay: 'dark',
       introTextStyle: 'script',
+      introLayout: 'frame',
+      introTitle: 'Save the Date',
       sectionDivider: 'dots',
       accentDecoration: 'floral',
     },
   },
 
-  // 4. 미드나잇 — 딥네이비 + 샴페인골드, 럭셔리 이브닝
+  // 4. 미드나잇 — 딥네이비 + 샴페인골드, 럭셔리 이브닝 매거진
   dark: {
     id: 'dark',
     name: '미드나잇',
-    description: '딥네이비 & 샴페인골드 — 럭셔리 이브닝',
+    description: '딥네이비 & 샴페인골드 · 럭셔리 이브닝',
     colors: {
       bg: '#0E1520',
-      bgAlt: '#162030',
+      bgAlt: '#162130',
       bgDark: '#060C14',
       text: '#F0EBE0',
       textMuted: '#8A9AAA',
@@ -145,26 +153,28 @@ export const themes: Record<ThemeId, Theme> = {
     style: {
       rounded: 'none',
       introOverlay: 'dark',
-      introTextStyle: 'script',
+      introTextStyle: 'serif',
+      introLayout: 'magazine',
+      introTitle: 'THE WEDDING',
       sectionDivider: 'line',
       accentDecoration: 'bold',
     },
   },
 
-  // 5. 세이지 — 세이지그린 + 크림, 보태니컬 가든
+  // 5. 세이지 — 세이지그린 + 크림, 보태니컬 미니멀
   natural: {
     id: 'natural',
     name: '세이지',
-    description: '세이지그린 & 크림 — 보태니컬 가든',
+    description: '세이지그린 & 크림 · 보태니컬 가든',
     colors: {
       bg: '#F2F0E8',
-      bgAlt: '#E8E4D8',
+      bgAlt: '#E6E3D6',
       bgDark: '#2A3428',
       text: '#242C22',
       textMuted: '#7A8870',
       accent: '#5C7048',
       accentLight: '#8AA870',
-      border: '#D8D4C8',
+      border: '#D6D2C4',
     },
     fonts: {
       heading: '"Libre Baskerville", serif',
@@ -173,10 +183,43 @@ export const themes: Record<ThemeId, Theme> = {
     },
     style: {
       rounded: 'sm',
-      introOverlay: 'dark',
+      introOverlay: 'light',
       introTextStyle: 'serif',
+      introLayout: 'minimal',
+      introTitle: 'Our Wedding',
       sectionDivider: 'dots',
       accentDecoration: 'floral',
+    },
+  },
+
+  // 6. 그린라벨 — 현대백화점 딥그린, 모던 럭셔리 프레임
+  hyundai: {
+    id: 'hyundai',
+    name: '그린라벨',
+    description: '딥그린 & 아이보리 · 모던 럭셔리',
+    colors: {
+      bg: '#F6F4EE',
+      bgAlt: '#E8E6DC',
+      bgDark: '#0B3B2E',
+      text: '#10302A',
+      textMuted: '#5E7A6E',
+      accent: '#0B5C42',
+      accentLight: '#3E8C6A',
+      border: '#D2D8CC',
+    },
+    fonts: {
+      heading: '"Marcellus", serif',
+      body: 'Pretendard, sans-serif',
+      script: '"Marcellus", serif',
+    },
+    style: {
+      rounded: 'none',
+      introOverlay: 'dark',
+      introTextStyle: 'sans',
+      introLayout: 'frame',
+      introTitle: 'WEDDING INVITATION',
+      sectionDivider: 'line',
+      accentDecoration: 'bold',
     },
   },
 }

@@ -170,62 +170,76 @@ export default function Edit() {
                       : '0 2px 8px rgba(0,0,0,0.06)',
                   }}
                 >
-                  {/* 미리보기 카드 */}
+                  {/* 미리보기 카드 — 테마별 인트로 레이아웃 반영 */}
                   <div
-                    className="aspect-[3/4] relative flex flex-col items-center justify-between py-5 px-3"
-                    style={{ background: theme.colors.bg }}
+                    className="aspect-[3/4] relative overflow-hidden"
+                    style={{ background: theme.colors.bgDark }}
                   >
-                    {/* 상단 얇은 선 장식 */}
-                    <div className="flex flex-col items-center gap-1 w-full">
-                      <div style={{ width: '30px', height: '1px', background: theme.colors.accent, opacity: 0.6 }} />
-                      <div style={{ width: '16px', height: '1px', background: theme.colors.accentLight, opacity: 0.4 }} />
-                    </div>
+                    {/* 배경 그라데이션 (사진 대용) */}
+                    <div
+                      className="absolute inset-0"
+                      style={{
+                        background: `linear-gradient(150deg, ${theme.colors.accentLight}, ${theme.colors.accent})`,
+                        opacity: 0.9,
+                      }}
+                    />
+                    <div className="absolute inset-0" style={{ background: 'rgba(0,0,0,0.28)' }} />
 
-                    {/* 스크립트 제목 */}
-                    <div className="text-center flex flex-col items-center gap-2">
-                      <p style={{
-                        fontFamily: theme.fonts.script || theme.fonts.heading,
-                        color: theme.colors.accent,
-                        fontSize: '20px',
-                        lineHeight: 1.3,
-                      }}>
-                        Wedding
-                      </p>
-                      <p style={{
-                        fontFamily: theme.fonts.heading,
-                        color: theme.colors.text,
-                        fontSize: '9px',
-                        letterSpacing: '0.25em',
-                        textTransform: 'uppercase',
-                        opacity: 0.7,
-                      }}>
-                        2026 · 12 · 19
-                      </p>
-                    </div>
+                    {(() => {
+                      const titleFont =
+                        theme.style.introTextStyle === 'script'
+                          ? { fontFamily: theme.fonts.script, fontSize: '26px', lineHeight: 1 }
+                          : theme.style.introTextStyle === 'serif'
+                          ? { fontFamily: theme.fonts.heading, fontSize: '17px', fontStyle: 'italic' as const }
+                          : { fontFamily: theme.fonts.heading, fontSize: '12px', letterSpacing: '0.2em', textTransform: 'uppercase' as const }
+                      const t = theme.style.introTitle
+                      const nm = '박성환 · 이지영'
 
-                    {/* 이름 */}
-                    <div className="text-center">
-                      <p style={{
-                        fontFamily: theme.fonts.heading,
-                        color: theme.colors.text,
-                        fontSize: '11px',
-                        letterSpacing: '0.1em',
-                        fontStyle: 'italic',
-                      }}>
-                        박성환 · 이지영
-                      </p>
-                    </div>
-
-                    {/* 하단 선 장식 */}
-                    <div className="flex flex-col items-center gap-1 w-full">
-                      <div style={{ width: '16px', height: '1px', background: theme.colors.accentLight, opacity: 0.4 }} />
-                      <div style={{ width: '30px', height: '1px', background: theme.colors.accent, opacity: 0.6 }} />
-                    </div>
+                      if (theme.style.introLayout === 'magazine') {
+                        return (
+                          <div className="absolute inset-0 flex flex-col justify-end items-start text-left p-3 text-white">
+                            <p style={{ fontSize: '6px', letterSpacing: '0.3em', opacity: 0.85, marginBottom: '4px' }}>2026.12.19</p>
+                            <p style={titleFont} className="drop-shadow">{t}</p>
+                            <div style={{ width: '24px', height: '1px', background: theme.colors.accentLight, margin: '5px 0' }} />
+                            <p style={{ fontFamily: theme.fonts.heading, fontSize: '9px' }}>{nm}</p>
+                          </div>
+                        )
+                      }
+                      if (theme.style.introLayout === 'frame') {
+                        return (
+                          <div className="absolute inset-2 flex flex-col items-center justify-center text-center text-white" style={{ border: '1px solid rgba(255,255,255,0.5)' }}>
+                            <p style={{ fontSize: '6px', letterSpacing: '0.3em', opacity: 0.85, marginBottom: '6px' }}>{nm}</p>
+                            <p style={titleFont} className="px-2 drop-shadow">{t}</p>
+                            <p style={{ fontSize: '6px', letterSpacing: '0.2em', opacity: 0.85, marginTop: '6px' }}>2026.12.19</p>
+                          </div>
+                        )
+                      }
+                      if (theme.style.introLayout === 'minimal') {
+                        return (
+                          <div className="absolute inset-0 flex flex-col items-center justify-center text-center text-white">
+                            <div style={{ width: '1px', height: '18px', background: '#fff', opacity: 0.6, marginBottom: '8px' }} />
+                            <p style={titleFont} className="drop-shadow">{t}</p>
+                            <p style={{ fontFamily: theme.fonts.heading, fontSize: '8px', letterSpacing: '0.15em', marginTop: '6px' }}>{nm}</p>
+                            <div style={{ width: '1px', height: '18px', background: '#fff', opacity: 0.6, marginTop: '8px' }} />
+                          </div>
+                        )
+                      }
+                      // classic
+                      return (
+                        <div className="absolute inset-0 flex flex-col justify-between items-center text-center py-6 text-white">
+                          <p style={titleFont} className="drop-shadow mt-2">{t}</p>
+                          <div className="mb-2">
+                            <p style={{ fontFamily: theme.fonts.heading, fontSize: '9px', letterSpacing: '0.1em', marginBottom: '3px' }}>{nm}</p>
+                            <p style={{ fontSize: '6px', letterSpacing: '0.2em', opacity: 0.85 }}>2026.12.19</p>
+                          </div>
+                        </div>
+                      )
+                    })()}
 
                     {/* 선택 표시 */}
                     {data.theme === theme.id && (
                       <div
-                        className="absolute top-2 right-2 w-5 h-5 rounded-full flex items-center justify-center text-white"
+                        className="absolute top-2 right-2 w-5 h-5 rounded-full flex items-center justify-center text-white z-10"
                         style={{ background: theme.colors.accent, fontSize: '10px' }}
                       >
                         ✓

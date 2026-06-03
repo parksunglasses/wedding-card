@@ -4,7 +4,16 @@
       "Bash(git -C \"/Users/hwan/Desktop/모바일 청첩장/wedding-card\" status)",
       "Bash(git init *)",
       "Bash(git add *)",
-      "Bash(git commit *)"
+      "Bash(git commit *)",
+      "Bash(gh repo *)",
+      "Bash(pnpm run *)",
+      "Bash(/opt/homebrew/bin/pnpm run *)",
+      "Bash(npm run *)",
+      "Bash(npx tsc *)",
+      "Bash(git push *)",
+      "Bash(gh auth *)",
+      "Bash(gh api *)",
+      "Bash(echo \"---exit:$?---\")"
     ]
   }
 }
