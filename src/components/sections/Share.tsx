@@ -2,9 +2,7 @@ import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { WeddingData } from '@/types'
 import { Theme } from '@/themes'
-import { loadKakaoShare, isKakaoConfigured } from '@/lib/kakao'
-import { getOptimizedUrl } from '@/lib/cloudinary'
-import { formatDate, getDayOfWeek, formatTime } from '@/lib/date'
+import { shareKakao } from '@/lib/share'
 
 interface Props {
   data: WeddingData
@@ -26,36 +24,8 @@ export default function Share({ data, theme }: Props) {
   }
 
   const handleKakaoShare = async () => {
-    if (!isKakaoConfigured) {
-      alert('카카오 JavaScript 키 설정이 필요합니다 (.env)')
-      return
-    }
     try {
-      const Kakao = await loadKakaoShare()
-      const dateKor = `${formatDate(data.date)} ${getDayOfWeek(data.date)} ${formatTime(data.time)}`
-      // 썸네일: 메인 사진(없으면 첫 갤러리 사진)
-      const photo = data.mainPhoto || data.galleryPhotos[0] || ''
-      // 원본 비율 유지 (정사각형 강제 시 세로 사진이 눌려 보임)
-      const imageUrl = photo ? getOptimizedUrl(photo, { width: 800, dpr: false }) : ''
-      // 버튼 링크는 모두 등록된 도메인(우리 사이트)이어야 카카오가 버튼을 표시함
-      // "위치 보기"는 우리 도메인(?to=map)을 거쳐 카카오맵으로 자동 연결
-      const baseUrl = shareUrl.split('#')[0].split('?')[0]
-      const locationUrl = `${baseUrl}?to=map`
-      const link = { mobileWebUrl: shareUrl, webUrl: shareUrl }
-
-      Kakao.Share.sendDefault({
-        objectType: 'feed',
-        content: {
-          title: `${data.groom.name} ❤️ ${data.bride.name} 결혼식에 초대합니다.`,
-          description: `${dateKor}\n${data.venue}`,
-          imageUrl,
-          link,
-        },
-        buttons: [
-          { title: '청첩장 보기', link },
-          { title: '위치 보기', link: { mobileWebUrl: locationUrl, webUrl: locationUrl } },
-        ],
-      })
+      await shareKakao(data)
     } catch (e) {
       console.error('Kakao share failed', e)
       alert('카카오톡 공유에 실패했습니다')

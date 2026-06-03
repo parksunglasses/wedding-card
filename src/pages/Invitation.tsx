@@ -15,7 +15,7 @@ import Flower from '@/components/sections/Flower'
 import Guestbook from '@/components/sections/Guestbook'
 import RSVP from '@/components/sections/RSVP'
 import Share from '@/components/sections/Share'
-import BGMPlayer from '@/components/BGMPlayer'
+import FloatingControls from '@/components/FloatingControls'
 
 export default function Invitation() {
   // 캐시(localStorage)/기본값으로 즉시 렌더 → Supabase로 백그라운드 갱신
@@ -40,7 +40,7 @@ export default function Invitation() {
   return (
     <ThemeProvider theme={theme}>
       <div className="min-h-screen theme-bg">
-        <BGMPlayer src={data.bgmUrl} theme={theme} />
+        <FloatingControls data={data} theme={theme} />
         <Intro data={data} theme={theme} />
         <Greeting data={data} theme={theme} />
         <Calendar data={data} theme={theme} />
