@@ -43,6 +43,29 @@ export async function uploadImage(file: File): Promise<UploadResult> {
   }
 }
 
+// 오디오(BGM) 업로드 — Cloudinary는 오디오를 video 리소스로 처리
+export async function uploadAudio(file: File): Promise<string> {
+  if (!isCloudinaryConfigured) {
+    throw new Error('Cloudinary가 설정되지 않았습니다. .env를 확인하세요')
+  }
+
+  const formData = new FormData()
+  formData.append('file', file)
+  formData.append('upload_preset', UPLOAD_PRESET)
+
+  const response = await fetch(
+    `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/auto/upload`,
+    { method: 'POST', body: formData }
+  )
+
+  if (!response.ok) {
+    throw new Error('업로드 실패 (업로드 프리셋이 오디오를 허용하지 않을 수 있습니다)')
+  }
+
+  const data = await response.json()
+  return data.secure_url as string
+}
+
 // URL에 크기 옵션 추가
 // 예: getOptimizedUrl(url, { width: 800 })
 //     → https://res.cloudinary.com/.../w_800,q_auto,f_auto/photo.jpg

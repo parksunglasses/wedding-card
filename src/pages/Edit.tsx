@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { WeddingData, Account } from '@/types'
 import { loadWeddingDataAsync, saveWeddingData } from '@/data/wedding'
@@ -6,6 +6,7 @@ import { isAuthenticated } from './EditLogin'
 import { themeList, ThemeId } from '@/themes'
 import ImageUploader from '@/components/ImageUploader'
 import MultiImageUploader from '@/components/MultiImageUploader'
+import { uploadAudio } from '@/lib/cloudinary'
 
 type Tab = 'basic' | 'theme' | 'content'
 
@@ -349,6 +350,10 @@ export default function Edit() {
               </button>
             </Section>
 
+            <Section title="배경음악 (BGM)">
+              <BGMField value={data.bgmUrl} onChange={(v) => update('bgmUrl', v)} />
+            </Section>
+
             <Section title="기타">
               <Field label="축하 화환 링크" value={data.flowerLink} onChange={(v) => update('flowerLink', v)}
                 placeholder="https://... (비워두면 표시 안됨)" />
@@ -391,6 +396,66 @@ function Field({ label, value, onChange, type = 'text', placeholder }: FieldProp
         className="w-full px-3 py-2 rounded-lg bg-white border text-sm focus:outline-none"
         style={{ borderColor: '#D9CFBE' }}
       />
+    </div>
+  )
+}
+
+function BGMField({ value, onChange }: { value: string; onChange: (v: string) => void }) {
+  const [uploading, setUploading] = useState(false)
+  const [error, setError] = useState('')
+  const inputRef = useRef<HTMLInputElement>(null)
+
+  const handleFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+    if (file.size > 15 * 1024 * 1024) {
+      setError('15MB 이하 파일만 업로드 가능합니다')
+      return
+    }
+    setError('')
+    setUploading(true)
+    try {
+      const url = await uploadAudio(file)
+      onChange(url)
+    } catch (err) {
+      setError('업로드 실패. URL 직접 입력을 이용해주세요')
+      console.error(err)
+    } finally {
+      setUploading(false)
+      if (inputRef.current) inputRef.current.value = ''
+    }
+  }
+
+  return (
+    <div className="space-y-3">
+      {value ? (
+        <div className="flex items-center gap-3 p-3 bg-white rounded-lg border" style={{ borderColor: '#D9CFBE' }}>
+          <span style={{ color: '#A68B5B' }}>♪</span>
+          <audio src={value} controls className="flex-1 h-8 min-w-0" />
+          <button type="button" onClick={() => onChange('')} className="text-xs text-red-500 shrink-0">삭제</button>
+        </div>
+      ) : (
+        <button
+          type="button"
+          onClick={() => inputRef.current?.click()}
+          disabled={uploading}
+          className="w-full py-3 text-sm border border-dashed rounded-lg"
+          style={{ color: '#A68B5B', borderColor: '#A68B5B' }}
+        >
+          {uploading ? '업로드 중...' : '♪ 음악 파일 업로드 (mp3)'}
+        </button>
+      )}
+
+      <input ref={inputRef} type="file" accept="audio/*" onChange={handleFile} className="hidden" />
+
+      <Field
+        label="또는 음악 URL 직접 입력"
+        value={value}
+        onChange={onChange}
+        placeholder="https://...mp3 (비워두면 BGM 없음)"
+      />
+
+      {error && <p className="text-xs text-red-500">{error}</p>}
     </div>
   )
 }

@@ -47,6 +47,9 @@ export interface WeddingData {
   // 화환
   flowerLink: string
 
+  // 배경음악 (BGM)
+  bgmUrl: string
+
   // 테마
   theme: 'elegant' | 'minimal' | 'flower' | 'dark' | 'natural' | 'hyundai'
 }

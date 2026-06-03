@@ -20,10 +20,10 @@ export const defaultWeddingData: WeddingData = {
   date: '2026-12-19',
   time: '11:00',
   venue: '서울웨딩타워',
-  address: '서울 강남구 영동대로 517',
-  venuePhone: '02-551-0100',
-  lat: 37.5087,
-  lng: 127.0603,
+  address: '서울 송파구 양재대로 932 가락몰 타워 2F',
+  venuePhone: '02-463-5000',
+  lat: 37.495096,
+  lng: 127.115506,
 
   greetingTitle: '서로를 향한 믿음으로\n함께하는 모든 날들이\n빛나는 추억이 되도록\n평생을 약속합니다.',
   greetingMessage: '박성환, 이지영\n두 사람이 하나가 되는 자리에\n소중한 분들을 초대합니다.\n따뜻한 마음으로 함께해 주시면\n더없는 기쁨이 되겠습니다.',
@@ -31,9 +31,9 @@ export const defaultWeddingData: WeddingData = {
   mainPhoto: '',
   galleryPhotos: [],
 
-  subway: '2호선 삼성역 5번출구 (도보 5분)\n9호선 봉은사역 7번출구 (도보 10분)',
-  bus: '[간선버스] 146, 341, 360, 740\n[지선버스] 3412, 4312',
-  parking: '서울웨딩타워 지하주차장 (무료)',
+  subway: '3·8호선 가락시장역 2번 출구 도보 3분',
+  bus: '[가락시장·가락시장역·가락몰 하차]\n간선 401, 301, 302, 303, 320, 350, 360, 461\n지선 3413, 3416, 3319, 3317, 3422\n일반 16, 101, 30, 32, 119, 31, 87, 100, 331\n마을 강남05, 강남03, 강남06',
+  parking: '가락몰 타워 동문 지하주차장',
 
   groomAccounts: [
     { bank: '국민은행', accountNumber: '000-00-0000-000', holder: '박성환' },
@@ -43,6 +43,7 @@ export const defaultWeddingData: WeddingData = {
   ],
 
   flowerLink: '',
+  bgmUrl: '',
   theme: 'elegant',
 }
 
