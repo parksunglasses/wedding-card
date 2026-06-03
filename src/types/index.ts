@@ -50,6 +50,9 @@ export interface WeddingData {
   // 배경음악 (BGM)
   bgmUrl: string
 
+  // 입장(문 열림) 애니메이션 on/off
+  doorIntro: boolean
+
   // 테마
   theme: 'elegant' | 'minimal' | 'flower' | 'dark' | 'natural' | 'hyundai'
 }

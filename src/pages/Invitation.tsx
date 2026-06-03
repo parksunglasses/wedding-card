@@ -16,6 +16,7 @@ import Guestbook from '@/components/sections/Guestbook'
 import RSVP from '@/components/sections/RSVP'
 import Share from '@/components/sections/Share'
 import FloatingControls from '@/components/FloatingControls'
+import DoorIntro from '@/components/DoorIntro'
 
 export default function Invitation() {
   // 캐시(localStorage)/기본값으로 즉시 렌더 → Supabase로 백그라운드 갱신
@@ -40,6 +41,7 @@ export default function Invitation() {
   return (
     <ThemeProvider theme={theme}>
       <div className="min-h-screen theme-bg">
+        {data.doorIntro && <DoorIntro data={data} theme={theme} />}
         <FloatingControls data={data} theme={theme} />
         <Intro data={data} theme={theme} />
         <Greeting data={data} theme={theme} />

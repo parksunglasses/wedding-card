@@ -11,7 +11,7 @@ interface Props {
 
 export default function Location({ data, theme }: Props) {
   const kakaoMapUrl = `https://map.kakao.com/link/map/${encodeURIComponent(data.venue)},${data.lat},${data.lng}`
-  const naverMapUrl = `https://map.naver.com/v5/search/${encodeURIComponent(data.address)}`
+  const naverMapUrl = `https://map.naver.com/v5/search/${encodeURIComponent(data.venue)}`
   const tmapUrl = `tmap://route?goalname=${encodeURIComponent(data.venue)}&goalx=${data.lng}&goaly=${data.lat}`
 
   const mapRef = useRef<HTMLDivElement>(null)

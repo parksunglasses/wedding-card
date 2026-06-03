@@ -44,6 +44,7 @@ export const defaultWeddingData: WeddingData = {
 
   flowerLink: '',
   bgmUrl: '',
+  doorIntro: true,
   theme: 'elegant',
 }
 

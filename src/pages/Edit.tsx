@@ -350,6 +350,15 @@ export default function Edit() {
               </button>
             </Section>
 
+            <Section title="입장 효과">
+              <Toggle
+                label="문 열림 애니메이션"
+                desc="페이지 진입 시 양쪽 문이 열리는 효과"
+                checked={data.doorIntro}
+                onChange={(v) => update('doorIntro', v)}
+              />
+            </Section>
+
             <Section title="배경음악 (BGM)">
               <BGMField value={data.bgmUrl} onChange={(v) => update('bgmUrl', v)} />
             </Section>
@@ -397,6 +406,31 @@ function Field({ label, value, onChange, type = 'text', placeholder }: FieldProp
         style={{ borderColor: '#D9CFBE' }}
       />
     </div>
+  )
+}
+
+function Toggle({ label, desc, checked, onChange }: { label: string; desc?: string; checked: boolean; onChange: (v: boolean) => void }) {
+  return (
+    <button
+      type="button"
+      onClick={() => onChange(!checked)}
+      className="w-full flex items-center justify-between p-3 bg-white rounded-lg border text-left"
+      style={{ borderColor: '#D9CFBE' }}
+    >
+      <div>
+        <p className="text-sm" style={{ color: '#2A2520' }}>{label}</p>
+        {desc && <p className="text-xs mt-0.5" style={{ color: '#8B7E6E' }}>{desc}</p>}
+      </div>
+      <span
+        className="relative inline-block w-11 h-6 rounded-full transition-colors shrink-0"
+        style={{ background: checked ? '#A68B5B' : '#D9CFBE' }}
+      >
+        <span
+          className="absolute top-0.5 w-5 h-5 rounded-full bg-white transition-all"
+          style={{ left: checked ? '22px' : '2px' }}
+        />
+      </span>
+    </button>
   )
 }
 
