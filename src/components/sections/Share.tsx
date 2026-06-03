@@ -38,8 +38,9 @@ export default function Share({ data, theme }: Props) {
       // 원본 비율 유지 (정사각형 강제 시 세로 사진이 눌려 보임)
       const imageUrl = photo ? getOptimizedUrl(photo, { width: 800, dpr: false }) : ''
       // 버튼 링크는 모두 등록된 도메인(우리 사이트)이어야 카카오가 버튼을 표시함
-      const baseUrl = shareUrl.split('#')[0]
-      const locationUrl = `${baseUrl}#location`
+      // "위치 보기"는 우리 도메인(?to=map)을 거쳐 카카오맵으로 자동 연결
+      const baseUrl = shareUrl.split('#')[0].split('?')[0]
+      const locationUrl = `${baseUrl}?to=map`
       const link = { mobileWebUrl: shareUrl, webUrl: shareUrl }
 
       Kakao.Share.sendDefault({

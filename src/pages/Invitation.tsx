@@ -21,6 +21,16 @@ export default function Invitation() {
   // 캐시(localStorage)/기본값으로 즉시 렌더 → Supabase로 백그라운드 갱신
   const [data, setData] = useState<WeddingData>(() => loadWeddingData())
 
+  // 공유 카드의 "위치 보기"(?to=map) → 카카오맵으로 즉시 연결
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search)
+    if (params.get('to') === 'map') {
+      const d = loadWeddingData()
+      const url = `https://map.kakao.com/link/map/${encodeURIComponent(d.venue)},${d.lat},${d.lng}`
+      window.location.replace(url)
+    }
+  }, [])
+
   useEffect(() => {
     loadWeddingDataAsync().then(setData)
   }, [])
