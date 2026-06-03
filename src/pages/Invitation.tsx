@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { WeddingData } from '@/types'
-import { loadWeddingDataAsync } from '@/data/wedding'
+import { loadWeddingData, loadWeddingDataAsync } from '@/data/wedding'
 import ThemeProvider from '@/themes/ThemeProvider'
 import { getTheme } from '@/themes'
 
@@ -17,19 +17,12 @@ import RSVP from '@/components/sections/RSVP'
 import Share from '@/components/sections/Share'
 
 export default function Invitation() {
-  const [data, setData] = useState<WeddingData | null>(null)
+  // 캐시(localStorage)/기본값으로 즉시 렌더 → Supabase로 백그라운드 갱신
+  const [data, setData] = useState<WeddingData>(() => loadWeddingData())
 
   useEffect(() => {
     loadWeddingDataAsync().then(setData)
   }, [])
-
-  if (!data) {
-    return (
-      <div className="min-h-screen flex items-center justify-center theme-bg">
-        <p className="font-heading text-2xl theme-accent italic">Loading...</p>
-      </div>
-    )
-  }
 
   const theme = getTheme(data.theme)
 

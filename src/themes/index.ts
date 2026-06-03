@@ -54,7 +54,7 @@ export const themes: Record<ThemeId, Theme> = {
     },
     fonts: {
       heading: '"Cormorant Garamond", serif',
-      body: 'Pretendard, sans-serif',
+      body: '"Pretendard Variable", Pretendard, sans-serif',
       script: '"Great Vibes", cursive',
     },
     style: {
@@ -85,7 +85,7 @@ export const themes: Record<ThemeId, Theme> = {
     },
     fonts: {
       heading: '"Tenor Sans", sans-serif',
-      body: 'Pretendard, sans-serif',
+      body: '"Pretendard Variable", Pretendard, sans-serif',
       script: '"Playfair Display", serif',
     },
     style: {
@@ -116,7 +116,7 @@ export const themes: Record<ThemeId, Theme> = {
     },
     fonts: {
       heading: '"Bodoni Moda", serif',
-      body: 'Pretendard, sans-serif',
+      body: '"Pretendard Variable", Pretendard, sans-serif',
       script: '"Pinyon Script", cursive',
     },
     style: {
@@ -147,7 +147,7 @@ export const themes: Record<ThemeId, Theme> = {
     },
     fonts: {
       heading: '"Cinzel", serif',
-      body: 'Pretendard, sans-serif',
+      body: '"Pretendard Variable", Pretendard, sans-serif',
       script: '"Great Vibes", cursive',
     },
     style: {
@@ -178,7 +178,7 @@ export const themes: Record<ThemeId, Theme> = {
     },
     fonts: {
       heading: '"Libre Baskerville", serif',
-      body: 'Pretendard, sans-serif',
+      body: '"Pretendard Variable", Pretendard, sans-serif',
       script: '"Great Vibes", cursive',
     },
     style: {
@@ -209,7 +209,7 @@ export const themes: Record<ThemeId, Theme> = {
     },
     fonts: {
       heading: '"Marcellus", serif',
-      body: 'Pretendard, sans-serif',
+      body: '"Pretendard Variable", Pretendard, sans-serif',
       script: '"Marcellus", serif',
     },
     style: {

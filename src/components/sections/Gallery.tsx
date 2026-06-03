@@ -40,13 +40,23 @@ export default function Gallery({ data, theme }: Props) {
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: idx * 0.1 }}
             onClick={() => photo && setSelectedIdx(idx)}
-            className="aspect-[3/4] rounded-lg overflow-hidden cursor-pointer bg-cover bg-center"
+            className="aspect-[3/4] rounded-lg overflow-hidden cursor-pointer"
             style={{
-              backgroundImage: photo
-                ? `url(${getOptimizedUrl(photo, { width: 600 })})`
+              background: photo
+                ? undefined
                 : `linear-gradient(135deg, ${theme.colors.accentLight}, ${theme.colors.accent})`,
             }}
-          />
+          >
+            {photo && (
+              <img
+                src={getOptimizedUrl(photo, { width: 600 })}
+                alt=""
+                loading="lazy"
+                decoding="async"
+                className="w-full h-full object-cover"
+              />
+            )}
+          </motion.div>
         ))}
       </div>
 
