@@ -1,7 +1,9 @@
 // 카카오 SDK 로더 (지도 + 공유)
 // 지도 SDK와 JavaScript(공유) SDK 모두 같은 JavaScript 키를 사용합니다.
 
-const KAKAO_KEY = import.meta.env.VITE_KAKAO_JS_KEY || ''
+// 카카오 JavaScript 키는 브라우저에 노출되는 공개 키입니다 (도메인 등록으로 보호).
+// 환경변수가 있으면 우선 사용하고, 없으면 아래 기본값을 사용합니다.
+const KAKAO_KEY = import.meta.env.VITE_KAKAO_JS_KEY || '8f84b71ff98be347a60ec036ddbb09fb'
 
 export const isKakaoConfigured = Boolean(KAKAO_KEY && KAKAO_KEY !== 'your-kakao-key')
 
