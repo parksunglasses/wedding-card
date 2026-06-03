@@ -2,6 +2,9 @@ import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { WeddingData } from '@/types'
 import { Theme } from '@/themes'
+import { loadKakaoShare, isKakaoConfigured } from '@/lib/kakao'
+import { getOptimizedUrl } from '@/lib/cloudinary'
+import { formatDate, getDayOfWeek, formatTime } from '@/lib/date'
 
 interface Props {
   data: WeddingData
@@ -22,8 +25,34 @@ export default function Share({ data, theme }: Props) {
     }
   }
 
-  const handleKakaoShare = () => {
-    alert('카카오톡 공유 SDK 연동 필요')
+  const handleKakaoShare = async () => {
+    if (!isKakaoConfigured) {
+      alert('카카오 JavaScript 키 설정이 필요합니다 (.env)')
+      return
+    }
+    try {
+      const Kakao = await loadKakaoShare()
+      const dateKor = `${formatDate(data.date)} ${getDayOfWeek(data.date)} ${formatTime(data.time)}`
+      // 썸네일: 메인 사진(없으면 첫 갤러리 사진)
+      const photo = data.mainPhoto || data.galleryPhotos[0] || ''
+      const imageUrl = photo ? getOptimizedUrl(photo, { width: 800, height: 800, dpr: false }) : ''
+
+      Kakao.Share.sendDefault({
+        objectType: 'feed',
+        content: {
+          title: `${data.groom.name} ♥ ${data.bride.name} 결혼합니다`,
+          description: `${dateKor}\n${data.venue}`,
+          imageUrl,
+          link: { mobileWebUrl: shareUrl, webUrl: shareUrl },
+        },
+        buttons: [
+          { title: '청첩장 보기', link: { mobileWebUrl: shareUrl, webUrl: shareUrl } },
+        ],
+      })
+    } catch (e) {
+      console.error('Kakao share failed', e)
+      alert('카카오톡 공유에 실패했습니다')
+    }
   }
 
   const handleSMS = () => {

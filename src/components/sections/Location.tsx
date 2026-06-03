@@ -1,6 +1,8 @@
+import { useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
 import { WeddingData } from '@/types'
 import { Theme } from '@/themes'
+import { loadKakaoMaps, isKakaoConfigured } from '@/lib/kakao'
 
 interface Props {
   data: WeddingData
@@ -11,6 +13,29 @@ export default function Location({ data, theme }: Props) {
   const kakaoMapUrl = `https://map.kakao.com/link/map/${encodeURIComponent(data.venue)},${data.lat},${data.lng}`
   const naverMapUrl = `https://map.naver.com/v5/search/${encodeURIComponent(data.address)}`
   const tmapUrl = `tmap://route?goalname=${encodeURIComponent(data.venue)}&goalx=${data.lng}&goaly=${data.lat}`
+
+  const mapRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (!isKakaoConfigured || !mapRef.current) return
+    let cancelled = false
+
+    loadKakaoMaps()
+      .then((kakao) => {
+        if (cancelled || !mapRef.current) return
+        const center = new kakao.maps.LatLng(data.lat, data.lng)
+        const map = new kakao.maps.Map(mapRef.current, { center, level: 3 })
+        new kakao.maps.Marker({ position: center, map })
+        map.setZoomable(false) // 스크롤 중 지도 확대 방지
+      })
+      .catch(() => {
+        /* 키 미설정/로드 실패 시 아래 fallback 표시 */
+      })
+
+    return () => {
+      cancelled = true
+    }
+  }, [data.lat, data.lng])
 
   return (
     <section className="theme-bg-dark py-16 px-8" style={{ color: theme.colors.bg }}>
@@ -40,18 +65,25 @@ export default function Location({ data, theme }: Props) {
         </a>
       </motion.div>
 
-      <div className="relative aspect-video rounded-lg overflow-hidden mb-6" style={{ background: theme.colors.bg + '1A' }}>
-        <iframe
-          src={`https://map.kakao.com/?map_type=TYPE_MAP&q=${encodeURIComponent(data.address)}`}
-          className="w-full h-full"
-          title="map"
-        />
-        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-          <div className="bg-white/90 theme-text px-4 py-2 rounded-lg text-xs">
-            카카오맵 SDK 연동 필요
+      <a
+        href={kakaoMapUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="relative block aspect-video rounded-lg overflow-hidden mb-6"
+        style={{ background: theme.colors.bg + '1A' }}
+      >
+        {/* 실제 카카오맵 (키 설정 시) */}
+        <div ref={mapRef} className="w-full h-full" />
+
+        {/* 키 미설정 시 안내 fallback */}
+        {!isKakaoConfigured && (
+          <div className="absolute inset-0 flex items-center justify-center">
+            <div className="bg-white/90 theme-text px-4 py-2 rounded-lg text-xs text-center">
+              지도 표시를 위해<br />카카오 JavaScript 키가 필요합니다
+            </div>
           </div>
-        </div>
-      </div>
+        )}
+      </a>
 
       <div className="grid grid-cols-3 gap-3 max-w-md mx-auto">
         <a href={kakaoMapUrl} target="_blank" rel="noopener noreferrer"

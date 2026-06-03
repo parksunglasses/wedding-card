@@ -14,7 +14,8 @@
       "Bash(gh auth *)",
       "Bash(gh api *)",
       "Bash(echo \"---exit:$?---\")",
-      "Bash(echo \"exit:$?\")"
+      "Bash(echo \"exit:$?\")",
+      "Bash(curl -s 'https://iehanxjvpahqoeufmrkk.supabase.co/rest/v1/wedding_data?id=eq.1&select=data' -H 'apikey: sb_publishable_TWyBkQ77XtPNZmt_gMIDPg_w_4HXaSh' -H 'Authorization: Bearer sb_publishable_TWyBkQ77XtPNZmt_gMIDPg_w_4HXaSh')"
     ]
   }
 }
