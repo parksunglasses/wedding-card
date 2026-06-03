@@ -36,17 +36,20 @@ export default function Share({ data, theme }: Props) {
       // 썸네일: 메인 사진(없으면 첫 갤러리 사진)
       const photo = data.mainPhoto || data.galleryPhotos[0] || ''
       const imageUrl = photo ? getOptimizedUrl(photo, { width: 800, height: 800, dpr: false }) : ''
+      const mapUrl = `https://map.kakao.com/link/map/${encodeURIComponent(data.venue)},${data.lat},${data.lng}`
+      const link = { mobileWebUrl: shareUrl, webUrl: shareUrl }
 
       Kakao.Share.sendDefault({
         objectType: 'feed',
         content: {
-          title: `${data.groom.name} ♥ ${data.bride.name} 결혼합니다`,
+          title: `${data.groom.name} ❤️ ${data.bride.name} 결혼식에 초대합니다.`,
           description: `${dateKor}\n${data.venue}`,
           imageUrl,
-          link: { mobileWebUrl: shareUrl, webUrl: shareUrl },
+          link,
         },
         buttons: [
-          { title: '청첩장 보기', link: { mobileWebUrl: shareUrl, webUrl: shareUrl } },
+          { title: '청첩장 보기', link },
+          { title: '위치 보기', link: { mobileWebUrl: mapUrl, webUrl: mapUrl } },
         ],
       })
     } catch (e) {

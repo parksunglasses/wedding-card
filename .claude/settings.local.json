@@ -15,7 +15,10 @@
       "Bash(gh api *)",
       "Bash(echo \"---exit:$?---\")",
       "Bash(echo \"exit:$?\")",
-      "Bash(curl -s 'https://iehanxjvpahqoeufmrkk.supabase.co/rest/v1/wedding_data?id=eq.1&select=data' -H 'apikey: sb_publishable_TWyBkQ77XtPNZmt_gMIDPg_w_4HXaSh' -H 'Authorization: Bearer sb_publishable_TWyBkQ77XtPNZmt_gMIDPg_w_4HXaSh')"
+      "Bash(curl -s 'https://iehanxjvpahqoeufmrkk.supabase.co/rest/v1/wedding_data?id=eq.1&select=data' -H 'apikey: sb_publishable_TWyBkQ77XtPNZmt_gMIDPg_w_4HXaSh' -H 'Authorization: Bearer sb_publishable_TWyBkQ77XtPNZmt_gMIDPg_w_4HXaSh')",
+      "Bash(curl -s \"https://iehanxjvpahqoeufmrkk.supabase.co/rest/v1/wedding_data?id=eq.1&select=data\" -H \"apikey: sb_publishable_TWyBkQ77XtPNZmt_gMIDPg_w_4HXaSh\" -H \"Authorization: Bearer sb_publishable_TWyBkQ77XtPNZmt_gMIDPg_w_4HXaSh\")",
+      "Bash(curl -s -X POST https://iehanxjvpahqoeufmrkk.supabase.co/rest/v1/wedding_data -H 'apikey: sb_publishable_TWyBkQ77XtPNZmt_gMIDPg_w_4HXaSh' -H 'Authorization: Bearer sb_publishable_TWyBkQ77XtPNZmt_gMIDPg_w_4HXaSh' -H 'Content-Type: application/json' -H 'Prefer: resolution=merge-duplicates' -d '{\"id\":1,\"data\":{\"test\":true}}' -w '\\\\nHTTP %{http_code}\\\\n')",
+      "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\('데이터 없음' if not d else json.dumps\\({k:\\(v[:80]+'...' if isinstance\\(v,str\\) and len\\(v\\)>80 else v\\) for k,v in d[0]['data'].items\\(\\) if k in ['groom','bride','mainPhoto','venue','date','galleryPhotos','theme']}, ensure_ascii=False, indent=2\\)\\)\")"
     ]
   }
 }
