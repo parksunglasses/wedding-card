@@ -3,6 +3,7 @@ import { motion } from 'framer-motion'
 import { GuestbookEntry } from '@/types'
 import { Theme } from '@/themes'
 import { supabase, isSupabaseConfigured } from '@/lib/supabase'
+import { isAuthenticated } from '@/pages/EditLogin'
 
 interface Props {
   theme: Theme
@@ -13,10 +14,28 @@ export default function Guestbook({ theme }: Props) {
   const [name, setName] = useState('')
   const [message, setMessage] = useState('')
   const [submitting, setSubmitting] = useState(false)
+  const isAdmin = isAuthenticated()
 
   useEffect(() => {
     fetchEntries()
   }, [])
+
+  const handleDelete = async (id: string) => {
+    if (!confirm('이 방명록을 삭제할까요?')) return
+
+    if (isSupabaseConfigured) {
+      const { error } = await supabase.from('guestbooks').delete().eq('id', id)
+      if (!error) {
+        setEntries((prev) => prev.filter((e) => e.id !== id))
+      } else {
+        alert('삭제 실패: ' + error.message)
+      }
+    } else {
+      const updated = entries.filter((e) => e.id !== id)
+      setEntries(updated)
+      localStorage.setItem('guestbook', JSON.stringify(updated))
+    }
+  }
 
   const fetchEntries = async () => {
     if (!isSupabaseConfigured) {
@@ -140,9 +159,22 @@ export default function Guestbook({ theme }: Props) {
               >
                 <div className="flex justify-between items-center mb-2">
                   <p className="font-semibold text-sm theme-text">{entry.name}</p>
-                  <p className="text-xs" style={{ color: theme.colors.text + '66' }}>
-                    {new Date(entry.createdAt).toLocaleDateString('ko-KR')}
-                  </p>
+                  <div className="flex items-center gap-2">
+                    <p className="text-xs" style={{ color: theme.colors.text + '66' }}>
+                      {new Date(entry.createdAt).toLocaleDateString('ko-KR')}
+                    </p>
+                    {isAdmin && (
+                      <button
+                        type="button"
+                        onClick={() => handleDelete(entry.id)}
+                        className="text-xs px-1.5 py-0.5 rounded"
+                        style={{ color: '#C0392B', background: '#C0392B11' }}
+                        aria-label="삭제"
+                      >
+                        삭제
+                      </button>
+                    )}
+                  </div>
                 </div>
                 <p className="text-sm leading-relaxed whitespace-pre-line" style={{ color: theme.colors.text + 'CC' }}>
                   {entry.message}

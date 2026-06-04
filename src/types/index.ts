@@ -50,8 +50,12 @@ export interface WeddingData {
   // 배경음악 (BGM)
   bgmUrl: string
 
-  // 입장(문 열림) 애니메이션 on/off
+  // 입장 애니메이션 on/off
   doorIntro: boolean
+  // Lottie 인트로 애니메이션 JSON URL (비우면 시네마틱 페이드)
+  lottieUrl?: string
+  // 청첩장 보는 동안 폭죽 효과 on/off
+  fireworks?: boolean
 
   // 테마
   theme: 'elegant' | 'minimal' | 'flower' | 'dark' | 'natural' | 'hyundai'

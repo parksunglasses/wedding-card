@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { WeddingData } from '@/types'
 import { loadWeddingData, loadWeddingDataAsync } from '@/data/wedding'
 import ThemeProvider from '@/themes/ThemeProvider'
-import { getTheme } from '@/themes'
+import { getTheme, themes, ThemeId } from '@/themes'
 
 import Intro from '@/components/sections/Intro'
 import Greeting from '@/components/sections/Greeting'
@@ -17,6 +17,7 @@ import RSVP from '@/components/sections/RSVP'
 import Share from '@/components/sections/Share'
 import FloatingControls from '@/components/FloatingControls'
 import DoorIntro from '@/components/DoorIntro'
+import FireworksOverlay from '@/components/FireworksOverlay'
 
 export default function Invitation() {
   // 캐시(localStorage)/기본값으로 즉시 렌더 → Supabase로 백그라운드 갱신
@@ -36,12 +37,17 @@ export default function Invitation() {
     loadWeddingDataAsync().then(setData)
   }, [])
 
-  const theme = getTheme(data.theme)
+  // ?theme=minimal 등으로 테마 임시 미리보기 (DB 변경 없이)
+  const themeOverride = new URLSearchParams(window.location.search).get('theme')
+  const effectiveTheme: ThemeId =
+    themeOverride && themeOverride in themes ? (themeOverride as ThemeId) : data.theme
+  const theme = getTheme(effectiveTheme)
 
   return (
     <ThemeProvider theme={theme}>
       <div className="min-h-screen theme-bg">
         {data.doorIntro && <DoorIntro data={data} theme={theme} />}
+        {data.fireworks !== false && <FireworksOverlay />}
         <FloatingControls data={data} theme={theme} />
         <Intro data={data} theme={theme} />
         <Greeting data={data} theme={theme} />

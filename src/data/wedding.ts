@@ -45,6 +45,8 @@ export const defaultWeddingData: WeddingData = {
   flowerLink: '',
   bgmUrl: '',
   doorIntro: true,
+  lottieUrl: '',
+  fireworks: true,
   theme: 'elegant',
 }
 

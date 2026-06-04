@@ -352,10 +352,24 @@ export default function Edit() {
 
             <Section title="입장 효과">
               <Toggle
-                label="문 열림 애니메이션"
-                desc="페이지 진입 시 양쪽 문이 열리는 효과"
+                label="진입 인트로 애니메이션"
+                desc="페이지 진입 시 인트로 효과 표시"
                 checked={data.doorIntro}
                 onChange={(v) => update('doorIntro', v)}
+              />
+              {data.doorIntro && (
+                <Field
+                  label="Lottie 애니메이션 URL (비우면 시네마틱 페이드)"
+                  value={data.lottieUrl ?? ''}
+                  onChange={(v) => update('lottieUrl', v)}
+                  placeholder="lottiefiles.com 에서 .json URL 붙여넣기"
+                />
+              )}
+              <Toggle
+                label="폭죽 효과"
+                desc="청첩장 보는 동안 중간중간 폭죽이 터짐"
+                checked={data.fireworks !== false}
+                onChange={(v) => update('fireworks', v)}
               />
             </Section>
 
