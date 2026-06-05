@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { WeddingData } from '@/types'
 import { Theme } from '@/themes'
-import { shareKakao, addKakaoCalendar } from '@/lib/share'
+import { shareKakao } from '@/lib/share'
 
 interface Props {
   data: WeddingData
@@ -29,14 +29,6 @@ export default function Share({ data, theme }: Props) {
     } catch (e) {
       console.error('Kakao share failed', e)
       alert('카카오톡 공유에 실패했습니다')
-    }
-  }
-
-  const handleCalendar = async () => {
-    try {
-      await addKakaoCalendar(data)
-    } catch (e) {
-      console.error('Calendar failed', e)
     }
   }
 
@@ -67,17 +59,11 @@ export default function Share({ data, theme }: Props) {
           소중한 분들에게 청첩장을 전해주세요
         </p>
 
-        <div className="grid grid-cols-2 gap-3 mb-3">
+        <div className="grid grid-cols-3 gap-3">
           <button onClick={handleKakaoShare} className="flex flex-col items-center gap-2 py-4 rounded-lg text-xs" style={buttonStyle}>
             <div className="w-10 h-10 rounded-lg bg-yellow-400 flex items-center justify-center text-black text-lg">💬</div>
             카카오톡
           </button>
-          <button onClick={handleCalendar} className="flex flex-col items-center gap-2 py-4 rounded-lg text-xs" style={buttonStyle}>
-            <div className="w-10 h-10 rounded-lg bg-yellow-400 flex items-center justify-center text-black text-lg">📅</div>
-            일정 등록
-          </button>
-        </div>
-        <div className="grid grid-cols-2 gap-3">
           <button onClick={handleSMS} className="flex flex-col items-center gap-2 py-4 rounded-lg text-xs" style={buttonStyle}>
             <div className="w-10 h-10 rounded-lg bg-green-500 flex items-center justify-center text-white text-lg">✉️</div>
             문자

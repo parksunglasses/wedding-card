@@ -28,9 +28,6 @@ export async function shareKakao(data: WeddingData): Promise<void> {
       imageUrl,
       link,
     },
-    buttons: [
-      { title: '일정 등록', link: { mobileWebUrl: calendarUrl, webUrl: calendarUrl } },
-    ],
   })
 }
 
