@@ -68,20 +68,20 @@ export const themes: Record<ThemeId, Theme> = {
     },
   },
 
-  // 2. 블러쉬 — 파스텔 핑크 (샹파뉴와 같은 우아한 클래식)
+  // 2. 블러쉬 — 파스텔 핑크 로맨틱
   minimal: {
     id: 'minimal',
     name: '블러쉬',
-    description: '파스텔 핑크 & 로즈 · 우아한 클래식',
+    description: '파스텔 핑크 & 로즈 · 로맨틱 클래식',
     colors: {
-      bg: '#FDF7F8',
-      bgAlt: '#F8EAEE',
-      bgDark: '#9A6670',
-      text: '#3D2A2E',
-      textMuted: '#A98C92',
-      accent: '#C67E92',
-      accentLight: '#F6DCE3',
-      border: '#F1DCE2',
+      bg: '#FFF9FB',
+      bgAlt: '#FCEDF4',
+      bgDark: '#A86880',
+      text: '#3A2028',
+      textMuted: '#B89AA6',
+      accent: '#D4728A',
+      accentLight: '#F0B8CA',
+      border: '#F0D8E4',
     },
     fonts: {
       heading: '"Cormorant Garamond", serif',
@@ -89,8 +89,8 @@ export const themes: Record<ThemeId, Theme> = {
       script: '"Great Vibes", cursive',
     },
     style: {
-      rounded: 'none',
-      introOverlay: 'dark',
+      rounded: 'sm',
+      introOverlay: 'light',
       introTextStyle: 'script',
       introLayout: 'classic',
       introTitle: 'Wedding Day',

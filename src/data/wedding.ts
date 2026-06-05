@@ -47,7 +47,7 @@ export const defaultWeddingData: WeddingData = {
   doorIntro: true,
   lottieUrl: '',
   fireworks: true,
-  theme: 'elegant',
+  theme: 'minimal',
 }
 
 // localStorage에서 불러오기 (동기, 초기 렌더용)
