@@ -15,6 +15,7 @@ export default function Edit() {
   const [data, setData] = useState<WeddingData | null>(null)
   const [tab, setTab] = useState<Tab>('basic')
   const [saved, setSaved] = useState(false)
+  const [saveError, setSaveError] = useState(false)
 
   useEffect(() => {
     if (!isAuthenticated()) {
@@ -26,16 +27,23 @@ export default function Edit() {
 
   if (!data) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[#F5F0E8]">
-        <p className="font-serif text-xl italic" style={{ color: '#A68B5B' }}>Loading...</p>
+      <div className="min-h-screen flex flex-col items-center justify-center gap-4 bg-[#F5F0E8]">
+        <div className="w-8 h-8 border-2 border-t-transparent rounded-full animate-spin" style={{ borderColor: '#A68B5B', borderTopColor: 'transparent' }} />
+        <p className="font-serif text-sm" style={{ color: '#A68B5B' }}>불러오는 중...</p>
       </div>
     )
   }
 
-  const handleSave = () => {
-    saveWeddingData(data)
-    setSaved(true)
-    setTimeout(() => setSaved(false), 2000)
+  const handleSave = async () => {
+    try {
+      await saveWeddingData(data)
+      setSaved(true)
+      setSaveError(false)
+      setTimeout(() => setSaved(false), 2000)
+    } catch {
+      setSaveError(true)
+      setTimeout(() => setSaveError(false), 3000)
+    }
   }
 
   const handlePreview = () => {
@@ -83,8 +91,12 @@ export default function Edit() {
           <button onClick={handlePreview} className="text-xs px-3 py-2 rounded-lg border border-white/20">
             미리보기
           </button>
-          <button onClick={handleSave} className="text-xs px-4 py-2 rounded-lg font-medium" style={{ background: '#A68B5B', color: 'white' }}>
-            {saved ? '저장됨 ✓' : '저장'}
+          <button
+            onClick={handleSave}
+            className="text-xs px-4 py-2 rounded-lg font-medium"
+            style={{ background: saveError ? '#ef4444' : '#A68B5B', color: 'white' }}
+          >
+            {saveError ? '저장 실패 ✕' : saved ? '저장됨 ✓' : '저장'}
           </button>
         </div>
       </header>

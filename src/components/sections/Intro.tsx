@@ -21,7 +21,7 @@ export default function Intro({ data, theme }: Props) {
     : 'none'
 
   const bgImage = data.mainPhoto
-    ? `${overlay !== 'none' ? overlay + ',' : ''} url(${getOptimizedUrl(data.mainPhoto, { width: 1200 })})`
+    ? `${overlay !== 'none' ? overlay + ',' : ''} url(${getOptimizedUrl(data.mainPhoto, { width: 480 })})`
     : `linear-gradient(135deg, ${theme.colors.accentLight}, ${theme.colors.accent})`
 
   const title = theme.style.introTitle

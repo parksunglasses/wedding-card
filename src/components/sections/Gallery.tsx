@@ -49,8 +49,8 @@ export default function Gallery({ data, theme }: Props) {
           >
             {photo && (
               <img
-                src={getOptimizedUrl(photo, { width: 600 })}
-                alt=""
+                src={getOptimizedUrl(photo, { width: 480 })}
+                alt={`웨딩 사진 ${idx + 1}`}
                 loading="lazy"
                 decoding="async"
                 className="w-full h-full object-cover"
@@ -76,8 +76,8 @@ export default function Gallery({ data, theme }: Props) {
               ×
             </button>
             <img
-              src={getOptimizedUrl(photos[selectedIdx], { width: 1200 })}
-              alt=""
+              src={getOptimizedUrl(photos[selectedIdx], { width: 800 })}
+              alt={`웨딩 사진 ${selectedIdx + 1} 확대`}
               className="max-w-full max-h-full object-contain"
             />
           </motion.div>

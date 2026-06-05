@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, memo } from 'react'
 import { motion } from 'framer-motion'
 import { WeddingData } from '@/types'
 import { Theme } from '@/themes'
@@ -9,16 +9,45 @@ interface Props {
   theme: Theme
 }
 
-export default function Calendar({ data, theme }: Props) {
-  const [countdown, setCountdown] = useState(getCountdown(data.date, data.time))
-  const calendar = getCalendarData(data.date)
+// 1초마다 업데이트되는 카운트다운만 분리 — Calendar 전체 리렌더 방지
+const Countdown = memo(function Countdown({
+  date, time, theme,
+}: { date: string; time: string; theme: Theme }) {
+  const [countdown, setCountdown] = useState(() => getCountdown(date, time))
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      setCountdown(getCountdown(data.date, data.time))
-    }, 1000)
+    const timer = setInterval(() => setCountdown(getCountdown(date, time)), 1000)
     return () => clearInterval(timer)
-  }, [data.date, data.time])
+  }, [date, time])
+
+  return (
+    <div className="mt-16 -mx-8 px-8 py-12 theme-bg-dark" style={{ color: theme.colors.accentLight }}>
+      <div className="grid grid-cols-4 gap-2 max-w-md mx-auto text-center">
+        {[
+          { label: 'DAY', value: countdown.days },
+          { label: 'HOUR', value: countdown.hours },
+          { label: 'MIN', value: countdown.minutes },
+          { label: 'SEC', value: countdown.seconds },
+        ].map((item, idx) => (
+          <div key={idx}>
+            <p className="font-heading text-xs tracking-widest mb-2" style={{ color: theme.colors.accentLight }}>
+              {item.label}
+            </p>
+            <p className="font-heading text-3xl" style={{ color: theme.colors.bg }}>
+              {String(item.value).padStart(2, '0')}
+            </p>
+          </div>
+        ))}
+      </div>
+      <p className="text-center text-sm mt-8" style={{ color: theme.colors.bg + 'CC' }}>
+        결혼까지 남은 시간 · <span style={{ color: theme.colors.accentLight }}>{countdown.days}</span>일
+      </p>
+    </div>
+  )
+})
+
+export default function Calendar({ data, theme }: Props) {
+  const calendar = getCalendarData(data.date)
 
   const weekdays = ['S', 'M', 'T', 'W', 'T', 'F', 'S']
 
@@ -95,28 +124,7 @@ export default function Calendar({ data, theme }: Props) {
         </div>
       </motion.div>
 
-      <div className="mt-16 -mx-8 px-8 py-12 theme-bg-dark" style={{ color: theme.colors.accentLight }}>
-        <div className="grid grid-cols-4 gap-2 max-w-md mx-auto text-center">
-          {[
-            { label: 'DAY', value: countdown.days },
-            { label: 'HOUR', value: countdown.hours },
-            { label: 'MIN', value: countdown.minutes },
-            { label: 'SEC', value: countdown.seconds },
-          ].map((item, idx) => (
-            <div key={idx}>
-              <p className="font-heading text-xs tracking-widest mb-2" style={{ color: theme.colors.accentLight }}>
-                {item.label}
-              </p>
-              <p className="font-heading text-3xl" style={{ color: theme.colors.bg }}>
-                {String(item.value).padStart(2, '0')}
-              </p>
-            </div>
-          ))}
-        </div>
-        <p className="text-center text-sm mt-8" style={{ color: theme.colors.bg + 'CC' }}>
-          결혼까지 남은 시간 · <span style={{ color: theme.colors.accentLight }}>{countdown.days}</span>일
-        </p>
-      </div>
+      <Countdown date={data.date} time={data.time} theme={theme} />
     </section>
   )
 }
