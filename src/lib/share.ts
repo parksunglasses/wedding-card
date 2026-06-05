@@ -17,6 +17,7 @@ export async function shareKakao(data: WeddingData): Promise<void> {
   const imageUrl = photo ? getOptimizedUrl(photo, { width: 800, dpr: false }) : ''
   const link = { mobileWebUrl: baseUrl, webUrl: baseUrl }
   const calendarUrl = `${baseUrl}?to=calendar`
+  const locationUrl = `${baseUrl}?to=map`
 
   Kakao.Share.sendDefault({
     objectType: 'feed',
@@ -27,8 +28,8 @@ export async function shareKakao(data: WeddingData): Promise<void> {
       link,
     },
     buttons: [
-      { title: '청첩장 보기', link },
       { title: '일정 등록', link: { mobileWebUrl: calendarUrl, webUrl: calendarUrl } },
+      { title: '위치 보기', link: { mobileWebUrl: locationUrl, webUrl: locationUrl } },
     ],
   })
 }
