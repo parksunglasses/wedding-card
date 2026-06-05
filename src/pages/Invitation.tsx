@@ -18,6 +18,7 @@ const Flower      = lazy(() => import('@/components/sections/Flower'))
 const Guestbook   = lazy(() => import('@/components/sections/Guestbook'))
 const RSVP        = lazy(() => import('@/components/sections/RSVP'))
 const Share       = lazy(() => import('@/components/sections/Share'))
+const GuestUpload = lazy(() => import('@/components/sections/GuestUpload'))
 const FireworksOverlay = lazy(() => import('@/components/FireworksOverlay'))
 
 function SectionFallback() {
@@ -94,6 +95,9 @@ export default function Invitation() {
         </Suspense>
         <Suspense fallback={<SectionFallback />}>
           <RSVP theme={theme} />
+        </Suspense>
+        <Suspense fallback={<SectionFallback />}>
+          <GuestUpload theme={theme} />
         </Suspense>
         <Suspense fallback={<SectionFallback />}>
           <Share data={data} theme={theme} />

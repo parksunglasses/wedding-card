@@ -43,6 +43,27 @@ export async function uploadImage(file: File): Promise<UploadResult> {
   }
 }
 
+// 사진/영상 통합 업로드 (하객용) — auto/upload로 타입 자동 감지
+export async function uploadGuestMedia(file: File): Promise<string> {
+  if (!isCloudinaryConfigured) {
+    throw new Error('Cloudinary가 설정되지 않았습니다.')
+  }
+
+  const formData = new FormData()
+  formData.append('file', file)
+  formData.append('upload_preset', UPLOAD_PRESET)
+  formData.append('folder', 'wedding_guests')
+
+  const response = await fetch(
+    `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/auto/upload`,
+    { method: 'POST', body: formData }
+  )
+
+  if (!response.ok) throw new Error('업로드 실패')
+  const data = await response.json()
+  return data.secure_url as string
+}
+
 // 오디오(BGM) 업로드 — Cloudinary는 오디오를 video 리소스로 처리
 export async function uploadAudio(file: File): Promise<string> {
   if (!isCloudinaryConfigured) {
