@@ -57,10 +57,10 @@ export default function Intro({ data, theme }: Props) {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1.2, delay: 0.5 }}
-            className="absolute bottom-24 left-0 right-0 text-center px-8 z-10"
+            className="absolute bottom-24 left-0 right-0 text-center px-6 z-10"
           >
-            <p className="text-base mb-2" style={{ fontFamily: theme.fonts.heading, letterSpacing: '0.15em' }}>{names}</p>
-            <p className="text-xs tracking-[0.2em] opacity-90 font-light">{dateEng}</p>
+            <p className="text-[clamp(0.85rem,3.5vw,1rem)] mb-2 whitespace-nowrap" style={{ fontFamily: theme.fonts.heading, letterSpacing: '0.15em' }}>{names}</p>
+            <p className="text-[clamp(0.65rem,2.5vw,0.75rem)] tracking-[0.2em] opacity-90 font-light whitespace-nowrap">{dateEng}</p>
           </motion.div>
         </>
       )}
@@ -75,8 +75,8 @@ export default function Intro({ data, theme }: Props) {
         >
           <div className="w-px h-16 mb-8" style={{ background: textColor, opacity: 0.5 }} />
           <p style={titleStyle} className="mb-6">{title}</p>
-          <p className="text-sm mb-8" style={{ fontFamily: theme.fonts.heading, letterSpacing: '0.2em' }}>{names}</p>
-          <p className="text-[11px] tracking-[0.25em] opacity-80 font-light">{dateKor}</p>
+          <p className="text-[clamp(0.8rem,3vw,0.875rem)] mb-8 whitespace-nowrap" style={{ fontFamily: theme.fonts.heading, letterSpacing: '0.2em' }}>{names}</p>
+          <p className="text-[clamp(0.65rem,2.5vw,0.6875rem)] tracking-[0.25em] opacity-80 font-light whitespace-nowrap">{dateKor}</p>
           <div className="w-px h-16 mt-8" style={{ background: textColor, opacity: 0.5 }} />
         </motion.div>
       )}
@@ -107,8 +107,8 @@ export default function Intro({ data, theme }: Props) {
           className="absolute inset-5 z-10 flex flex-col items-center justify-center text-center"
           style={{ border: `1px solid ${textColor}66` }}
         >
-          <p className="text-[10px] tracking-[0.4em] mb-5 opacity-80" style={{ color: theme.colors.accentLight }}>
-            {data.groom.name.toUpperCase()} & {data.bride.name.toUpperCase()}
+          <p className="text-[10px] tracking-[0.3em] mb-5 opacity-80 whitespace-nowrap" style={{ color: theme.colors.accentLight }}>
+            {data.groom.name} ♥ {data.bride.name}
           </p>
           <p style={titleStyle} className="px-6 drop-shadow-lg">{title}</p>
           <div className="flex items-center gap-3 mt-6">

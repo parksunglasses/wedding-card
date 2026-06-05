@@ -76,7 +76,7 @@ export const themes: Record<ThemeId, Theme> = {
     colors: {
       bg: '#FFF9FB',
       bgAlt: '#FCEDF4',
-      bgDark: '#A86880',
+      bgDark: '#C47888',
       text: '#3A2028',
       textMuted: '#B89AA6',
       accent: '#D4728A',
@@ -90,7 +90,7 @@ export const themes: Record<ThemeId, Theme> = {
     },
     style: {
       rounded: 'sm',
-      introOverlay: 'light',
+      introOverlay: 'dark',
       introTextStyle: 'script',
       introLayout: 'classic',
       introTitle: 'Wedding Day',

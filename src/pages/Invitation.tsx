@@ -36,6 +36,11 @@ export default function Invitation() {
       const url = `https://map.kakao.com/link/map/${encodeURIComponent(d.venue)},${d.lat},${d.lng}`
       window.location.replace(url)
     }
+    if (params.get('to') === 'calendar') {
+      import('@/lib/share').then(({ addKakaoCalendar }) => {
+        loadWeddingDataAsync().then((d) => addKakaoCalendar(d))
+      })
+    }
   }, [])
 
   useEffect(() => {

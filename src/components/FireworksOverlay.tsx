@@ -12,12 +12,12 @@ function launchFireworks() {
   for (let i = 0; i < count; i++) {
     setTimeout(() => {
       confetti({
-        particleCount: 60,
-        spread: 55,
-        startVelocity: 28,
+        particleCount: 35,
+        spread: 40,
+        startVelocity: 20,
         decay: 0.92,
-        scalar: 0.8,
-        ticks: 120,
+        scalar: 0.45,
+        ticks: 100,
         origin: {
           x: 0.05 + Math.random() * 0.9,
           y: 0.1 + Math.random() * 0.7,

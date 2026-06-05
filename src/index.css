@@ -6,7 +6,7 @@
 :root {
   --theme-bg: #FFF9FB;
   --theme-bg-alt: #FCEDF4;
-  --theme-bg-dark: #A86880;
+  --theme-bg-dark: #C47888;
   --theme-text: #3A2028;
   --theme-text-muted: #B89AA6;
   --theme-accent: #D4728A;
@@ -19,6 +19,12 @@
 
 * {
   -webkit-tap-highlight-color: transparent;
+}
+
+/* 한국어 단어 중간 줄바꿈 방지 */
+body, p, h1, h2, h3, span, div {
+  word-break: keep-all;
+  overflow-wrap: break-word;
 }
 
 html, body {
