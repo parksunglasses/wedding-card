@@ -17,10 +17,11 @@ export async function shareKakao(data: WeddingData): Promise<void> {
   const imageUrl = photo ? getOptimizedUrl(photo, { width: 800, dpr: false }) : ''
   const link = { mobileWebUrl: baseUrl, webUrl: baseUrl }
   const calendarUrl = `${baseUrl}?to=calendar`
-  const locationUrl = `${baseUrl}?to=map`
 
   Kakao.Share.sendDefault({
-    objectType: 'feed',
+    objectType: 'location',
+    address: data.address,
+    addressTitle: data.venue,
     content: {
       title: `${data.groom.name} ❤️ ${data.bride.name} 결혼식에 초대합니다.`,
       description: `${dateKor}\n${data.venue}`,
@@ -29,7 +30,6 @@ export async function shareKakao(data: WeddingData): Promise<void> {
     },
     buttons: [
       { title: '일정 등록', link: { mobileWebUrl: calendarUrl, webUrl: calendarUrl } },
-      { title: '위치 보기', link: { mobileWebUrl: locationUrl, webUrl: locationUrl } },
     ],
   })
 }
