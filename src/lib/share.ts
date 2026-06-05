@@ -15,7 +15,6 @@ export async function shareKakao(data: WeddingData): Promise<void> {
   const dateKor = `${formatDate(data.date)} ${getDayOfWeek(data.date)} ${formatTime(data.time)}`
   const photo = data.mainPhoto || data.galleryPhotos[0] || ''
   const imageUrl = photo ? getOptimizedUrl(photo, { width: 800, dpr: false }) : ''
-  const locationUrl = `${baseUrl}?to=map`
   const link = { mobileWebUrl: baseUrl, webUrl: baseUrl }
 
   Kakao.Share.sendDefault({
@@ -28,7 +27,28 @@ export async function shareKakao(data: WeddingData): Promise<void> {
     },
     buttons: [
       { title: '청첩장 보기', link },
-      { title: '위치 보기', link: { mobileWebUrl: locationUrl, webUrl: locationUrl } },
+      { title: '일정 등록', link: { mobileWebUrl: baseUrl, webUrl: baseUrl } },
     ],
+  })
+}
+
+// 카카오 톡캘린더 일정 등록
+export async function addKakaoCalendar(data: WeddingData): Promise<void> {
+  if (!isKakaoConfigured) return
+  const Kakao = await loadKakaoShare()
+
+  const [year, month, day] = data.date.split('-').map(Number)
+  const [hour, minute] = data.time.split(':').map(Number)
+  const pad = (n: number) => String(n).padStart(2, '0')
+
+  const start = `${year}-${pad(month)}-${pad(day)}T${pad(hour)}:${pad(minute)}:00+09:00`
+  const endHour = hour + 2
+  const end   = `${year}-${pad(month)}-${pad(day)}T${pad(endHour)}:${pad(minute)}:00+09:00`
+
+  Kakao.Calendar.createEvents({
+    title: `${data.groom.name} ♥ ${data.bride.name} 결혼식`,
+    time: { start, end, allDay: false, lunar: false },
+    location: { name: data.venue, address: data.address, latitude: data.lat, longitude: data.lng },
+    reminders: [1440], // 하루 전 알림
   })
 }
