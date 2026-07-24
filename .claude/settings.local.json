@@ -24,7 +24,9 @@
       "Bash(iconv -f EUC-KR -t UTF-8)",
       "Bash(python3 -c \"import sys,re; t=sys.stdin.read\\(\\); t=re.sub\\(r'<script.*?</script>','',t,flags=re.S\\); t=re.sub\\(r'<style.*?</style>','',t,flags=re.S\\); t=re.sub\\(r'<[^>]+>',' ',t\\); t=re.sub\\(r'\\\\s+',' ',t\\); print\\(t[:2500]\\)\")",
       "Bash(curl -s \"http://www.swtower.com/kor/company/location.php\" -o /tmp/swt.html)",
-      "Read(//tmp/**)"
+      "Read(//tmp/**)",
+      "Bash(git commit -m ' *)",
+      "Bash(git checkout *)"
     ]
   }
 }

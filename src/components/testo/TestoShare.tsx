@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import { WeddingData } from '@/types'
 import { shareKakao } from '@/lib/share'
-import { TESTO, pen } from './TestoKit'
+import { TESTO, pen, gaegu, Deco } from './TestoKit'
+import { TESTO_TEXT } from './testoData'
 
 interface Props {
   data: WeddingData
@@ -30,40 +31,26 @@ export default function TestoShare({ data }: Props) {
     }
   }
 
-  const smsHref = `sms:?&body=${encodeURIComponent(
-    `${data.groom.name}♥${data.bride.name} 결혼합니다\n${shareUrl}`,
-  )}`
+  const smsHref = `sms:?&body=${encodeURIComponent(`${TESTO_TEXT.groom.name}♥${TESTO_TEXT.bride.name} 결혼합니다\n${shareUrl}`)}`
 
-  const tileStyle = {
-    ...pen(20),
-    background: TESTO.paper,
-    color: TESTO.red,
-    borderRadius: 12,
-    padding: '14px 0 12px',
-  }
+  const tile = { display: 'flex', flexDirection: 'column' as const, alignItems: 'center', gap: 4, ...gaegu, fontSize: 13, color: TESTO.ink }
+  const iconBox = (bg: string) => ({ width: '100%', aspectRatio: '1/1', borderRadius: 16, background: bg, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 26, boxShadow: '0 4px 10px rgba(0,0,0,.18)' })
 
   return (
-    <section className="testo-paper-red px-10 pb-[60px] pt-[50px] text-center" style={{ color: TESTO.paper }}>
-      <h2 className="m-0" style={pen(40)}>청첩장 전하기</h2>
-      <svg viewBox="0 0 130 10" width={120} height={10} className="mx-auto mb-[22px] mt-1.5 block" aria-hidden="true">
-        <path d="M3 6 Q 20 1 38 6 T 74 6 T 110 6 T 127 5" fill="none" stroke={TESTO.paper} strokeWidth={2} strokeLinecap="round" />
-      </svg>
-
-      <div className="mx-auto grid max-w-[320px] grid-cols-3 gap-2.5">
-        <button type="button" onClick={shareByKakao} style={tileStyle}>카톡</button>
-        <a href={smsHref} style={{ ...tileStyle, textDecoration: 'none', display: 'block' }}>문자</a>
-        <button type="button" onClick={copyLink} style={tileStyle}>{copied ? '복사됨' : '링크'}</button>
+    <section className="testo-paper share" style={{ color: TESTO.ink }}>
+      <Deco tone="paper" items={[]} />
+      <h2 style={pen(40, TESTO.red)}>청첩장 전하기</h2>
+      <div className="share-grid">
+        <button type="button" onClick={shareByKakao} style={tile}>
+          <span style={iconBox('#FEE500')}>💬</span>카카오톡
+        </button>
+        <a href={smsHref} style={{ ...tile, textDecoration: 'none' }}>
+          <span style={iconBox('#34C759')}>✉️</span>문자
+        </a>
+        <button type="button" onClick={copyLink} style={tile}>
+          <span style={iconBox(TESTO.tan)}>🔗</span>{copied ? '복사됨' : '링크복사'}
+        </button>
       </div>
-
-      <svg viewBox="0 0 32 40" width={40} height={44} className="mx-auto mb-1.5 mt-11 block" aria-hidden="true">
-        <path d="M16 4 L24 16 H20 L27 27 H5 L12 16 H8 Z" fill="none" stroke={TESTO.paper} strokeWidth={2} strokeLinejoin="round" />
-        <path d="M16 27 V33" stroke={TESTO.paper} strokeWidth={2} strokeLinecap="round" />
-        <circle cx="16" cy="4" r="2" fill={TESTO.paper} />
-      </svg>
-      <p className="m-0" style={pen(36)}>기다리고 있을게요!</p>
-      <p className="mt-1.5 text-[14px] opacity-80" style={{ fontFamily: 'Gaegu, sans-serif' }}>
-        {data.groom.name} &amp; {data.bride.name} 올림
-      </p>
     </section>
   )
 }

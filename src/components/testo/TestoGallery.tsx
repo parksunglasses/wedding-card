@@ -1,10 +1,9 @@
 import { useState } from 'react'
-import { motion } from 'framer-motion'
 import { WeddingData } from '@/types'
-import { getOptimizedUrl } from '@/lib/cloudinary'
 import { DEFAULT_WEDDING_PHOTO } from '@/data/wedding'
-import { Heart, Snowfall, TESTO, pen } from './TestoKit'
+import { TESTO, pen, Photo, Deco } from './TestoKit'
 import PhotoSlideshow, { SlideshowTheme } from '@/components/PhotoSlideshow'
+import { Snowfall } from './TestoKit'
 
 interface Props {
   data: WeddingData
@@ -28,59 +27,26 @@ export default function TestoGallery({ data }: Props) {
   const photos = data.galleryPhotos.length > 0
     ? data.galleryPhotos
     : [data.mainPhoto || DEFAULT_WEDDING_PHOTO]
-  const strip = [photos[0], photos[1] ?? photos[0]]
+  const grid = photos.slice(0, 6)
 
   return (
-    <>
-      <section className="testo-paper-red relative px-8 pb-14 pt-11 text-center" style={{ color: TESTO.paper }}>
-        <div className="flex justify-center gap-5">
-          <motion.div
-            initial={{ opacity: 0, y: 18 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.6 }}
-            className="px-[9px] pb-[26px] pt-[9px]"
-            style={{ background: TESTO.paper, transform: 'rotate(-4deg)', boxShadow: '0 10px 22px rgba(0,0,0,.3)' }}
+    <section className="testo-paper gallery" style={{ color: TESTO.ink }}>
+      <Deco tone="paper" items={[{ t: 'star', x: '457px', y: '435px', s: 26, r: 0 }, { t: 'gift', x: '23px', y: '305px', s: 34, r: -8 }]} />
+      <h2 className="gallery-title" style={pen(56, TESTO.red)}>갤러리</h2>
+      <div className="gallery-grid">
+        {grid.map((p, i) => (
+          <button
+            key={`${p}-${i}`}
+            type="button"
+            className="gallery-cell"
+            onClick={() => { setIndex(i); setOpen(true) }}
+            aria-label={`${i + 1}번째 사진 크게 보기`}
           >
-            <img
-              src={getOptimizedUrl(strip[0], { width: 400 })}
-              alt="웨딩 스냅 1"
-              loading="lazy"
-              className="block h-[170px] w-[140px] object-cover"
-            />
-          </motion.div>
-          <Heart size={34} variant="scribble" color={TESTO.paper} className="mt-[70px]" />
-        </div>
-
-        <p className="mt-[26px] m-0 flex items-center justify-center gap-2" style={pen(40)}>
-          {data.groom.name} + {data.bride.name} =
-          <Heart size={30} variant="outline" color={TESTO.paper} />
-        </p>
-
-        <motion.div
-          initial={{ opacity: 0, y: 18 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.6, delay: 0.1 }}
-          className="mt-[18px] flex justify-center"
-        >
-          <div
-            className="px-[9px] pb-[26px] pt-[9px]"
-            style={{ background: TESTO.paper, transform: 'rotate(3deg)', boxShadow: '0 10px 22px rgba(0,0,0,.3)' }}
-          >
-            <img
-              src={getOptimizedUrl(strip[1], { width: 400 })}
-              alt="웨딩 스냅 2"
-              loading="lazy"
-              className="block h-[150px] w-[170px] object-cover"
-            />
-          </div>
-        </motion.div>
-
-        <button type="button" onClick={() => { setIndex(0); setOpen(true) }} className="testo-pill mt-[26px]" style={{ background: TESTO.paper, color: TESTO.red, boxShadow: '0 6px 14px rgba(0,0,0,.25)' }}>
-          사진 더 보기
-        </button>
-      </section>
+            <Photo src={p} fill alt={`웨딩 사진 ${i + 1}`} />
+          </button>
+        ))}
+      </div>
+      <button type="button" onClick={() => { setIndex(0); setOpen(true) }} className="testo-pill mt-26">사진 더 보기</button>
 
       {open && (
         <PhotoSlideshow
@@ -92,6 +58,6 @@ export default function TestoGallery({ data }: Props) {
           snow={<Snowfall distance={640} color={TESTO.snow} count={4} />}
         />
       )}
-    </>
+    </section>
   )
 }

@@ -1,6 +1,10 @@
 // 테스토 테마 공용 조각 — 크래프트지 질감, 낙서 하트, 찢어진 종이 구분선
 import { useId } from 'react'
 import type { CSSProperties, ReactNode } from 'react'
+import { getOptimizedUrl } from '@/lib/cloudinary'
+
+/** 본문 손글씨 폰트(가는 고딕 손글씨) */
+export const gaegu = { fontFamily: 'Gaegu, sans-serif' } as const
 
 export const TESTO = {
   paper: '#F4ECD9',
@@ -227,5 +231,209 @@ export function TornDivider({ variant, flip = false, color = TESTO.red }: TornDi
     >
       <path d={DIVIDER_PATHS[variant]} fill={color} />
     </svg>
+  )
+}
+
+// ── 사진 (실제 이미지 or 크래프트 플레이스홀더) ─────────────────────
+const PHOTO_TONES = ['#EBDFC4', '#E5D7B8', '#EFE3CB', '#E7DBBF', '#F0E6D2', '#E3D4B4', '#EAD9BA', '#E1D0AC']
+
+interface PhotoProps {
+  src?: string
+  w?: number
+  h?: number
+  i?: number
+  fill?: boolean
+  radius?: number
+  alt?: string
+}
+
+export function Photo({ src, w, h, i = 0, fill, radius = 0, alt = '' }: PhotoProps) {
+  const style: CSSProperties = { width: fill ? '100%' : w, height: fill ? '100%' : h, borderRadius: radius }
+  if (src) {
+    return (
+      <div className="photo" style={style}>
+        <img src={getOptimizedUrl(src, { width: 800 })} alt={alt} loading="lazy" className="photo-img" />
+      </div>
+    )
+  }
+  return (
+    <div className="photo" style={{ ...style, background: PHOTO_TONES[i % PHOTO_TONES.length] }}>
+      <svg viewBox="0 0 44 44" width={30} height={30} aria-hidden="true" style={{ opacity: 0.3 }}>
+        <rect x="7" y="13" width="30" height="22" rx="2" fill="none" stroke={TESTO.ink} strokeWidth="1.6" />
+        <circle cx="22" cy="24" r="6" fill="none" stroke={TESTO.ink} strokeWidth="1.6" />
+        <path d="M16 13 l3 -4 h6 l3 4" fill="none" stroke={TESTO.ink} strokeWidth="1.6" strokeLinejoin="round" />
+      </svg>
+    </div>
+  )
+}
+
+// ── 크리스마스 아이콘 (viewBox 0 0 24 24 안에 넣어 사용) ────────────
+const ICO = { pine: '#2F5D45', gold: '#E8B84B', red: '#7A1420', brown: '#8A5A32', paper: '#F4ECD9' }
+
+export type IcoType =
+  | 'tree' | 'gift' | 'bauble' | 'star' | 'hat' | 'cane' | 'snow' | 'holly'
+  | 'santa' | 'bell' | 'sock' | 'flake' | 'mitten'
+
+/** 크리스마스 아이콘 내부 요소. mono가 있으면 단색 실루엣. */
+export function Ico({ t, mono = null }: { t: IcoType; mono?: string | null }) {
+  const s = mono
+  switch (t) {
+    case 'tree':
+      return mono ? (
+        <g fill={s!}><path d="M12 3 L7 10 H17 Z" /><path d="M12 8 L5.5 15 H18.5 Z" /><path d="M12 13 L4 21 H20 Z" /><rect x="10.5" y="20" width="3" height="2.5" /></g>
+      ) : (
+        <g><path d="M12 3 L7 10 H17 Z" fill={ICO.pine} /><path d="M12 8 L5.5 15 H18.5 Z" fill={ICO.pine} /><path d="M12 13 L4 21 H20 Z" fill={ICO.pine} /><rect x="10.5" y="20" width="3" height="2.5" fill={ICO.brown} /><path d="M12 1.6 l1 2.3 2.5 .2 -1.9 1.6 .6 2.4 -2.2 -1.3 -2.2 1.3 .6 -2.4 -1.9 -1.6 2.5 -.2 Z" fill={ICO.gold} /><circle cx="9.5" cy="12" r="1" fill={ICO.gold} /><circle cx="14" cy="16" r="1" fill={ICO.paper} /><circle cx="10.5" cy="18" r="1" fill={ICO.gold} /></g>
+      )
+    case 'gift':
+      return mono ? (
+        <g fill={s!}><rect x="4.5" y="9" width="15" height="11.5" rx="1" /><path d="M12 9 C 9.5 9 8.5 4.5 10.2 4.5 C 12 4.5 12 7 12 9 C 12 7 12 4.5 13.8 4.5 C 15.5 4.5 14.5 9 12 9 Z" /></g>
+      ) : (
+        <g><rect x="4.5" y="9" width="15" height="11.5" rx="1" fill={ICO.pine} /><rect x="11" y="9" width="2.2" height="11.5" fill={ICO.gold} /><rect x="4.5" y="13" width="15" height="2.2" fill={ICO.gold} /><path d="M12 9 C 9.5 9 8.5 4.5 10.2 4.5 C 12 4.5 12 7 12 9 C 12 7 12 4.5 13.8 4.5 C 15.5 4.5 14.5 9 12 9 Z" fill={ICO.gold} /></g>
+      )
+    case 'bauble':
+      return mono ? (
+        <g fill={s!}><circle cx="12" cy="14.5" r="6.3" /><rect x="10.5" y="6" width="3" height="2.6" /></g>
+      ) : (
+        <g><path d="M12 3.5 V6" stroke={ICO.pine} strokeWidth="1.2" fill="none" /><rect x="10.5" y="6" width="3" height="2.6" rx=".6" fill={ICO.pine} /><circle cx="12" cy="14.5" r="6.3" fill={ICO.gold} /><path d="M12 8.5 a6 6 0 0 1 4.6 9" stroke={ICO.paper} strokeWidth="1.1" fill="none" opacity=".8" /><circle cx="12" cy="14.5" r="6.3" fill="none" stroke={ICO.brown} strokeWidth=".5" opacity=".4" /></g>
+      )
+    case 'star':
+      return <path d="M12 2.4 l2.7 6.2 6.7 .5 -5.1 4.4 1.6 6.6 -5.9 -3.5 -5.9 3.5 1.6 -6.6 -5.1 -4.4 6.7 -.5 Z" fill={mono ? s! : ICO.gold} />
+    case 'hat':
+      return mono ? (
+        <g fill={s!}><path d="M3.5 16.5 C 6 6 17 5 20.5 15.5 Z" /><rect x="2.5" y="16" width="19" height="3" rx="1.5" /><circle cx="20.5" cy="6.5" r="2.3" /></g>
+      ) : (
+        <g><path d="M3.5 16.5 C 6 6 17 5 20.5 15.5 Z" fill={ICO.gold} /><rect x="2.5" y="16" width="19" height="3" rx="1.5" fill={ICO.paper} /><circle cx="20.5" cy="6.5" r="2.3" fill={ICO.paper} /></g>
+      )
+    case 'cane':
+      return mono ? (
+        <path d="M9 21 V11 A3.6 3.6 0 0 1 16.2 11" fill="none" stroke={s!} strokeWidth="3.2" strokeLinecap="round" />
+      ) : (
+        <g fill="none" strokeLinecap="round"><path d="M9 21 V11 A3.6 3.6 0 0 1 16.2 11" stroke={ICO.gold} strokeWidth="3.4" /><path d="M9 21 V11 A3.6 3.6 0 0 1 16.2 11" stroke={ICO.red} strokeWidth="3.4" strokeDasharray="2.4 4" /></g>
+      )
+    case 'snow':
+      return mono ? (
+        <g fill={s!}><circle cx="12" cy="16.5" r="4.8" /><circle cx="12" cy="8.8" r="3.5" /></g>
+      ) : (
+        <g><circle cx="12" cy="16.5" r="4.8" fill={ICO.paper} stroke={ICO.pine} strokeWidth=".6" /><circle cx="12" cy="8.8" r="3.5" fill={ICO.paper} stroke={ICO.pine} strokeWidth=".6" /><rect x="8.5" y="12" width="7" height="1.8" rx=".9" fill={ICO.red} /><circle cx="10.8" cy="8.2" r=".6" fill={ICO.pine} /><circle cx="13.2" cy="8.2" r=".6" fill={ICO.pine} /><path d="M12 9.4 l2.2 .6 -2.2 .5 Z" fill={ICO.gold} /></g>
+      )
+    case 'holly':
+      return mono ? (
+        <g fill={s!}><path d="M12 13 C 8.5 9.5 8.5 5.5 12 7 C 15.5 5.5 15.5 9.5 12 13 Z" /><circle cx="10.4" cy="14.6" r="1.5" /><circle cx="13.6" cy="14.6" r="1.5" /><circle cx="12" cy="16.4" r="1.5" /></g>
+      ) : (
+        <g><path d="M12 13 C 8.5 9.5 8.5 5.5 12 7 C 15.5 5.5 15.5 9.5 12 13 Z" fill={ICO.pine} /><circle cx="10.4" cy="14.6" r="1.6" fill={ICO.gold} /><circle cx="13.6" cy="14.6" r="1.6" fill={ICO.red} /><circle cx="12" cy="16.4" r="1.6" fill={ICO.gold} /></g>
+      )
+    case 'santa':
+      return (
+        <g>
+          <path d="M6 12.8 C 6 19.2 18 19.2 18 12.8 C 18 16.8 15.5 19 12 19 C 8.5 19 6 16.8 6 12.8 Z" fill="#F7F3EC" />
+          <ellipse cx="12" cy="12.4" rx="6.4" ry="5.9" fill="#F4CBA6" />
+          <path d="M5.4 9.8 C 7 4.8 17 4.8 18.6 9.8 Z" fill="#7A1420" />
+          <path d="M12 5.2 C 15 3.8 17.6 4.4 18.8 5.8" fill="none" stroke="#7A1420" strokeWidth="2.6" strokeLinecap="round" />
+          <rect x="4.6" y="9.2" width="14.8" height="2.8" rx="1.4" fill="#F7F3EC" />
+          <circle cx="18.9" cy="5.6" r="1.9" fill="#F7F3EC" />
+          <circle cx="10" cy="12" r=".9" fill="#3A2A24" />
+          <circle cx="14" cy="12" r=".9" fill="#3A2A24" />
+          <circle cx="8.5" cy="13.9" r="1.5" fill="#EC9E93" opacity=".75" />
+          <circle cx="15.5" cy="13.9" r="1.5" fill="#EC9E93" opacity=".75" />
+          <circle cx="12" cy="13.4" r="1.2" fill="#E8897A" />
+          <path d="M12 14.9 C 11 15.9 9.6 15.6 9.2 14.9 C 10 15.7 11.2 15.6 12 15 C 12.8 15.6 14 15.7 14.8 14.9 C 14.4 15.6 13 15.9 12 14.9 Z" fill="#F7F3EC" />
+        </g>
+      )
+    case 'bell':
+      return (
+        <g>
+          <path d="M12 3.6 C 8.2 3.6 7.2 7 7.2 11 C 7.2 15 5.6 16.4 5 17.6 L 19 17.6 C 18.4 16.4 16.8 15 16.8 11 C 16.8 7 15.8 3.6 12 3.6 Z" fill="#E8B84B" />
+          <circle cx="12" cy="3" r="1.4" fill="#E8B84B" />
+          <circle cx="12" cy="19.4" r="1.9" fill="#7A1420" />
+        </g>
+      )
+    case 'sock':
+      return (
+        <g>
+          <path d="M9 6.5 L9 13 C 9 15 7 15.6 6 17 C 4.9 18.6 6 20.6 8.6 20.6 C 10.6 20.6 12.2 19 14.6 17.6 C 16 16.6 16 15 16 13 L16 6.5 Z" fill="#7A1420" />
+          <rect x="8.4" y="4.4" width="8.2" height="3" rx="1.3" fill="#F7F3EC" />
+        </g>
+      )
+    case 'flake':
+      return (
+        <g stroke="#F7F3EC" strokeWidth="1.4" strokeLinecap="round" fill="none">
+          <path d="M12 3 V21 M3 12 H21 M5.6 5.6 L18.4 18.4 M18.4 5.6 L5.6 18.4" />
+          <path d="M12 6.5 l-2 -1.8 M12 6.5 l2 -1.8 M12 17.5 l-2 1.8 M12 17.5 l2 1.8 M6.5 12 l-1.8 -2 M6.5 12 l-1.8 2 M17.5 12 l1.8 -2 M17.5 12 l1.8 2" />
+        </g>
+      )
+    case 'mitten':
+      return (
+        <g>
+          <path d="M9 6 L15 6 C 15.6 6 16 6.5 16 8 C 16 8.8 16 9.4 16 10 C 18 9.5 19.5 11 19.5 12.8 C 19.5 14.6 18 15.5 16 15 L16 18 L8 18 L8 7 C 8 6.4 8.4 6 9 6 Z" fill="#7A1420" />
+          <rect x="7.4" y="18" width="9.2" height="2.6" rx="1.1" fill="#F7F3EC" />
+        </g>
+      )
+    default:
+      return null
+  }
+}
+
+// ── 크리스마스 장식 스캐터 (모서리/가장자리에 배치, 텍스트는 비워둠) ──
+interface DecoItem {
+  t: IcoType
+  x: number | string
+  y: number | string
+  s: number
+  r: number
+}
+
+const LAYOUTS: DecoItem[][] = [
+  [{ t: 'tree', x: 9, y: 44, s: 40, r: -8 }, { t: 'bell', x: 91, y: 42, s: 30, r: 8 }, { t: 'cane', x: 9, y: 68, s: 30, r: 12 }, { t: 'holly', x: 90, y: 70, s: 32, r: 0 }, { t: 'mitten', x: 9, y: 90, s: 28, r: 6 }, { t: 'bauble', x: 91, y: 88, s: 30, r: 0 }],
+  [{ t: 'holly', x: 9, y: 10, s: 32, r: 8 }, { t: 'bell', x: 91, y: 12, s: 30, r: 0 }, { t: 'star', x: 92, y: 46, s: 26, r: 0 }, { t: 'gift', x: 8, y: 44, s: 34, r: -8 }, { t: 'flake', x: 90, y: 78, s: 30, r: 0 }],
+  [{ t: 'bell', x: 8, y: 12, s: 32, r: -8 }, { t: 'bauble', x: 91, y: 12, s: 30, r: 0 }, { t: 'star', x: 92, y: 46, s: 26, r: 0 }, { t: 'cane', x: 8, y: 80, s: 30, r: 12 }, { t: 'gift', x: 91, y: 78, s: 34, r: 8 }],
+  [{ t: 'sock', x: 8, y: 12, s: 32, r: 8 }, { t: 'snow', x: 91, y: 20, s: 36, r: 0 }, { t: 'cane', x: 9, y: 58, s: 28, r: 12 }, { t: 'star', x: 92, y: 72, s: 26, r: 0 }, { t: 'bauble', x: 10, y: 84, s: 30, r: 0 }, { t: 'flake', x: 90, y: 46, s: 28, r: 0 }],
+]
+
+interface DecoProps {
+  seed?: number
+  tone?: 'paper' | 'red' | 'green'
+  items?: DecoItem[] | null
+}
+
+// ── 모달 셸 (크래프트지 질감) ──────────────────────────────────────
+export function Modal({ onClose, children, title }: { onClose: () => void; children: ReactNode; title?: ReactNode }) {
+  return (
+    <div
+      className="ss-overlay"
+      style={{ background: 'rgba(20,6,8,.82)', padding: 24 }}
+      onClick={(e) => e.target === e.currentTarget && onClose()}
+      role="presentation"
+    >
+      <div className="testo-modal" role="dialog" aria-modal="true">
+        <button type="button" onClick={onClose} aria-label="닫기" className="modal-x" style={{ color: TESTO.red }}>×</button>
+        {title && <h3 style={{ ...pen(34, TESTO.red), textAlign: 'center', margin: '0 0 18px' }}>{title}</h3>}
+        {children}
+      </div>
+    </div>
+  )
+}
+
+export function Deco({ seed = 0, tone = 'paper', items = null }: DecoProps) {
+  let its = items ?? undefined
+  if (!its) {
+    its = LAYOUTS[seed % LAYOUTS.length]
+    if (tone === 'paper') its = its.filter((it) => it.t !== 'snow' && it.t !== 'flake')
+  }
+  const op = tone === 'paper' ? 0.72 : 0.62
+  const u = (v: number | string) => (typeof v === 'number' ? `${v}%` : v)
+  return (
+    <div className="xmas-deco" aria-hidden="true">
+      {its.map((it, i) => (
+        <svg
+          key={i}
+          viewBox="0 0 24 24"
+          width={it.s}
+          height={it.s}
+          style={{ position: 'absolute', left: u(it.x), top: u(it.y), transform: `translate(-50%,-50%) rotate(${it.r}deg)`, opacity: op }}
+        >
+          <Ico t={it.t} mono={null} />
+        </svg>
+      ))}
+    </div>
   )
 }

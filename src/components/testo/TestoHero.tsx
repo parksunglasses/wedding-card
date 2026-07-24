@@ -1,14 +1,15 @@
-import { motion } from 'framer-motion'
 import { WeddingData } from '@/types'
-import { getOptimizedUrl } from '@/lib/cloudinary'
 import { DEFAULT_WEDDING_PHOTO } from '@/data/wedding'
-import { Heart, Squiggle, TESTO, pen } from './TestoKit'
+import { TESTO, pen, Photo, Heart, Snowfall, Deco, Ico } from './TestoKit'
+import { TESTO_TEXT } from './testoData'
 
 interface Props {
   data: WeddingData
 }
 
-const SCATTERED_HEARTS: Array<{ size: number; left: number; top: number; rotate: number; scribble: boolean }> = [
+const WEEKDAYS = ['일', '월', '화', '수', '목', '금', '토']
+
+const SCATTERED = [
   { size: 28, left: 4, top: 26, rotate: -12, scribble: false },
   { size: 42, left: 50, top: 2, rotate: -7, scribble: true },
   { size: 58, left: 118, top: 12, rotate: 7, scribble: true },
@@ -17,98 +18,75 @@ const SCATTERED_HEARTS: Array<{ size: number; left: number; top: number; rotate:
   { size: 24, left: -8, top: 58, rotate: -3, scribble: true },
 ]
 
-export default function TestoHero({ data }: Props) {
-  const groomPhoto = getOptimizedUrl(data.galleryPhotos[0] || data.mainPhoto || DEFAULT_WEDDING_PHOTO, {
-    width: 400,
-  })
-  const bridePhoto = getOptimizedUrl(
-    data.galleryPhotos[1] || data.galleryPhotos[0] || data.mainPhoto || DEFAULT_WEDDING_PHOTO,
-    { width: 400 },
+function Chrys({ size = 18, color = TESTO.muted }: { size?: number; color?: string }) {
+  const petals = [0, 45, 90, 135, 180, 225, 270, 315]
+  return (
+    <svg className="chrys" viewBox="0 0 24 24" width={size} height={size} aria-hidden="true">
+      <g fill={color}>
+        {petals.map((rot, i) => {
+          const a = (rot * Math.PI) / 180
+          return <circle key={i} cx={12 + 6.5 * Math.cos(a)} cy={12 + 6.5 * Math.sin(a)} r="3" />
+        })}
+        <circle cx="12" cy="12" r="3.3" />
+      </g>
+    </svg>
   )
+}
+
+export default function TestoHero({ data }: Props) {
+  const photo = data.mainPhoto || data.galleryPhotos[0] || DEFAULT_WEDDING_PHOTO
+  const [y, m, d] = TESTO_TEXT.date.split('-').map(Number)
+  const dow = WEEKDAYS[new Date(y, m - 1, d).getDay()]
+  const [hh, mi] = TESTO_TEXT.time.split(':')
+  const ampm = Number(hh) < 12 ? 'AM' : 'PM'
 
   return (
-    <section className="testo-paper testo-hero-intro relative overflow-hidden px-8 pb-10 pt-[52px] text-center">
-      <div className="pointer-events-none absolute inset-0 z-[1]" aria-hidden="true">
-        <span className="testo-flake" style={{ left: '10%', fontSize: 12, color: TESTO.snow, animationDuration: '9s' }}>❄</span>
-        <span className="testo-flake" style={{ left: '32%', fontSize: 9, color: TESTO.snow, animationDuration: '12s', animationDelay: '2s' }}>❄</span>
-        <span className="testo-flake" style={{ left: '58%', fontSize: 13, color: TESTO.snow, animationDuration: '10s', animationDelay: '4s' }}>❄</span>
-        <span className="testo-flake" style={{ left: '78%', fontSize: 10, color: TESTO.snow, animationDuration: '8.5s', animationDelay: '1s' }}>❄</span>
-        <span className="testo-flake" style={{ left: '90%', fontSize: 11, color: TESTO.snow, animationDuration: '11s', animationDelay: '3s' }}>❄</span>
-      </div>
+    <section className="testo-paper hero">
+      <Deco seed={0} tone="paper" />
+      <Snowfall distance={560} count={5} />
 
-      {/* 480px 시안 기준 72px — 좁은 화면에서는 뷰포트에 비례해 줄여 이름이 잘리지 않게 한다 */}
-      <h1 className="relative z-[2] m-0" style={{ ...pen(72, TESTO.red), fontSize: 'clamp(40px, 14.5vw, 72px)' }}>
-        <span className="whitespace-nowrap">{data.groom.name} ♡ {data.bride.name}</span>
-        <br />
-        결혼합니다!
-      </h1>
+      <svg className="hero-script" viewBox="0 0 430 168" aria-label="We're Getting Married!">
+        <defs>
+          <path id="arc1" d="M14 76 Q215 44 416 76" fill="none" />
+          <path id="arc2" d="M84 150 Q215 120 346 150" fill="none" />
+        </defs>
+        <text textAnchor="middle" fill={TESTO.red} fontSize="68" style={{ fontFamily: "'Dancing Script', cursive", fontWeight: 700 }}>
+          <textPath href="#arc1" startOffset="50%">We&rsquo;re Getting</textPath>
+        </text>
+        <text textAnchor="middle" fill={TESTO.red} fontSize="68" style={{ fontFamily: "'Dancing Script', cursive", fontWeight: 700 }}>
+          <textPath href="#arc2" startOffset="50%">Married!</textPath>
+        </text>
+      </svg>
 
-      <div className="relative mx-auto mt-[30px] w-[300px]" style={{ paddingTop: 78 }}>
-        {SCATTERED_HEARTS.map((heart, index) => (
-          <Heart
-            key={index}
-            size={heart.size}
-            variant={heart.scribble ? 'scribble' : 'outline'}
-            rotate={heart.rotate}
-            className="absolute"
-            style={{ left: heart.left, top: heart.top }}
-          />
+      <div className="hero-photos">
+        {SCATTERED.map((h, i) => (
+          <Heart key={i} size={h.size} variant={h.scribble ? 'scribble' : 'outline'} rotate={h.rotate} style={{ position: 'absolute', left: h.left, top: h.top }} />
         ))}
-
-        <p className="absolute -left-1.5 m-0" style={{ ...pen(26, TESTO.red), top: 88, transform: 'rotate(-6deg)' }}>
-          신랑
-        </p>
-        <p className="absolute -right-1.5 m-0" style={{ ...pen(26, TESTO.red), top: 88, transform: 'rotate(6deg)' }}>
-          신부
-        </p>
-
-        <div className="flex justify-center gap-2.5 px-10">
-          <motion.img
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.1 }}
-            src={groomPhoto}
-            alt={`신랑 ${data.groom.name}`}
-            className="h-[150px] w-[120px] object-cover"
-            style={{ borderRadius: 10 }}
-          />
-          <motion.img
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.22 }}
-            src={bridePhoto}
-            alt={`신부 ${data.bride.name}`}
-            className="h-[150px] w-[120px] object-cover"
-            style={{ borderRadius: 10 }}
-          />
+        <p className="hero-tag-l" style={{ ...pen(26, TESTO.red), transform: 'rotate(-6deg)' }}>{TESTO_TEXT.groom.nameEn}</p>
+        <p className="hero-tag-r" style={{ ...pen(26, TESTO.red), transform: 'rotate(6deg)' }}>{TESTO_TEXT.bride.nameEn}</p>
+        <div className="hero-pair">
+          <Photo src={photo} w={200} h={210} radius={10} alt="메인 웨딩 사진" />
         </div>
-
-        <p
-          className="relative -mt-3.5 inline-block px-[30px] pb-2 pt-1"
-          style={{
-            ...pen(30),
-            background: TESTO.red,
-            color: TESTO.paper,
-            borderRadius: '8px 22px 10px 26px',
-            transform: 'rotate(-2deg)',
-            boxShadow: '0 6px 14px rgba(0,0,0,.2)',
-          }}
-        >
-          우리 결혼해요!
-        </p>
+        <p className="hero-tape" style={{ ...pen(30), background: TESTO.red, color: TESTO.paper }}>{TESTO_TEXT.tape}</p>
       </div>
 
-      <div className="mt-10">
-        <h2 className="m-0" style={pen(40, TESTO.red)}>우리를 소개할게요</h2>
-        <Squiggle className="mx-auto mb-[18px] mt-1" />
-        <p className="m-0 text-[16px] leading-[1.9]" style={{ fontFamily: 'Gaegu, sans-serif', color: TESTO.inkSoft }}>
-          서로를 향한 믿음으로 시작해
-          <br />
-          이제 평생을 약속하려 합니다.
-          <br />
-          오래 알고 지낸 두 사람이
-          <br />
-          드디어 하나가 됩니다!
+      <div className="hero-greet">
+        <div className="hero-date-wrap">
+          <h2 className="hero-date">
+            {y}.{String(m).padStart(2, '0')}.{String(d).padStart(2, '0')} ({dow})
+            <span className="hero-time">{hh}:{mi}<span className="ampm">{ampm}</span></span>
+          </h2>
+        </div>
+        <div className="hero-parents">
+          <p>{TESTO_TEXT.groom.father} · <span className="chrys-wrap"><Chrys />{TESTO_TEXT.groom.mother}</span>의 장남 <span className="pname">{TESTO_TEXT.groom.given}</span></p>
+          <p>{TESTO_TEXT.bride.father} · {TESTO_TEXT.bride.mother}의 장녀 <span className="pname">{TESTO_TEXT.bride.given}</span></p>
+        </div>
+        <div className="hero-mid-tree">
+          <svg viewBox="0 0 24 24" width={47} height={47} aria-hidden="true"><Ico t="santa" /></svg>
+        </div>
+        <p className="hero-intro">
+          {TESTO_TEXT.intro[0]}<br />
+          {TESTO_TEXT.intro[1]}
         </p>
       </div>
     </section>

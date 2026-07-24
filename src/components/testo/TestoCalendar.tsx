@@ -1,45 +1,31 @@
 import { memo, useEffect, useState } from 'react'
-import { motion } from 'framer-motion'
-import { WeddingData } from '@/types'
 import { formatTime, getCalendarData, getCountdown, getDayOfWeek } from '@/lib/date'
-import { SnowTree, TESTO, pen } from './TestoKit'
-
-interface Props {
-  data: WeddingData
-}
+import { TESTO, pen, gaegu, SnowTree, Deco } from './TestoKit'
+import { TESTO_TEXT } from './testoData'
 
 const WEEKDAYS = ['일', '월', '화', '수', '목', '금', '토']
 
-const Countdown = memo(function Countdown({ date, time }: { date: string; time: string }) {
-  const [countdown, setCountdown] = useState(() => getCountdown(date, time))
-
+const Countdown = memo(function Countdown({ cc, lc }: { cc: string; lc: string }) {
+  const [c, setC] = useState(() => getCountdown(TESTO_TEXT.date, TESTO_TEXT.time))
   useEffect(() => {
-    const timer = window.setInterval(() => setCountdown(getCountdown(date, time)), 1000)
-    return () => window.clearInterval(timer)
-  }, [date, time])
-
-  const pad = (value: number) => String(value).padStart(2, '0')
+    const id = setInterval(() => setC(getCountdown(TESTO_TEXT.date, TESTO_TEXT.time)), 1000)
+    return () => clearInterval(id)
+  }, [])
+  const pad = (v: number) => String(v).padStart(2, '0')
   const units = [
-    { value: String(countdown.days), label: '일' },
-    { value: pad(countdown.hours), label: '시간' },
-    { value: pad(countdown.minutes), label: '분' },
-    { value: pad(countdown.seconds), label: '초' },
+    { v: String(c.days), l: '일' },
+    { v: pad(c.hours), l: '시간' },
+    { v: pad(c.minutes), l: '분' },
+    { v: pad(c.seconds), l: '초' },
   ]
-
   return (
-    <div
-      className="mt-4 inline-flex gap-4 px-[26px] py-3.5"
-      style={{ border: `2px solid ${TESTO.red}`, borderRadius: '70px/46px', transform: 'rotate(-1deg)' }}
-      aria-label={`결혼까지 ${countdown.days}일 ${countdown.hours}시간 ${countdown.minutes}분 남음`}
-    >
-      {units.map((unit, index) => (
-        <div key={unit.label} className="flex items-center gap-4">
-          {index > 0 && <span style={pen(24, TESTO.red)}>:</span>}
+    <div className="countdown" style={{ border: `2px solid ${cc}`, borderRadius: '70px/46px', transform: 'rotate(-1deg)' }}>
+      {units.map((u, i) => (
+        <div key={u.l} className="flex-center gap-12">
+          {i > 0 && <span style={pen(18, cc)}>:</span>}
           <div>
-            <div style={pen(30, TESTO.red)}>{unit.value}</div>
-            <div className="text-[11px]" style={{ fontFamily: 'Gaegu, sans-serif', color: TESTO.muted }}>
-              {unit.label}
-            </div>
+            <div style={pen(24, cc)}>{u.v}</div>
+            <div style={{ ...gaegu, fontSize: 10, color: lc }}>{u.l}</div>
           </div>
         </div>
       ))}
@@ -47,82 +33,47 @@ const Countdown = memo(function Countdown({ date, time }: { date: string; time: 
   )
 })
 
-export default function TestoCalendar({ data }: Props) {
-  const calendar = getCalendarData(data.date)
-  const [year, month] = data.date.split('-').map(Number)
-
+export default function TestoCalendar() {
+  const { month, year, weeks } = getCalendarData(TESTO_TEXT.date)
+  const weddingDay = weeks.flat().find((d) => d.isWedding)
   return (
-    <section className="testo-paper px-10 py-[52px] text-center">
-      <motion.div
-        initial={{ opacity: 0, y: 18 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.15 }}
-        transition={{ duration: 0.7 }}
-      >
-        <div className="flex items-end justify-between">
-          <span style={pen(44, TESTO.red)}>{month}월</span>
-          {/* 히어로에서 옮겨온 트리 — 흐름 안에 두어 어떤 화면 폭에서도 글자를 가리지 않는다 */}
-          <SnowTree size={38} className="mb-0.5" />
-          <span style={pen(44, TESTO.red)}>{year}</span>
-        </div>
-        <div style={{ borderTop: `2px solid ${TESTO.red}`, marginTop: 6 }} />
-
-        <div className="mt-3 grid grid-cols-7 gap-0.5 text-[14px]" style={{ fontFamily: 'Gaegu, sans-serif' }}>
-          {WEEKDAYS.map((day, index) => (
-            <div
-              key={day}
-              className="py-1 font-bold"
-              style={{ color: index === 0 ? TESTO.redSoft : index === 6 ? TESTO.red : TESTO.ink }}
-            >
-              {day}
-            </div>
-          ))}
-
-          {calendar.weeks.flat().map((dayInfo, index) => (
-            <div key={index} className="relative py-1.5">
-              {dayInfo.day && (
-                <span
-                  className={dayInfo.isWedding ? 'font-extrabold' : undefined}
-                  style={{
-                    color: dayInfo.isWedding
-                      ? TESTO.red
-                      : dayInfo.isSunday
-                        ? TESTO.redSoft
-                        : dayInfo.isSaturday
-                          ? TESTO.red
-                          : TESTO.ink,
-                  }}
-                >
-                  {dayInfo.day}
-                </span>
-              )}
-              {dayInfo.isWedding && (
-                <svg
-                  viewBox="0 0 46 42"
-                  width={46}
-                  height={42}
-                  className="pointer-events-none absolute left-1/2 top-[-8px] -ml-[23px]"
-                  aria-hidden="true"
-                >
-                  <path
-                    d="M23 38 C 23 38 5 26 5 14 C 5 6 13 4 18 9 C 20 11 22 13 23 15 C 24 13 26 11 28 9 C 33 4 41 6 41 14 C 41 26 23 38 23 38 Z"
-                    fill="none"
-                    stroke={TESTO.red}
-                    strokeWidth={1.8}
-                  />
-                </svg>
-              )}
-            </div>
-          ))}
-        </div>
-
-        <p className="mt-4 text-[15px]" style={{ fontFamily: 'Gaegu, sans-serif', color: TESTO.inkSoft }}>
-          {year}년 {month}월 {calendar.weeks.flat().find((d) => d.isWedding)?.day}일 {getDayOfWeek(data.date)}{' '}
-          {formatTime(data.time)}
-        </p>
-
-        <Countdown date={data.date} time={data.time} />
-      </motion.div>
+    <section className="testo-paper-red calendar" style={{ color: TESTO.paper }}>
+      <Deco tone="red" items={[]} />
+      <div className="cal-head">
+        <span style={pen(44, TESTO.paper)}>{month}월</span>
+        <SnowTree size={38} />
+        <span style={pen(44, TESTO.paper)}>{year}</span>
+      </div>
+      <div style={{ borderTop: `2px solid ${TESTO.paper}`, marginTop: 6 }} />
+      <div className="cal-grid" style={gaegu}>
+        {WEEKDAYS.map((d, i) => (
+          <div key={d} className="cal-wd" style={{ color: i === 0 || i === 6 ? TESTO.gold : TESTO.paper }}>{d}</div>
+        ))}
+        {weeks.flat().map((d, i) => (
+          <div key={i} className="cal-cell">
+            {d.day && (
+              <span className={d.isWedding ? 'cal-wed' : ''} style={{ color: d.isWedding || d.isSunday || d.isSaturday ? TESTO.gold : TESTO.paper }}>
+                {d.day}
+              </span>
+            )}
+            {d.isWedding && (
+              <svg viewBox="0 0 46 42" width={46} height={42} className="cal-heart" aria-hidden="true">
+                <path
+                  d="M23 39 C 23 39 4 27.5 4 15.5 C 4 9 11 6.6 16.5 10.4 C 19.6 12.6 21.6 14.6 23 17.4 C 24.4 14.6 26.4 12.6 29.5 10.4 C 35 6.6 42 9 42 15.5 C 42 27.5 23 39 23 39 Z"
+                  fill={TESTO.paper}
+                  fillOpacity="0.42"
+                  stroke={TESTO.paper}
+                  strokeWidth="2.2"
+                />
+              </svg>
+            )}
+          </div>
+        ))}
+      </div>
+      <p style={{ ...gaegu, fontSize: 22, fontWeight: 700, color: TESTO.paper, marginTop: 28 }}>
+        {year}년 {month}월 {weddingDay && weddingDay.day}일 {getDayOfWeek(TESTO_TEXT.date)} {formatTime(TESTO_TEXT.time)}
+      </p>
+      <Countdown cc={TESTO.paper} lc="rgba(244,236,217,.7)" />
     </section>
   )
 }
