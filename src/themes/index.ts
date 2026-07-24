@@ -1,14 +1,6 @@
 // 테마 시스템
 
-export type ThemeId =
-  | 'elegant'
-  | 'minimal'
-  | 'editorial'
-  | 'flower'
-  | 'dark'
-  | 'natural'
-  | 'hyundai'
-  | 'doodle'
+export type ThemeId = 'elegant' | 'editorial' | 'doodle' | 'testo'
 
 export interface Theme {
   id: ThemeId
@@ -76,38 +68,7 @@ export const themes: Record<ThemeId, Theme> = {
     },
   },
 
-  // 2. 블러쉬 — 파스텔 핑크 로맨틱
-  minimal: {
-    id: 'minimal',
-    name: '블러쉬',
-    description: '아이보리 크림 & 더스티로즈 · 로맨틱 클래식',
-    colors: {
-      bg: '#FCF8F2',
-      bgAlt: '#F7EFE4',
-      bgDark: '#B8929C',
-      text: '#463731',
-      textMuted: '#AD9C8C',
-      accent: '#D97E9F',
-      accentLight: '#F5DAE1',
-      border: '#EEE5D6',
-    },
-    fonts: {
-      heading: '"Cormorant Garamond", serif',
-      body: '"Pretendard Variable", Pretendard, sans-serif',
-      script: '"Great Vibes", cursive',
-    },
-    style: {
-      rounded: 'sm',
-      introOverlay: 'dark',
-      introTextStyle: 'script',
-      introLayout: 'classic',
-      introTitle: 'Wedding Day',
-      sectionDivider: 'line',
-      accentDecoration: 'minimal',
-    },
-  },
-
-  // 3. 에디토리얼 — 개선 시안 전용 레이아웃
+  // 2. 에디토리얼 — 개선 시안 전용 레이아웃
   editorial: {
     id: 'editorial',
     name: '에디토리얼',
@@ -138,131 +99,7 @@ export const themes: Record<ThemeId, Theme> = {
     },
   },
 
-  // 4. 로즈 — 더스티로즈 + 버건디, 프렌치 로맨틱
-  flower: {
-    id: 'flower',
-    name: '로즈',
-    description: '더스티로즈 & 버건디 · 프렌치 로맨틱',
-    colors: {
-      bg: '#FBF4F2',
-      bgAlt: '#F4E4E0',
-      bgDark: '#3D1F22',
-      text: '#2C1518',
-      textMuted: '#A88084',
-      accent: '#9B4A50',
-      accentLight: '#C97A80',
-      border: '#EDD5D2',
-    },
-    fonts: {
-      heading: '"Bodoni Moda", serif',
-      body: '"Pretendard Variable", Pretendard, sans-serif',
-      script: '"Pinyon Script", cursive',
-    },
-    style: {
-      rounded: 'lg',
-      introOverlay: 'dark',
-      introTextStyle: 'script',
-      introLayout: 'frame',
-      introTitle: 'Save the Date',
-      sectionDivider: 'dots',
-      accentDecoration: 'floral',
-    },
-  },
-
-  // 5. 미드나잇 — 딥네이비 + 샴페인골드, 럭셔리 이브닝 매거진
-  dark: {
-    id: 'dark',
-    name: '미드나잇',
-    description: '딥네이비 & 샴페인골드 · 럭셔리 이브닝',
-    colors: {
-      bg: '#0E1520',
-      bgAlt: '#162130',
-      bgDark: '#060C14',
-      text: '#F0EBE0',
-      textMuted: '#8A9AAA',
-      accent: '#C9A84C',
-      accentLight: '#E8CC80',
-      border: '#243040',
-    },
-    fonts: {
-      heading: '"Cinzel", serif',
-      body: '"Pretendard Variable", Pretendard, sans-serif',
-      script: '"Great Vibes", cursive',
-    },
-    style: {
-      rounded: 'none',
-      introOverlay: 'dark',
-      introTextStyle: 'serif',
-      introLayout: 'magazine',
-      introTitle: 'THE WEDDING',
-      sectionDivider: 'line',
-      accentDecoration: 'bold',
-    },
-  },
-
-  // 6. 세이지 — 세이지그린 + 크림, 보태니컬 미니멀
-  natural: {
-    id: 'natural',
-    name: '세이지',
-    description: '세이지그린 & 크림 · 보태니컬 가든',
-    colors: {
-      bg: '#F2F0E8',
-      bgAlt: '#E6E3D6',
-      bgDark: '#2A3428',
-      text: '#242C22',
-      textMuted: '#7A8870',
-      accent: '#5C7048',
-      accentLight: '#8AA870',
-      border: '#D6D2C4',
-    },
-    fonts: {
-      heading: '"Libre Baskerville", serif',
-      body: '"Pretendard Variable", Pretendard, sans-serif',
-      script: '"Great Vibes", cursive',
-    },
-    style: {
-      rounded: 'sm',
-      introOverlay: 'light',
-      introTextStyle: 'serif',
-      introLayout: 'minimal',
-      introTitle: 'Our Wedding',
-      sectionDivider: 'dots',
-      accentDecoration: 'floral',
-    },
-  },
-
-  // 7. 그린라벨 — 현대백화점 딥그린, 모던 럭셔리 프레임
-  hyundai: {
-    id: 'hyundai',
-    name: '그린라벨',
-    description: '딥그린 & 아이보리 · 모던 럭셔리',
-    colors: {
-      bg: '#F6F4EE',
-      bgAlt: '#E8E6DC',
-      bgDark: '#0B3B2E',
-      text: '#10302A',
-      textMuted: '#5E7A6E',
-      accent: '#0B5C42',
-      accentLight: '#3E8C6A',
-      border: '#D2D8CC',
-    },
-    fonts: {
-      heading: '"Marcellus", serif',
-      body: '"Pretendard Variable", Pretendard, sans-serif',
-      script: '"Marcellus", serif',
-    },
-    style: {
-      rounded: 'none',
-      introOverlay: 'dark',
-      introTextStyle: 'sans',
-      introLayout: 'frame',
-      introTitle: 'WEDDING INVITATION',
-      sectionDivider: 'line',
-      accentDecoration: 'bold',
-    },
-  },
-
-  // 8. 레드두들 — 크림 + 딥레드, 손그림 겨울 두들
+  // 3. 레드두들 — 크림 + 딥레드, 손그림 겨울 두들
   //    다른 테마와 달리 전용 레이아웃(src/components/doodle)을 사용한다.
   doodle: {
     id: 'doodle',
@@ -290,6 +127,38 @@ export const themes: Record<ThemeId, Theme> = {
       introLayout: 'classic',
       introTitle: '결혼합니다!',
       sectionDivider: 'dots',
+      accentDecoration: 'floral',
+    },
+  },
+
+  // 4. 테스토 — 크래프트지 질감 + 딥레드, 손글씨 브러시 크리스마스
+  //    다른 테마와 달리 전용 레이아웃(src/components/testo)을 사용한다.
+  testo: {
+    id: 'testo',
+    name: '테스토',
+    description: '크래프트지 & 딥레드 · 손글씨 브러시 크리스마스',
+    colors: {
+      bg: '#F4ECD9',
+      bgAlt: '#FBF7EC',
+      bgDark: '#7A1420',
+      text: '#3A2A24',
+      textMuted: '#9A7A6E',
+      accent: '#7A1420',
+      accentLight: '#9A2432',
+      border: '#D8C6A6',
+    },
+    fonts: {
+      heading: '"Nanum Brush Script", "Nanum Pen Script", cursive',
+      body: '"Gaegu", "Pretendard Variable", Pretendard, sans-serif',
+      script: '"Nanum Brush Script", cursive',
+    },
+    style: {
+      rounded: 'sm',
+      introOverlay: 'light',
+      introTextStyle: 'script',
+      introLayout: 'classic',
+      introTitle: '결혼합니다!',
+      sectionDivider: 'line',
       accentDecoration: 'floral',
     },
   },

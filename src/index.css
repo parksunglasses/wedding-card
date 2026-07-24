@@ -2,16 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
-/* 기본 테마 변수 (JS에서 덮어쓰여짐) */
+/* 기본 테마 변수 (JS에서 덮어쓰여짐) — 기본 테마인 에디토리얼 팔레트 */
 :root {
-  --theme-bg: #FCF8F2;
-  --theme-bg-alt: #F7EFE4;
-  --theme-bg-dark: #B8929C;
-  --theme-text: #463731;
-  --theme-text-muted: #AD9C8C;
-  --theme-accent: #D97E9F;
-  --theme-accent-light: #F5DAE1;
-  --theme-border: #EEE5D6;
+  --theme-bg: #F7F4EE;
+  --theme-bg-alt: #EFEBE4;
+  --theme-bg-dark: #35443A;
+  --theme-text: #1E211E;
+  --theme-text-muted: #77766F;
+  --theme-accent: #C48291;
+  --theme-accent-light: #E3B9C2;
+  --theme-border: #D8D1C7;
   --theme-font-heading: 'Cormorant Garamond', serif;
   --theme-font-body: 'Pretendard Variable', 'Pretendard', sans-serif;
   --theme-font-script: 'Great Vibes', cursive;
@@ -285,6 +285,89 @@ html, body {
 
 .doodle-pill:not(:disabled):active { transform: scale(0.97); }
 .doodle-pill:disabled { opacity: 0.55; cursor: not-allowed; }
+
+/* ───────────── 테스토 테마 전용 (다른 테마에는 영향 없음) ───────────── */
+
+/* 히어로 진입 애니메이션 — 히어로 컨테이너에서 1회 재생, 다른 testo 섹션에는 적용되지 않는다 */
+@keyframes testoRiseIn {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes testoDraw {
+  from { stroke-dashoffset: 340; }
+  to   { stroke-dashoffset: 0; }
+}
+
+.testo-hero-intro {
+  animation: testoRiseIn 1s ease-out both;
+}
+
+/* 손그림 하트 스크리블 채움 — 히어로 안에서만 그려지는 연출을 적용 */
+.testo-hero-intro .testo-heart-scribble {
+  stroke-dasharray: 340;
+  animation: testoDraw 1.9s ease-out 0.5s both;
+}
+
+@keyframes testoSnowfall {
+  0% { transform: translateY(-20px); opacity: 0; }
+  12% { opacity: 0.85; }
+  100% { transform: translateY(var(--testo-fall, 320px)); opacity: 0; }
+}
+
+.testo-flake {
+  position: absolute;
+  top: 0;
+  animation-name: testoSnowfall;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  will-change: transform;
+}
+
+/* 크래프트지 질감 — SVG 프랙탈 노이즈를 배경에 겹친다 */
+.testo-paper {
+  background-color: #F4ECD9;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+}
+
+.testo-paper-red {
+  background-color: #7A1420;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.08'/%3E%3C/svg%3E");
+}
+
+.testo-field {
+  width: 100%;
+  padding: 12px 14px;
+  border: 2px solid #D8C6A6;
+  border-radius: 6px;
+  background: #FBF7EC;
+  color: #3A2A24;
+  font-family: 'Gaegu', sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.testo-field::placeholder { color: #B89A8E; }
+
+.testo-pill {
+  display: inline-flex;
+  min-height: 46px;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 0 32px;
+  border: none;
+  border-radius: 999px;
+  background: #7A1420;
+  color: #F4ECD9;
+  font-family: 'Nanum Brush Script', cursive;
+  font-size: 26px;
+  line-height: 1;
+  transition: transform 160ms ease, opacity 160ms ease;
+}
+
+.testo-pill:not(:disabled):active { transform: scale(0.97); }
+.testo-pill:disabled { opacity: 0.55; cursor: not-allowed; }
 
 @media (prefers-reduced-motion: reduce) {
   html {

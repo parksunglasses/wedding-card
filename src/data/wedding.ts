@@ -52,7 +52,8 @@ export const defaultWeddingData: WeddingData = {
   doorIntro: true,
   lottieUrl: '',
   fireworks: true,
-  theme: 'minimal',
+  // 저장된 값이 없을 때의 기본 테마 (제거된 테마 id가 DB에 남아 있으면 getTheme이 elegant로 폴백)
+  theme: 'editorial',
 }
 
 // localStorage에서 불러오기 (동기, 초기 렌더용)

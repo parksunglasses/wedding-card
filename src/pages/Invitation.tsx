@@ -22,6 +22,7 @@ const GuestUpload = lazy(() => import('@/components/sections/GuestUpload'))
 const FireworksOverlay = lazy(() => import('@/components/FireworksOverlay'))
 const DoodleInvitation = lazy(() => import('@/components/doodle/DoodleInvitation'))
 const EditorialInvitation = lazy(() => import('@/components/editorial/EditorialInvitation'))
+const TestoInvitation = lazy(() => import('@/components/testo/TestoInvitation'))
 
 function SectionFallback() {
   return <div className="py-16" />
@@ -71,7 +72,7 @@ export default function Invitation() {
         </div>
       )}
 
-      {/* 에디토리얼과 레드두들은 각각 전용 레이아웃을 쓴다. */}
+      {/* 에디토리얼, 레드두들, 테스토는 각각 전용 레이아웃을 쓴다. */}
       {theme.id === 'editorial' ? (
         <Suspense fallback={<SectionFallback />}>
           <EditorialInvitation data={data} theme={theme} />
@@ -85,6 +86,18 @@ export default function Invitation() {
           <FloatingControls data={data} theme={theme} />
           <Suspense fallback={<SectionFallback />}>
             <DoodleInvitation data={data} />
+          </Suspense>
+        </div>
+      ) : theme.id === 'testo' ? (
+        // 테스토는 히어로 자체의 인라인 진입 애니메이션(riseIn + 스크리블 draw)을 쓰므로
+        // 전체 화면 커버(DoorIntro)는 띄우지 않는다.
+        <div className="min-h-screen theme-bg">
+          <Suspense fallback={null}>
+            {data.fireworks !== false && <FireworksOverlay />}
+          </Suspense>
+          <FloatingControls data={data} theme={theme} />
+          <Suspense fallback={<SectionFallback />}>
+            <TestoInvitation data={data} />
           </Suspense>
         </div>
       ) : (

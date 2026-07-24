@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { WeddingData, Account } from '@/types'
 import { loadWeddingDataAsync, saveWeddingData } from '@/data/wedding'
 import { isAuthenticated } from './EditLogin'
-import { themeList, ThemeId } from '@/themes'
+import { themeList, Theme, ThemeId } from '@/themes'
 import ImageUploader from '@/components/ImageUploader'
 import MultiImageUploader from '@/components/MultiImageUploader'
 import { uploadAudio } from '@/lib/cloudinary'
@@ -127,7 +127,7 @@ export default function Edit() {
           <div className="space-y-8">
             <Section title="신랑 · Groom">
               <Field label="이름" value={data.groom.name} onChange={(v) => update('groom.name', v)} />
-              <Field label="연락처" value={data.groom.phone} onChange={(v) => update('groom.phone', v)} />
+              <Field label="연락처" type="tel" value={data.groom.phone} onChange={(v) => update('groom.phone', v)} />
               <div className="grid grid-cols-2 gap-3">
                 <Field label="아버지" value={data.groom.father} onChange={(v) => update('groom.father', v)} />
                 <Field label="어머니" value={data.groom.mother} onChange={(v) => update('groom.mother', v)} />
@@ -136,7 +136,7 @@ export default function Edit() {
 
             <Section title="신부 · Bride">
               <Field label="이름" value={data.bride.name} onChange={(v) => update('bride.name', v)} />
-              <Field label="연락처" value={data.bride.phone} onChange={(v) => update('bride.phone', v)} />
+              <Field label="연락처" type="tel" value={data.bride.phone} onChange={(v) => update('bride.phone', v)} />
               <div className="grid grid-cols-2 gap-3">
                 <Field label="아버지" value={data.bride.father} onChange={(v) => update('bride.father', v)} />
                 <Field label="어머니" value={data.bride.mother} onChange={(v) => update('bride.mother', v)} />
@@ -150,10 +150,27 @@ export default function Edit() {
               </div>
               <Field label="예식장명" value={data.venue} onChange={(v) => update('venue', v)} />
               <Field label="주소" value={data.address} onChange={(v) => update('address', v)} />
-              <Field label="예식장 연락처" value={data.venuePhone} onChange={(v) => update('venuePhone', v)} />
+              <Field label="예식장 연락처" type="tel" value={data.venuePhone} onChange={(v) => update('venuePhone', v)} />
               <div className="grid grid-cols-2 gap-3">
-                <Field label="위도" type="number" value={String(data.lat)} onChange={(v) => update('lat', parseFloat(v))} />
-                <Field label="경도" type="number" value={String(data.lng)} onChange={(v) => update('lng', parseFloat(v))} />
+                {/* 빈 값/불완전한 입력은 무시해 NaN이 저장되지 않게 한다 */}
+                <Field
+                  label="위도"
+                  type="number"
+                  value={String(data.lat)}
+                  onChange={(v) => {
+                    const n = parseFloat(v)
+                    if (!Number.isNaN(n)) update('lat', n)
+                  }}
+                />
+                <Field
+                  label="경도"
+                  type="number"
+                  value={String(data.lng)}
+                  onChange={(v) => {
+                    const n = parseFloat(v)
+                    if (!Number.isNaN(n)) update('lng', n)
+                  }}
+                />
               </div>
             </Section>
           </div>
@@ -183,71 +200,14 @@ export default function Edit() {
                       : '0 2px 8px rgba(0,0,0,0.06)',
                   }}
                 >
-                  {/* 미리보기 카드 — 테마별 인트로 레이아웃 반영 */}
-                  <div
-                    className="aspect-[3/4] relative overflow-hidden"
-                    style={{ background: theme.colors.bgDark }}
-                  >
-                    {/* 배경 그라데이션 (사진 대용) */}
-                    <div
-                      className="absolute inset-0"
-                      style={{
-                        background: `linear-gradient(150deg, ${theme.colors.accentLight}, ${theme.colors.accent})`,
-                        opacity: 0.9,
-                      }}
+                  {/* 미리보기 카드 — 테마별 실제 레이아웃을 축소해 반영 */}
+                  <div className="aspect-[3/4] relative overflow-hidden">
+                    <ThemeMiniPreview
+                      theme={theme}
+                      groom={data.groom.name}
+                      bride={data.bride.name}
+                      date={data.date}
                     />
-                    <div className="absolute inset-0" style={{ background: 'rgba(0,0,0,0.28)' }} />
-
-                    {(() => {
-                      const titleFont =
-                        theme.style.introTextStyle === 'script'
-                          ? { fontFamily: theme.fonts.script, fontSize: '26px', lineHeight: 1 }
-                          : theme.style.introTextStyle === 'serif'
-                          ? { fontFamily: theme.fonts.heading, fontSize: '17px', fontStyle: 'italic' as const }
-                          : { fontFamily: theme.fonts.heading, fontSize: '12px', letterSpacing: '0.2em', textTransform: 'uppercase' as const }
-                      const t = theme.style.introTitle
-                      const nm = '박성환 · 이지영'
-
-                      if (theme.style.introLayout === 'magazine') {
-                        return (
-                          <div className="absolute inset-0 flex flex-col justify-end items-start text-left p-3 text-white">
-                            <p style={{ fontSize: '6px', letterSpacing: '0.3em', opacity: 0.85, marginBottom: '4px' }}>2026.12.19</p>
-                            <p style={titleFont} className="drop-shadow">{t}</p>
-                            <div style={{ width: '24px', height: '1px', background: theme.colors.accentLight, margin: '5px 0' }} />
-                            <p style={{ fontFamily: theme.fonts.heading, fontSize: '9px' }}>{nm}</p>
-                          </div>
-                        )
-                      }
-                      if (theme.style.introLayout === 'frame') {
-                        return (
-                          <div className="absolute inset-2 flex flex-col items-center justify-center text-center text-white" style={{ border: '1px solid rgba(255,255,255,0.5)' }}>
-                            <p style={{ fontSize: '6px', letterSpacing: '0.3em', opacity: 0.85, marginBottom: '6px' }}>{nm}</p>
-                            <p style={titleFont} className="px-2 drop-shadow">{t}</p>
-                            <p style={{ fontSize: '6px', letterSpacing: '0.2em', opacity: 0.85, marginTop: '6px' }}>2026.12.19</p>
-                          </div>
-                        )
-                      }
-                      if (theme.style.introLayout === 'minimal') {
-                        return (
-                          <div className="absolute inset-0 flex flex-col items-center justify-center text-center text-white">
-                            <div style={{ width: '1px', height: '18px', background: '#fff', opacity: 0.6, marginBottom: '8px' }} />
-                            <p style={titleFont} className="drop-shadow">{t}</p>
-                            <p style={{ fontFamily: theme.fonts.heading, fontSize: '8px', letterSpacing: '0.15em', marginTop: '6px' }}>{nm}</p>
-                            <div style={{ width: '1px', height: '18px', background: '#fff', opacity: 0.6, marginTop: '8px' }} />
-                          </div>
-                        )
-                      }
-                      // classic
-                      return (
-                        <div className="absolute inset-0 flex flex-col justify-between items-center text-center py-6 text-white">
-                          <p style={titleFont} className="drop-shadow mt-2">{t}</p>
-                          <div className="mb-2">
-                            <p style={{ fontFamily: theme.fonts.heading, fontSize: '9px', letterSpacing: '0.1em', marginBottom: '3px' }}>{nm}</p>
-                            <p style={{ fontSize: '6px', letterSpacing: '0.2em', opacity: 0.85 }}>2026.12.19</p>
-                          </div>
-                        </div>
-                      )
-                    })()}
 
                     {/* 선택 표시 */}
                     {data.theme === theme.id && (
@@ -312,6 +272,15 @@ export default function Edit() {
             </Section>
 
             <Section title="갤러리 사진">
+              {data.theme === 'testo' && (
+                <p
+                  className="p-3 bg-white rounded-lg border text-xs leading-relaxed"
+                  style={{ borderColor: '#D9CFBE', color: '#8B7E6E' }}
+                >
+                  테스토 테마는 갤러리의 <b>1번째 사진을 신랑</b>, <b>2번째 사진을 신부</b> 자리에
+                  사용해요. 순서를 바꿔 배치해 보세요.
+                </p>
+              )}
               <MultiImageUploader
                 label="갤러리에 표시될 사진"
                 value={data.galleryPhotos}
@@ -363,19 +332,31 @@ export default function Edit() {
             </Section>
 
             <Section title="입장 효과">
-              <Toggle
-                label="진입 인트로 애니메이션"
-                desc="페이지 진입 시 인트로 효과 표시"
-                checked={data.doorIntro}
-                onChange={(v) => update('doorIntro', v)}
-              />
-              {data.doorIntro && (
-                <Field
-                  label="Lottie 애니메이션 URL (비우면 시네마틱 페이드)"
-                  value={data.lottieUrl ?? ''}
-                  onChange={(v) => update('lottieUrl', v)}
-                  placeholder="lottiefiles.com 에서 .json URL 붙여넣기"
-                />
+              {data.theme === 'testo' ? (
+                <p
+                  className="p-3 bg-white rounded-lg border text-xs leading-relaxed"
+                  style={{ borderColor: '#D9CFBE', color: '#8B7E6E' }}
+                >
+                  테스토 테마는 첫 화면 자체에 진입 애니메이션(떠오름 + 하트 드로잉)이 내장되어
+                  있어요. 별도 인트로 설정은 적용되지 않습니다.
+                </p>
+              ) : (
+                <>
+                  <Toggle
+                    label="진입 인트로 애니메이션"
+                    desc="페이지 진입 시 인트로 효과 표시"
+                    checked={data.doorIntro}
+                    onChange={(v) => update('doorIntro', v)}
+                  />
+                  {data.doorIntro && (
+                    <Field
+                      label="Lottie 애니메이션 URL (비우면 시네마틱 페이드)"
+                      value={data.lottieUrl ?? ''}
+                      onChange={(v) => update('lottieUrl', v)}
+                      placeholder="lottiefiles.com 에서 .json URL 붙여넣기"
+                    />
+                  )}
+                </>
               )}
               <Toggle
                 label="폭죽 효과"
@@ -395,6 +376,136 @@ export default function Edit() {
             </Section>
           </div>
         )}
+      </div>
+    </div>
+  )
+}
+
+// 테마별 실제 첫 화면 분위기를 축소해 보여주는 미니 목업.
+// 전용 레이아웃 테마(에디토리얼·레드두들·테스토)는 공용 인트로가 아니라 자기 히어로 모습을 그린다.
+function ThemeMiniPreview({
+  theme,
+  groom,
+  bride,
+  date,
+}: {
+  theme: Theme
+  groom: string
+  bride: string
+  date: string
+}) {
+  const dateDot = date.replace(/-/g, '.')
+
+  if (theme.id === 'editorial') {
+    return (
+      <div className="absolute inset-0" style={{ background: '#F7F4EE' }}>
+        <div
+          className="absolute inset-x-2 top-0 bottom-[16%]"
+          style={{ background: 'linear-gradient(160deg, #E3B9C2, #35443A)' }}
+        />
+        <div className="absolute left-0 top-[9%] w-[64%] p-2" style={{ background: '#F7F4EEF2' }}>
+          <p style={{ fontFamily: '"Cormorant Garamond", serif', fontStyle: 'italic', fontSize: 8, color: '#1E211E' }}>
+            The Wedding of
+          </p>
+          <p style={{ fontFamily: '"Cormorant Garamond", serif', fontSize: 13, lineHeight: 1.35, color: '#1E211E', marginTop: 3 }}>
+            {groom}
+            <span className="block h-px w-4 my-1" style={{ background: '#C48291' }} />
+            {bride}
+          </p>
+          <p style={{ fontSize: 6, letterSpacing: '0.12em', color: '#77766F', marginTop: 5 }}>{dateDot}</p>
+        </div>
+      </div>
+    )
+  }
+
+  if (theme.id === 'doodle') {
+    return (
+      <div className="absolute inset-0 flex flex-col items-center px-3 pt-2.5 text-center" style={{ background: '#FAF3E4' }}>
+        <p style={{ fontFamily: '"Nanum Pen Script", cursive', fontSize: 14, lineHeight: 1.15, color: '#8C2321' }}>
+          {groom} ♥ {bride}
+          <br />
+          결혼합니다!
+        </p>
+        <div
+          className="mt-1.5 w-[58%] flex-1"
+          style={{
+            border: '2.5px solid #8C2321',
+            borderRadius: '999px 999px 6px 6px',
+            background: 'linear-gradient(150deg, #E8D5BC, #C9A385)',
+          }}
+        />
+        <p
+          className="my-1.5 inline-block px-2 py-0.5"
+          style={{
+            fontFamily: '"Nanum Pen Script", cursive',
+            fontSize: 9,
+            background: '#8C2321',
+            color: '#FAF3E4',
+            borderRadius: '3px 7px 3px 7px',
+            transform: 'rotate(-2deg)',
+          }}
+        >
+          {dateDot}
+        </p>
+        <div
+          className="absolute bottom-0 left-0 right-0"
+          style={{ height: 5, background: 'repeating-linear-gradient(45deg, #8C2321 0 6px, #FAF3E4 6px 12px)' }}
+        />
+      </div>
+    )
+  }
+
+  if (theme.id === 'testo') {
+    return (
+      <div className="absolute inset-0 flex flex-col items-center overflow-hidden px-3 pt-2.5 text-center" style={{ background: '#F4ECD9' }}>
+        <p style={{ fontFamily: '"Nanum Brush Script", cursive', fontSize: 17, lineHeight: 1, color: '#7A1420' }}>
+          {groom} ♡ {bride}
+          <br />
+          결혼합니다!
+        </p>
+        <div className="mt-2 flex gap-1.5">
+          <div
+            className="p-[3px] pb-2"
+            style={{ background: '#FBF7EC', transform: 'rotate(-5deg)', boxShadow: '0 2px 6px rgba(0,0,0,.2)' }}
+          >
+            <div style={{ width: 30, height: 38, background: 'linear-gradient(150deg, #D8C6A6, #9A7A6E)' }} />
+          </div>
+          <div
+            className="p-[3px] pb-2"
+            style={{ background: '#FBF7EC', transform: 'rotate(4deg)', boxShadow: '0 2px 6px rgba(0,0,0,.2)' }}
+          >
+            <div style={{ width: 30, height: 38, background: 'linear-gradient(150deg, #9A7A6E, #D8C6A6)' }} />
+          </div>
+        </div>
+        <p style={{ fontFamily: 'Gaegu, sans-serif', fontSize: 7, color: '#5A3A32', marginTop: 5 }}>{dateDot}</p>
+        <svg
+          viewBox="0 0 100 14"
+          preserveAspectRatio="none"
+          className="absolute bottom-0 left-0 w-full"
+          style={{ height: 20 }}
+          aria-hidden="true"
+        >
+          <path d="M0 14 L0 6 C 30 2 70 3 100 5 L100 14 Z" fill="#7A1420" />
+        </svg>
+      </div>
+    )
+  }
+
+  // elegant — 클래식 스크립트 커버
+  return (
+    <div
+      className="absolute inset-0 flex flex-col items-center justify-between py-4 text-center"
+      style={{ background: 'linear-gradient(150deg, #C9A05A, #6B4F26)' }}
+    >
+      <div className="absolute inset-0" style={{ background: 'rgba(0,0,0,0.3)' }} />
+      <p className="relative mt-2 text-white drop-shadow" style={{ fontFamily: '"Great Vibes", cursive', fontSize: 21 }}>
+        Wedding Day
+      </p>
+      <div className="relative mb-1 text-white">
+        <p style={{ fontFamily: '"Cormorant Garamond", serif', fontSize: 9, letterSpacing: '0.1em' }}>
+          {groom} · {bride}
+        </p>
+        <p style={{ fontSize: 6, letterSpacing: '0.2em', opacity: 0.85, marginTop: 3 }}>{dateDot}</p>
       </div>
     </div>
   )
