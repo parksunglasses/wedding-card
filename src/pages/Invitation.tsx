@@ -21,6 +21,7 @@ const Share       = lazy(() => import('@/components/sections/Share'))
 const GuestUpload = lazy(() => import('@/components/sections/GuestUpload'))
 const FireworksOverlay = lazy(() => import('@/components/FireworksOverlay'))
 const DoodleInvitation = lazy(() => import('@/components/doodle/DoodleInvitation'))
+const EditorialInvitation = lazy(() => import('@/components/editorial/EditorialInvitation'))
 
 function SectionFallback() {
   return <div className="py-16" />
@@ -70,8 +71,12 @@ export default function Invitation() {
         </div>
       )}
 
-      {/* 레드두들은 전용 레이아웃을 쓴다 — 다른 테마 구성은 그대로 유지 */}
-      {theme.id === 'doodle' ? (
+      {/* 에디토리얼과 레드두들은 각각 전용 레이아웃을 쓴다. */}
+      {theme.id === 'editorial' ? (
+        <Suspense fallback={<SectionFallback />}>
+          <EditorialInvitation data={data} theme={theme} />
+        </Suspense>
+      ) : theme.id === 'doodle' ? (
         <div className="min-h-screen theme-bg">
           {data.doorIntro && <DoorIntro data={data} theme={theme} />}
           <Suspense fallback={null}>
@@ -111,16 +116,12 @@ export default function Invitation() {
         <Suspense fallback={<SectionFallback />}>
           <Flower data={data} theme={theme} />
         </Suspense>
-        <section className="invitation-section theme-bg">
-          <div className="grid grid-cols-2 gap-4">
-            <Suspense fallback={<SectionFallback />}>
-              <Guestbook theme={theme} />
-            </Suspense>
-            <Suspense fallback={<SectionFallback />}>
-              <RSVP theme={theme} />
-            </Suspense>
-          </div>
-        </section>
+        <Suspense fallback={<SectionFallback />}>
+          <Guestbook theme={theme} />
+        </Suspense>
+        <Suspense fallback={<SectionFallback />}>
+          <RSVP theme={theme} />
+        </Suspense>
         <Suspense fallback={<SectionFallback />}>
           <GuestUpload theme={theme} />
         </Suspense>

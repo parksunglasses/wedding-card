@@ -1,6 +1,14 @@
 // 테마 시스템
 
-export type ThemeId = 'elegant' | 'minimal' | 'flower' | 'dark' | 'natural' | 'hyundai' | 'doodle'
+export type ThemeId =
+  | 'elegant'
+  | 'minimal'
+  | 'editorial'
+  | 'flower'
+  | 'dark'
+  | 'natural'
+  | 'hyundai'
+  | 'doodle'
 
 export interface Theme {
   id: ThemeId
@@ -68,9 +76,40 @@ export const themes: Record<ThemeId, Theme> = {
     },
   },
 
-  // 2. 에디토리얼 — 아이보리 + 잉크 그린 + 더스티 로즈
+  // 2. 블러쉬 — 파스텔 핑크 로맨틱
   minimal: {
     id: 'minimal',
+    name: '블러쉬',
+    description: '아이보리 크림 & 더스티로즈 · 로맨틱 클래식',
+    colors: {
+      bg: '#FCF8F2',
+      bgAlt: '#F7EFE4',
+      bgDark: '#B8929C',
+      text: '#463731',
+      textMuted: '#AD9C8C',
+      accent: '#D97E9F',
+      accentLight: '#F5DAE1',
+      border: '#EEE5D6',
+    },
+    fonts: {
+      heading: '"Cormorant Garamond", serif',
+      body: '"Pretendard Variable", Pretendard, sans-serif',
+      script: '"Great Vibes", cursive',
+    },
+    style: {
+      rounded: 'sm',
+      introOverlay: 'dark',
+      introTextStyle: 'script',
+      introLayout: 'classic',
+      introTitle: 'Wedding Day',
+      sectionDivider: 'line',
+      accentDecoration: 'minimal',
+    },
+  },
+
+  // 3. 에디토리얼 — 개선 시안 전용 레이아웃
+  editorial: {
+    id: 'editorial',
     name: '에디토리얼',
     description: '아이보리 & 잉크 그린 · 모던 웨딩 에디토리얼',
     colors: {
@@ -93,13 +132,13 @@ export const themes: Record<ThemeId, Theme> = {
       introOverlay: 'dark',
       introTextStyle: 'script',
       introLayout: 'classic',
-      introTitle: 'Wedding Day',
+      introTitle: 'The Wedding of',
       sectionDivider: 'line',
       accentDecoration: 'minimal',
     },
   },
 
-  // 3. 로즈 — 더스티로즈 + 버건디, 프렌치 로맨틱
+  // 4. 로즈 — 더스티로즈 + 버건디, 프렌치 로맨틱
   flower: {
     id: 'flower',
     name: '로즈',
@@ -130,7 +169,7 @@ export const themes: Record<ThemeId, Theme> = {
     },
   },
 
-  // 4. 미드나잇 — 딥네이비 + 샴페인골드, 럭셔리 이브닝 매거진
+  // 5. 미드나잇 — 딥네이비 + 샴페인골드, 럭셔리 이브닝 매거진
   dark: {
     id: 'dark',
     name: '미드나잇',
@@ -161,7 +200,7 @@ export const themes: Record<ThemeId, Theme> = {
     },
   },
 
-  // 5. 세이지 — 세이지그린 + 크림, 보태니컬 미니멀
+  // 6. 세이지 — 세이지그린 + 크림, 보태니컬 미니멀
   natural: {
     id: 'natural',
     name: '세이지',
@@ -192,7 +231,7 @@ export const themes: Record<ThemeId, Theme> = {
     },
   },
 
-  // 6. 그린라벨 — 현대백화점 딥그린, 모던 럭셔리 프레임
+  // 7. 그린라벨 — 현대백화점 딥그린, 모던 럭셔리 프레임
   hyundai: {
     id: 'hyundai',
     name: '그린라벨',
@@ -223,7 +262,7 @@ export const themes: Record<ThemeId, Theme> = {
     },
   },
 
-  // 7. 레드두들 — 크림 + 딥레드, 손그림 겨울 두들
+  // 8. 레드두들 — 크림 + 딥레드, 손그림 겨울 두들
   //    다른 테마와 달리 전용 레이아웃(src/components/doodle)을 사용한다.
   doodle: {
     id: 'doodle',

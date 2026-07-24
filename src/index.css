@@ -4,14 +4,14 @@
 
 /* 기본 테마 변수 (JS에서 덮어쓰여짐) */
 :root {
-  --theme-bg: #F7F4EE;
-  --theme-bg-alt: #EFEBE4;
-  --theme-bg-dark: #35443A;
-  --theme-text: #1E211E;
-  --theme-text-muted: #77766F;
-  --theme-accent: #C48291;
-  --theme-accent-light: #E3B9C2;
-  --theme-border: #D8D1C7;
+  --theme-bg: #FCF8F2;
+  --theme-bg-alt: #F7EFE4;
+  --theme-bg-dark: #B8929C;
+  --theme-text: #463731;
+  --theme-text-muted: #AD9C8C;
+  --theme-accent: #D97E9F;
+  --theme-accent-light: #F5DAE1;
+  --theme-border: #EEE5D6;
   --theme-font-heading: 'Cormorant Garamond', serif;
   --theme-font-body: 'Pretendard Variable', 'Pretendard', sans-serif;
   --theme-font-script: 'Great Vibes', cursive;
@@ -19,12 +19,7 @@
 }
 
 * {
-  box-sizing: border-box;
   -webkit-tap-highlight-color: transparent;
-}
-
-html {
-  scroll-behavior: smooth;
 }
 
 /* 한국어 단어 중간 줄바꿈 방지 */
@@ -34,12 +29,9 @@ body, p, h1, h2, h3, span, div {
 }
 
 html, body {
-  margin: 0;
   font-family: var(--theme-font-body);
-  background: #E7E1D8;
+  background: #F0E8DC;
   color: var(--theme-text);
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
 }
 
 #root {
@@ -52,32 +44,32 @@ html, body {
 
 @media (min-width: 480px) {
   #root {
-    box-shadow: 0 20px 80px rgba(34, 30, 24, 0.18);
+    box-shadow: 0 0 60px rgba(0,0,0,0.2);
   }
 }
 
 ::-webkit-scrollbar { display: none; }
 
-button,
-input,
-textarea {
+.editorial-invitation button,
+.editorial-invitation input,
+.editorial-invitation textarea {
   font: inherit;
 }
 
-button,
-a {
+.editorial-invitation button,
+.editorial-invitation a {
   -webkit-tap-highlight-color: transparent;
 }
 
-button:focus-visible,
-a:focus-visible,
-input:focus-visible,
-textarea:focus-visible {
+.editorial-invitation button:focus-visible,
+.editorial-invitation a:focus-visible,
+.editorial-invitation input:focus-visible,
+.editorial-invitation textarea:focus-visible {
   outline: 2px solid var(--theme-accent);
   outline-offset: 3px;
 }
 
-::selection {
+.editorial-invitation ::selection {
   color: var(--theme-bg);
   background: var(--theme-bg-dark);
 }

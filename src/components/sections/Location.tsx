@@ -2,9 +2,7 @@ import { useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
 import { WeddingData } from '@/types'
 import { Theme } from '@/themes'
-import { isKakaoConfigured, loadKakaoMaps } from '@/lib/kakao'
-import SectionHeading from '@/components/ui/SectionHeading'
-import { MapPinIcon, PhoneIcon } from '@/components/ui/Icons'
+import { loadKakaoMaps, isKakaoConfigured } from '@/lib/kakao'
 
 interface Props {
   data: WeddingData
@@ -15,6 +13,7 @@ export default function Location({ data, theme }: Props) {
   const kakaoMapUrl = `https://map.kakao.com/link/map/${encodeURIComponent(data.venue)},${data.lat},${data.lng}`
   const naverMapUrl = `https://map.naver.com/v5/search/${encodeURIComponent(data.venue)}`
   const tmapUrl = `tmap://route?goalname=${encodeURIComponent(data.venue)}&goalx=${data.lng}&goaly=${data.lat}`
+
   const mapRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -27,9 +26,11 @@ export default function Location({ data, theme }: Props) {
         const center = new kakao.maps.LatLng(data.lat, data.lng)
         const map = new kakao.maps.Map(mapRef.current, { center, level: 3 })
         new kakao.maps.Marker({ position: center, map })
-        map.setZoomable(false)
+        map.setZoomable(false) // 스크롤 중 지도 확대 방지
       })
-      .catch(() => {})
+      .catch(() => {
+        /* 키 미설정/로드 실패 시 아래 fallback 표시 */
+      })
 
     return () => {
       cancelled = true
@@ -37,80 +38,73 @@ export default function Location({ data, theme }: Props) {
   }, [data.lat, data.lng])
 
   return (
-    <section id="location" className="invitation-section theme-bg" style={{ color: theme.colors.text }}>
+    <section id="location" className="theme-bg py-20 px-8" style={{ color: theme.colors.text }}>
       <motion.div
-        initial={{ opacity: 0, y: 18 }}
+        initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.1 }}
-        transition={{ duration: 0.75 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.8 }}
+        className="text-center mb-10"
       >
-        <SectionHeading label="Location" title="오시는 길" />
+        <p className="font-heading text-xs tracking-[0.4em] mb-3 uppercase" style={{ color: theme.colors.accent }}>
+          Location
+        </p>
+        <h2 className="font-heading text-3xl mb-4">오시는 길</h2>
 
-        <div className="mb-7 flex items-start gap-4">
-          <MapPinIcon className="mt-1 h-7 w-7 shrink-0" style={{ color: theme.colors.accent }} />
-          <div>
-            <p className="text-[17px] font-medium">{data.venue}</p>
-            <p className="mt-2 text-[13px] leading-relaxed" style={{ color: theme.colors.textMuted }}>
-              {data.address}
-            </p>
-            <a
-              href={`tel:${data.venuePhone}`}
-              className="mt-3 inline-flex items-center gap-2 text-[13px]"
-              style={{ color: theme.colors.textMuted }}
-            >
-              <PhoneIcon className="h-4 w-4" />
-              {data.venuePhone}
-            </a>
-          </div>
+        <div className="space-y-2">
+          <p className="text-sm opacity-80">{data.address}</p>
+          <p className="text-base font-semibold">{data.venue}</p>
         </div>
 
         <a
-          href={kakaoMapUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label={`${data.venue} 카카오맵에서 보기`}
-          className="relative block aspect-[16/10] overflow-hidden border"
-          style={{ borderColor: theme.colors.border, background: theme.colors.bgAlt }}
+          href={`tel:${data.venuePhone}`}
+          className="inline-flex items-center gap-2 mt-6 px-5 py-2 rounded-full text-sm"
+          style={{ background: theme.colors.accent + '0D', border: `1px solid ${theme.colors.border}` }}
         >
-          <div ref={mapRef} className="h-full w-full" />
-          {!isKakaoConfigured && (
-            <div
-              className="absolute inset-0 flex flex-col items-center justify-center gap-3"
-              style={{
-                backgroundImage: `linear-gradient(${theme.colors.border}55 1px, transparent 1px), linear-gradient(90deg, ${theme.colors.border}55 1px, transparent 1px)`,
-                backgroundSize: '28px 28px',
-              }}
-            >
-              <span
-                className="flex h-12 w-12 items-center justify-center rounded-full"
-                style={{ background: theme.colors.accent, color: theme.colors.bg }}
-              >
-                <MapPinIcon className="h-6 w-6" />
-              </span>
-              <span className="bg-white/90 px-3 py-1 text-[12px]">{data.venue}</span>
-            </div>
-          )}
+          📞 {data.venuePhone}
         </a>
-
-        <div className="mt-4 grid grid-cols-3 gap-2">
-          {[
-            { label: '카카오맵', href: kakaoMapUrl, mark: 'K' },
-            { label: '네이버지도', href: naverMapUrl, mark: 'N' },
-            { label: '티맵', href: tmapUrl, mark: 'T' },
-          ].map(({ label, href, mark }) => (
-            <a
-              key={label}
-              href={href}
-              target={href.startsWith('http') ? '_blank' : undefined}
-              rel={href.startsWith('http') ? 'noopener noreferrer' : undefined}
-              className="editorial-button min-w-0 px-1 text-[12px]"
-            >
-              <span className="font-heading text-[15px]" aria-hidden="true">{mark}</span>
-              {label}
-            </a>
-          ))}
-        </div>
       </motion.div>
+
+      <a
+        href={kakaoMapUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="relative block aspect-video rounded-2xl overflow-hidden mb-6"
+        style={{ background: theme.colors.accent + '0D' }}
+      >
+        {/* 실제 카카오맵 (키 설정 시) */}
+        <div ref={mapRef} className="w-full h-full" />
+
+        {/* 키 미설정 시 안내 fallback */}
+        {!isKakaoConfigured && (
+          <div className="absolute inset-0 flex items-center justify-center">
+            <div className="bg-white/90 theme-text px-4 py-2 rounded-2xl text-xs text-center">
+              지도 표시를 위해<br />카카오 JavaScript 키가 필요합니다
+            </div>
+          </div>
+        )}
+      </a>
+
+      <div className="grid grid-cols-3 gap-3 max-w-md mx-auto">
+        <a href={kakaoMapUrl} target="_blank" rel="noopener noreferrer"
+          className="flex flex-col items-center gap-2 py-3 rounded-2xl text-xs"
+          style={{ background: theme.colors.accent + '0D', border: `1px solid ${theme.colors.border}` }}>
+          <div className="w-8 h-8 rounded bg-yellow-400 flex items-center justify-center text-black">K</div>
+          카카오맵
+        </a>
+        <a href={naverMapUrl} target="_blank" rel="noopener noreferrer"
+          className="flex flex-col items-center gap-2 py-3 rounded-2xl text-xs"
+          style={{ background: theme.colors.accent + '0D', border: `1px solid ${theme.colors.border}` }}>
+          <div className="w-8 h-8 rounded bg-green-500 flex items-center justify-center text-white">N</div>
+          네이버지도
+        </a>
+        <a href={tmapUrl}
+          className="flex flex-col items-center gap-2 py-3 rounded-2xl text-xs"
+          style={{ background: theme.colors.accent + '0D', border: `1px solid ${theme.colors.border}` }}>
+          <div className="w-8 h-8 rounded bg-blue-500 flex items-center justify-center text-white">T</div>
+          티맵
+        </a>
+      </div>
     </section>
   )
 }

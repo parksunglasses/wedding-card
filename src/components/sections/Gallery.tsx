@@ -1,11 +1,8 @@
 import { useState } from 'react'
-import { AnimatePresence, motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import { WeddingData } from '@/types'
 import { Theme } from '@/themes'
 import { getOptimizedUrl } from '@/lib/cloudinary'
-import { DEFAULT_WEDDING_PHOTO } from '@/data/wedding'
-import SectionHeading from '@/components/ui/SectionHeading'
-import { ChevronLeftIcon, ChevronRightIcon, CloseIcon } from '@/components/ui/Icons'
 
 interface Props {
   data: WeddingData
@@ -15,111 +12,115 @@ interface Props {
 export default function Gallery({ data, theme }: Props) {
   const [selectedIdx, setSelectedIdx] = useState<number | null>(null)
   const [index, setIndex] = useState(0)
-  const [direction, setDirection] = useState(0)
+  const [dir, setDir] = useState(0)
 
-  const photos = data.galleryPhotos.length > 0
-    ? data.galleryPhotos
-    : [data.mainPhoto || DEFAULT_WEDDING_PHOTO]
+  const photos = data.galleryPhotos.length > 0 ? data.galleryPhotos : Array(5).fill('')
   const total = photos.length
+  const hasPhotos = data.galleryPhotos.length > 0
 
   const go = (next: number) => {
-    setDirection(next > index ? 1 : -1)
+    setDir(next > index ? 1 : -1)
     setIndex((next + total) % total)
   }
 
   return (
-    <section className="invitation-section theme-bg-alt overflow-hidden" style={{ color: theme.colors.text }}>
+    <section className="theme-bg py-20 px-6" style={{ color: theme.colors.text }}>
       <motion.div
-        initial={{ opacity: 0, y: 18 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.1 }}
-        transition={{ duration: 0.75 }}
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.8 }}
+        className="text-center mb-10"
       >
-        <SectionHeading label="Our Moments" title="우리의 순간" />
+        <p className="font-heading text-xs tracking-[0.4em] mb-2 uppercase" style={{ color: theme.colors.accent }}>
+          Gallery
+        </p>
+        <h2 className="font-heading text-2xl">우리의 순간</h2>
+      </motion.div>
 
-        <div className="relative mx-auto max-w-[390px]">
-          <div
-            className="relative aspect-[3/4] overflow-hidden bg-white"
-            style={{ borderRadius: '3px' }}
-          >
-            <AnimatePresence initial={false} custom={direction} mode="popLayout">
-              <motion.button
-                type="button"
-                key={index}
-                custom={direction}
-                initial={{ opacity: 0, x: direction >= 0 ? 40 : -40 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: direction >= 0 ? -40 : 40 }}
-                transition={{ duration: 0.42, ease: 'easeOut' }}
-                className="absolute inset-0 block h-full w-full"
-                onClick={() => setSelectedIdx(index)}
-                aria-label={`${index + 1}번째 사진 크게 보기`}
-              >
+      <div className="max-w-md mx-auto">
+        {/* 슬라이더 */}
+        <div
+          className="relative aspect-[3/4] rounded-2xl overflow-hidden"
+          style={{ background: `linear-gradient(135deg, ${theme.colors.bgAlt}, ${theme.colors.border})` }}
+        >
+          <AnimatePresence initial={false} custom={dir} mode="popLayout">
+            <motion.div
+              key={index}
+              custom={dir}
+              initial={{ opacity: 0, x: dir >= 0 ? 60 : -60 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: dir >= 0 ? -60 : 60 }}
+              transition={{ duration: 0.45, ease: 'easeOut' }}
+              className="absolute inset-0"
+              drag={total > 1 ? 'x' : false}
+              dragConstraints={{ left: 0, right: 0 }}
+              dragElastic={0.15}
+              onDragEnd={(_, info) => {
+                if (info.offset.x < -60) go(index + 1)
+                else if (info.offset.x > 60) go(index - 1)
+              }}
+              onClick={() => hasPhotos && setSelectedIdx(index)}
+            >
+              {photos[index] && (
                 <img
-                  src={getOptimizedUrl(photos[index], { width: 840, quality: 'auto:best' })}
+                  src={getOptimizedUrl(photos[index], { width: 640 })}
                   alt={`웨딩 사진 ${index + 1}`}
-                  loading={index === 0 ? 'eager' : 'lazy'}
+                  loading="lazy"
                   decoding="async"
                   draggable={false}
-                  className="h-full w-full object-cover"
+                  className="w-full h-full object-cover"
                 />
-              </motion.button>
-            </AnimatePresence>
+              )}
+            </motion.div>
+          </AnimatePresence>
 
-            {total > 1 && (
-              <>
-                <button
-                  type="button"
-                  onClick={() => go(index - 1)}
-                  aria-label="이전 사진"
-                  className="absolute left-3 top-1/2 z-10 flex h-11 w-11 -translate-y-1/2 items-center justify-center bg-white/88"
-                  style={{ color: theme.colors.accent }}
-                >
-                  <ChevronLeftIcon className="h-6 w-6" />
-                </button>
-                <button
-                  type="button"
-                  onClick={() => go(index + 1)}
-                  aria-label="다음 사진"
-                  className="absolute right-3 top-1/2 z-10 flex h-11 w-11 -translate-y-1/2 items-center justify-center bg-white/88"
-                  style={{ color: theme.colors.accent }}
-                >
-                  <ChevronRightIcon className="h-6 w-6" />
-                </button>
-              </>
-            )}
-          </div>
-
+          {/* 좌우 화살표 */}
           {total > 1 && (
-            <div className="mt-5 flex gap-2 overflow-x-auto pb-2" aria-label="갤러리 사진 목록">
-              {photos.map((photo, photoIndex) => (
-                <button
-                  type="button"
-                  key={`${photo}-${photoIndex}`}
-                  onClick={() => go(photoIndex)}
-                  aria-label={`${photoIndex + 1}번째 사진`}
-                  aria-current={photoIndex === index}
-                  className="h-[68px] w-[54px] shrink-0 overflow-hidden border-2"
-                  style={{ borderColor: photoIndex === index ? theme.colors.accent : 'transparent' }}
-                >
-                  <img
-                    src={getOptimizedUrl(photo, { width: 160 })}
-                    alt=""
-                    loading="lazy"
-                    className="h-full w-full object-cover"
-                  />
-                </button>
-              ))}
-            </div>
+            <>
+              <button
+                onClick={() => go(index - 1)}
+                aria-label="이전 사진"
+                className="absolute left-2 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full flex items-center justify-center text-lg z-10"
+                style={{ background: 'rgba(255,255,255,0.55)', color: theme.colors.text }}
+              >
+                ‹
+              </button>
+              <button
+                onClick={() => go(index + 1)}
+                aria-label="다음 사진"
+                className="absolute right-2 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full flex items-center justify-center text-lg z-10"
+                style={{ background: 'rgba(255,255,255,0.55)', color: theme.colors.text }}
+              >
+                ›
+              </button>
+            </>
           )}
-
-          <p className="mt-5 text-center font-heading text-[15px] tracking-[0.18em]">
-            <span style={{ color: theme.colors.accent }}>{String(index + 1).padStart(2, '0')}</span>
-            <span className="mx-2" style={{ color: theme.colors.border }}>/</span>
-            {String(total).padStart(2, '0')}
-          </p>
         </div>
-      </motion.div>
+
+        {/* 카운터 */}
+        <p className="text-center text-xs tracking-widest mt-4" style={{ color: theme.colors.textMuted }}>
+          <span style={{ color: theme.colors.accent }}>{index + 1}</span> / {total}
+        </p>
+
+        {/* 도트 */}
+        {total > 1 && (
+          <div className="flex items-center justify-center gap-1.5 mt-3">
+            {photos.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => go(i)}
+                aria-label={`${i + 1}번째 사진`}
+                className="h-1.5 rounded-full transition-all"
+                style={{
+                  width: i === index ? 16 : 6,
+                  background: i === index ? theme.colors.accent : theme.colors.border,
+                }}
+              />
+            ))}
+          </div>
+        )}
+      </div>
 
       <AnimatePresence>
         {selectedIdx !== null && (
@@ -128,23 +129,18 @@ export default function Gallery({ data, theme }: Props) {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={() => setSelectedIdx(null)}
-            className="fixed inset-0 z-[70] flex items-center justify-center bg-[#111511]/95 p-5"
-            role="dialog"
-            aria-modal="true"
-            aria-label="사진 크게 보기"
+            className="fixed inset-0 bg-black/95 z-50 flex items-center justify-center p-4"
           >
             <button
-              type="button"
               onClick={() => setSelectedIdx(null)}
-              aria-label="사진 닫기"
-              className="absolute right-5 top-5 flex h-11 w-11 items-center justify-center text-white"
+              className="absolute top-6 right-6 text-white text-3xl z-10"
             >
-              <CloseIcon className="h-6 w-6" />
+              ×
             </button>
             <img
-              src={getOptimizedUrl(photos[selectedIdx], { width: 1200, quality: 'auto:best' })}
+              src={getOptimizedUrl(photos[selectedIdx], { width: 800 })}
               alt={`웨딩 사진 ${selectedIdx + 1} 확대`}
-              className="max-h-full max-w-full object-contain"
+              className="max-w-full max-h-full object-contain"
             />
           </motion.div>
         )}
