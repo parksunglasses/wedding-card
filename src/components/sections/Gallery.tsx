@@ -24,7 +24,7 @@ export default function Gallery({ data, theme }: Props) {
   }
 
   return (
-    <section className="theme-bg py-20 px-6" style={{ color: theme.colors.text }}>
+    <section className="py-12 px-6" style={{ background: '#FCFBF7', color: theme.colors.text }}>
       <motion.div
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}

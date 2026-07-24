@@ -31,6 +31,7 @@ function SectionFallback() {
 export default function Invitation() {
   const [data, setData] = useState<WeddingData>(() => loadWeddingData())
   const [dbLoaded, setDbLoaded] = useState(false)
+  const [previewTheme, setPreviewTheme] = useState<ThemeId | null>(null)
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search)
@@ -56,12 +57,36 @@ export default function Invitation() {
   }, [])
 
   const themeOverride = new URLSearchParams(window.location.search).get('theme')
-  const effectiveTheme: ThemeId =
+  const configuredTheme: ThemeId =
     themeOverride && themeOverride in themes ? (themeOverride as ThemeId) : data.theme
+  const effectiveTheme = previewTheme ?? configuredTheme
   const theme = getTheme(effectiveTheme)
 
   return (
     <ThemeProvider theme={theme}>
+      <div className="fixed top-3 left-1/2 z-[1000000] flex -translate-x-1/2 rounded-full border border-black/10 bg-white/90 p-1 shadow-lg backdrop-blur">
+        <button
+          type="button"
+          onClick={() => setPreviewTheme('elegant')}
+          aria-pressed={effectiveTheme === 'elegant'}
+          className={`rounded-full px-3 py-1.5 text-xs font-semibold transition ${
+            effectiveTheme === 'elegant' ? 'bg-stone-800 text-white' : 'text-stone-600'
+          }`}
+        >
+          기본 테마
+        </button>
+        <button
+          type="button"
+          onClick={() => setPreviewTheme('testo')}
+          aria-pressed={effectiveTheme === 'testo'}
+          className={`rounded-full px-3 py-1.5 text-xs font-semibold transition ${
+            effectiveTheme === 'testo' ? 'bg-red-900 text-white' : 'text-stone-600'
+          }`}
+        >
+          testo 테마
+        </button>
+      </div>
+
       {/* DB 갱신 중 상단 얇은 로딩 바 */}
       {!dbLoaded && (
         <div className="fixed top-0 left-0 right-0 z-50 h-0.5 overflow-hidden">
@@ -81,7 +106,7 @@ export default function Invitation() {
         <div className="min-h-screen theme-bg">
           {data.doorIntro && <DoorIntro data={data} theme={theme} />}
           <Suspense fallback={null}>
-            {data.fireworks !== false && <FireworksOverlay />}
+            {data.fireworks !== false && <FireworksOverlay themeName={theme.id} />}
           </Suspense>
           <FloatingControls data={data} theme={theme} />
           <Suspense fallback={<SectionFallback />}>
@@ -93,7 +118,7 @@ export default function Invitation() {
         // 전체 화면 커버(DoorIntro)는 띄우지 않는다.
         <div className="min-h-screen theme-bg">
           <Suspense fallback={null}>
-            {data.fireworks !== false && <FireworksOverlay />}
+            {data.fireworks !== false && <FireworksOverlay themeName={theme.id} />}
           </Suspense>
           <FloatingControls data={data} theme={theme} />
           <Suspense fallback={<SectionFallback />}>
@@ -104,7 +129,7 @@ export default function Invitation() {
       <div className="min-h-screen theme-bg">
         {data.doorIntro && <DoorIntro data={data} theme={theme} />}
         <Suspense fallback={null}>
-          {data.fireworks !== false && <FireworksOverlay />}
+          {data.fireworks !== false && <FireworksOverlay themeName={theme.id} />}
         </Suspense>
         <FloatingControls data={data} theme={theme} />
         <Intro data={data} theme={theme} />

@@ -29,21 +29,21 @@ export default function AccountSection({ data, theme }: Props) {
         return (
           <div
             key={key}
-            className="rounded-2xl p-4 text-left"
+            className="rounded-2xl p-4 text-center"
             style={{
               background: theme.colors.accent + '0D',
               border: `1px solid ${theme.colors.border}`,
             }}
           >
             <p className="text-xs opacity-60 mb-1">{acc.bank}</p>
-            <p className="font-mono text-sm mb-2">{acc.accountNumber}</p>
-            <div className="flex items-center justify-between">
-              <p className="text-xs opacity-60">예금주 · {acc.holder}</p>
+            <p className="font-mono text-sm font-semibold mb-2 tracking-wide">{acc.accountNumber}</p>
+            <div className="flex items-center justify-center gap-3">
+              <p className="text-xs opacity-70">예금주 · {acc.holder}</p>
               <button
                 onClick={() => handleCopy(acc.accountNumber, key)}
-                className="text-xs px-3 py-1 rounded-full"
+                className="text-xs px-3 py-1 rounded-full font-medium"
                 style={{
-                  background: theme.colors.accent + '0D',
+                  background: theme.colors.accent + '14',
                   border: `1px solid ${theme.colors.border}`,
                 }}
               >
@@ -57,7 +57,7 @@ export default function AccountSection({ data, theme }: Props) {
   )
 
   return (
-    <section className="theme-bg-alt py-20 px-8" style={{ color: theme.colors.text }}>
+    <section className="py-12 px-8" style={{ background: '#FCFBF7', color: theme.colors.text }}>
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -71,27 +71,27 @@ export default function AccountSection({ data, theme }: Props) {
 
         <button
           onClick={() => setOpenSide(openSide === 'groom' ? null : 'groom')}
-          className="w-full px-5 py-4 rounded-2xl flex items-center justify-between mb-3"
+          className="w-full px-5 py-4 rounded-2xl flex items-center justify-center gap-2 mb-3"
           style={{
             background: theme.colors.accent + '0D',
             border: `1px solid ${theme.colors.border}`,
           }}
         >
-          <span className="text-sm">신랑 측 계좌번호</span>
-          <span className={`transition-transform ${openSide === 'groom' ? 'rotate-180' : ''}`}>▾</span>
+          <span className="text-sm font-medium">신랑 측 계좌번호</span>
+          <span className={`text-xs transition-transform ${openSide === 'groom' ? 'rotate-180' : ''}`}>▾</span>
         </button>
         {openSide === 'groom' && renderAccounts(data.groomAccounts, 'groom')}
 
         <button
           onClick={() => setOpenSide(openSide === 'bride' ? null : 'bride')}
-          className="w-full px-5 py-4 rounded-2xl flex items-center justify-between mt-3"
+          className="w-full px-5 py-4 rounded-2xl flex items-center justify-center gap-2 mt-3"
           style={{
             background: theme.colors.accent + '0D',
             border: `1px solid ${theme.colors.border}`,
           }}
         >
-          <span className="text-sm">신부 측 계좌번호</span>
-          <span className={`transition-transform ${openSide === 'bride' ? 'rotate-180' : ''}`}>▾</span>
+          <span className="text-sm font-medium">신부 측 계좌번호</span>
+          <span className={`text-xs transition-transform ${openSide === 'bride' ? 'rotate-180' : ''}`}>▾</span>
         </button>
         {openSide === 'bride' && renderAccounts(data.brideAccounts, 'bride')}
       </motion.div>

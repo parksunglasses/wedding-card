@@ -30,8 +30,8 @@ export const defaultWeddingData: WeddingData = {
   lat: 37.495096,
   lng: 127.115506,
 
-  greetingTitle: '서로를 향한 믿음으로 시작해\n이제 평생을 약속하려 합니다.',
-  greetingMessage: '박성환 & 이지영\n두 사람의 첫 시작을 소중한 분들과 함께하고 싶습니다.\n따뜻한 마음으로 축하해 주시면 더없는 기쁨이 되겠습니다.',
+  greetingTitle: '서로를 향한 믿음으로 시작해 이제 평생을 약속하려 합니다.',
+  greetingMessage: '저희들의 첫 시작을 함께해 주세요.',
 
   mainPhoto: '',
   galleryPhotos: [],

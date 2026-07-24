@@ -7,9 +7,24 @@ interface Props {
   theme: Theme
 }
 
+function Chrys({ size = 18, color = '#D97E9F' }: { size?: number; color?: string }) {
+  const petals = [0, 45, 90, 135, 180, 225, 270, 315]
+  return (
+    <svg viewBox="0 0 24 24" width={size} height={size} style={{ position: 'absolute', left: '-5px', top: '-5px', opacity: 0.35, pointerEvents: 'none' }} aria-hidden="true">
+      <g fill={color}>
+        {petals.map((rot, i) => {
+          const a = (rot * Math.PI) / 180
+          return <circle key={i} cx={12 + 6.5 * Math.cos(a)} cy={12 + 6.5 * Math.sin(a)} r="3" />
+        })}
+        <circle cx="12" cy="12" r="3.3" />
+      </g>
+    </svg>
+  )
+}
+
 export default function Greeting({ data, theme }: Props) {
   return (
-    <section className="theme-bg-alt py-20 px-8 text-center">
+    <section className="py-12 px-8 text-center" style={{ background: '#FCFBF7' }}>
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -20,53 +35,31 @@ export default function Greeting({ data, theme }: Props) {
           Invitation
         </p>
 
-        <div className="flex items-center justify-center gap-4 mb-12">
-          <div className="w-12 h-px" style={{ background: theme.colors.accent + '66' }} />
-          <h2 className="font-heading text-3xl theme-text leading-relaxed tracking-widest">
-            {data.groom.name}<br />
-            {data.bride.name}
-          </h2>
-          <div className="w-12 h-px" style={{ background: theme.colors.accent + '66' }} />
+        {/* 1. 날짜 및 시간 */}
+        <div className="mb-10 text-center">
+          <h3 className="font-heading text-4xl tracking-wide mb-1.5 flex items-center justify-center gap-2" style={{ color: theme.colors.accent }}>
+            <span>2026.12.19</span>
+            <span className="text-2xl font-normal opacity-90">(토)</span>
+          </h3>
+          <p className="font-heading text-2xl font-medium tracking-widest" style={{ color: theme.colors.accent }}>11:00 am</p>
         </div>
 
-        <div className="text-base leading-[2.2] theme-text space-y-6 mb-12">
-          {data.greetingTitle.split('\n').map((line, idx) => {
-            const firstChar = line.charAt(0)
-            const rest = line.slice(1)
-            return (
-              <p key={idx}>
-                <span className="font-bold theme-accent">{firstChar}</span>
-                <span>{rest}</span>
-              </p>
-            )
-          })}
+        {/* 2. 부모님 성함 및 장남 성환 / 장녀 지영 */}
+        <div className="space-y-2.5 text-sm sm:text-base leading-relaxed mb-14" style={{ color: theme.colors.text }}>
+          <p>
+            {data.groom.father} · <span className="relative inline-block"><Chrys color={theme.colors.accent} />{data.groom.mother}</span>의 장남 <span className="font-semibold" style={{ color: theme.colors.accent }}>성환</span>
+          </p>
+          <p>
+            {data.bride.father} · {data.bride.mother}의 장녀 <span className="font-semibold" style={{ color: theme.colors.accent }}>지영</span>
+          </p>
         </div>
 
-        <div className="text-sm leading-[2]" style={{ color: theme.colors.text + 'CC' }}>
-          {data.greetingMessage.split('\n').map((line, idx) => (
-            <p key={idx}>{line}</p>
-          ))}
+        {/* 3. 테스토와 100% 동일한 인사말 */}
+        <div className="text-sm leading-relaxed space-y-2" style={{ color: theme.colors.text + 'DD' }}>
+          <p>서로를 향한 믿음으로 시작해 이제 평생을 약속하려 합니다.</p>
+          <p>저희들의 첫 시작을 함께해 주세요.</p>
         </div>
       </motion.div>
-
-      <div className="mt-14 pt-10 border-t" style={{ borderColor: theme.colors.border, color: theme.colors.text }}>
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8, delay: 0.3 }}
-          className="space-y-4 text-sm leading-loose"
-        >
-          <div className="flex items-center justify-center gap-3">
-            <span>{data.groom.father} · {data.groom.mother}의 아들 {data.groom.name}</span>
-            <a href={`tel:${data.groom.phone}`}>📞</a>
-          </div>
-          <div className="flex items-center justify-center gap-3">
-            <span>{data.bride.father} · {data.bride.mother}의 딸 {data.bride.name}</span>
-            <a href={`tel:${data.bride.phone}`}>📞</a>
-          </div>
-        </motion.div>
-      </div>
     </section>
   )
 }

@@ -117,7 +117,7 @@ export default function Guestbook({ theme }: Props) {
 
   return (
     <>
-      <section className="theme-bg py-20 px-8">
+      <section className="py-12 px-8" style={{ background: '#FAF5ED' }}>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -138,7 +138,7 @@ export default function Guestbook({ theme }: Props) {
           >
             {entries.length === 0 ? (
               <p className="text-sm" style={{ color: theme.colors.text + '60' }}>
-                첫 번째 축하 메시지를 남겨주세요 💌
+                첫 번째 축하 메시지를 남겨주세요 ♥
               </p>
             ) : (
               <AnimatePresence mode="wait" custom={direction}>
@@ -190,7 +190,7 @@ export default function Guestbook({ theme }: Props) {
             className="w-full py-3 rounded-xl text-sm font-medium"
             style={{ background: theme.colors.accent, color: '#fff' }}
           >
-            ✏️ 축하 메시지 남기기
+            축하 메시지 남기기
           </button>
         </motion.div>
       </section>
