@@ -4,14 +4,14 @@
 
 /* 기본 테마 변수 (JS에서 덮어쓰여짐) */
 :root {
-  --theme-bg: #FAF6EE;
-  --theme-bg-alt: #F3EBDB;
-  --theme-bg-dark: #A9808A;
-  --theme-text: #43332E;
-  --theme-text-muted: #A2907F;
-  --theme-accent: #C57887;
-  --theme-accent-light: #EEC9D2;
-  --theme-border: #EADFCB;
+  --theme-bg: #FCF8F2;
+  --theme-bg-alt: #F7EFE4;
+  --theme-bg-dark: #B8929C;
+  --theme-text: #463731;
+  --theme-text-muted: #AD9C8C;
+  --theme-accent: #D97E9F;
+  --theme-accent-light: #F5DAE1;
+  --theme-border: #EEE5D6;
   --theme-font-heading: 'Cormorant Garamond', serif;
   --theme-font-body: 'Pretendard Variable', 'Pretendard', sans-serif;
   --theme-font-script: 'Great Vibes', cursive;
@@ -29,7 +29,7 @@ body, p, h1, h2, h3, span, div {
 
 html, body {
   font-family: var(--theme-font-body);
-  background: #EDE4D3;
+  background: #F0E8DC;
   color: var(--theme-text);
 }
 

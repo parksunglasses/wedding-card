@@ -42,7 +42,7 @@ export default function GuestUpload({ theme }: Props) {
   }
 
   return (
-    <section className="theme-bg py-16 px-8">
+    <section className="theme-bg py-20 px-8">
       <div className="max-w-md mx-auto text-center">
         {/* 헤더 */}
         <div className="inline-block border rounded-full px-6 py-2 mb-8" style={{ borderColor: theme.colors.accent + '66' }}>

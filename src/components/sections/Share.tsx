@@ -43,7 +43,7 @@ export default function Share({ data, theme }: Props) {
   }
 
   return (
-    <section className="theme-bg-alt py-16 px-8" style={{ color: theme.colors.text }}>
+    <section className="theme-bg-alt py-20 px-8" style={{ color: theme.colors.text }}>
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -60,16 +60,16 @@ export default function Share({ data, theme }: Props) {
         </p>
 
         <div className="grid grid-cols-3 gap-3">
-          <button onClick={handleKakaoShare} className="flex flex-col items-center gap-2 py-4 rounded-lg text-xs" style={buttonStyle}>
-            <div className="w-10 h-10 rounded-lg bg-yellow-400 flex items-center justify-center text-black text-lg">💬</div>
+          <button onClick={handleKakaoShare} className="flex flex-col items-center gap-2 py-4 rounded-2xl text-xs" style={buttonStyle}>
+            <div className="w-10 h-10 rounded-xl bg-yellow-400 flex items-center justify-center text-black text-lg">💬</div>
             카카오톡
           </button>
-          <button onClick={handleSMS} className="flex flex-col items-center gap-2 py-4 rounded-lg text-xs" style={buttonStyle}>
-            <div className="w-10 h-10 rounded-lg bg-green-500 flex items-center justify-center text-white text-lg">✉️</div>
+          <button onClick={handleSMS} className="flex flex-col items-center gap-2 py-4 rounded-2xl text-xs" style={buttonStyle}>
+            <div className="w-10 h-10 rounded-xl bg-green-500 flex items-center justify-center text-white text-lg">✉️</div>
             문자
           </button>
-          <button onClick={handleCopyLink} className="flex flex-col items-center gap-2 py-4 rounded-lg text-xs" style={buttonStyle}>
-            <div className="w-10 h-10 rounded-lg flex items-center justify-center text-lg" style={{ background: theme.colors.accent + '1A' }}>🔗</div>
+          <button onClick={handleCopyLink} className="flex flex-col items-center gap-2 py-4 rounded-2xl text-xs" style={buttonStyle}>
+            <div className="w-10 h-10 rounded-xl flex items-center justify-center text-lg" style={{ background: theme.colors.accent + '1A' }}>🔗</div>
             {copied ? '복사됨' : '링크복사'}
           </button>
         </div>

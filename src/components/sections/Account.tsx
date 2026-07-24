@@ -29,7 +29,7 @@ export default function AccountSection({ data, theme }: Props) {
         return (
           <div
             key={key}
-            className="rounded-lg p-4 text-left"
+            className="rounded-2xl p-4 text-left"
             style={{
               background: theme.colors.accent + '0D',
               border: `1px solid ${theme.colors.border}`,
@@ -57,7 +57,7 @@ export default function AccountSection({ data, theme }: Props) {
   )
 
   return (
-    <section className="theme-bg-alt py-16 px-8" style={{ color: theme.colors.text }}>
+    <section className="theme-bg-alt py-20 px-8" style={{ color: theme.colors.text }}>
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -71,7 +71,7 @@ export default function AccountSection({ data, theme }: Props) {
 
         <button
           onClick={() => setOpenSide(openSide === 'groom' ? null : 'groom')}
-          className="w-full px-5 py-4 rounded-lg flex items-center justify-between mb-3"
+          className="w-full px-5 py-4 rounded-2xl flex items-center justify-between mb-3"
           style={{
             background: theme.colors.accent + '0D',
             border: `1px solid ${theme.colors.border}`,
@@ -84,7 +84,7 @@ export default function AccountSection({ data, theme }: Props) {
 
         <button
           onClick={() => setOpenSide(openSide === 'bride' ? null : 'bride')}
-          className="w-full px-5 py-4 rounded-lg flex items-center justify-between mt-3"
+          className="w-full px-5 py-4 rounded-2xl flex items-center justify-between mt-3"
           style={{
             background: theme.colors.accent + '0D',
             border: `1px solid ${theme.colors.border}`,

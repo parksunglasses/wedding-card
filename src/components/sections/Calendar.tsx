@@ -21,7 +21,7 @@ const Countdown = memo(function Countdown({
   }, [date, time])
 
   return (
-    <div className="mt-16 -mx-8 px-8 py-12 theme-bg-alt" style={{ color: theme.colors.text }}>
+    <div className="mt-16 -mx-8 px-8 py-16 theme-bg-alt" style={{ color: theme.colors.text }}>
       <div className="grid grid-cols-4 gap-2 max-w-md mx-auto text-center">
         {[
           { label: 'DAY', value: countdown.days },
@@ -52,7 +52,7 @@ export default function Calendar({ data, theme }: Props) {
   const weekdays = ['S', 'M', 'T', 'W', 'T', 'F', 'S']
 
   return (
-    <section className="theme-bg py-16 px-8">
+    <section className="theme-bg py-20 px-8">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}

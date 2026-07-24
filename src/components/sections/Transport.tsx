@@ -9,7 +9,7 @@ interface Props {
 
 export default function Transport({ data, theme }: Props) {
   return (
-    <section className="theme-bg py-16 px-8">
+    <section className="theme-bg py-20 px-8">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -32,7 +32,7 @@ export default function Transport({ data, theme }: Props) {
           </div>
         </div>
 
-        <div className="text-center theme-bg-alt -mx-8 px-8 py-12">
+        <div className="text-center theme-bg-alt -mx-8 px-8 py-16">
           <div className="text-3xl mb-4">🚌</div>
           <h3 className="font-bold text-lg mb-6 theme-text">버스 이용 시</h3>
           <div className="text-sm max-w-xs mx-auto space-y-2.5">

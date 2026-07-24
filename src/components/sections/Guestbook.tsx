@@ -117,7 +117,7 @@ export default function Guestbook({ theme }: Props) {
 
   return (
     <>
-      <section className="theme-bg py-16 px-8">
+      <section className="theme-bg py-20 px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}

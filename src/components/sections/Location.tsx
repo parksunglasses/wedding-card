@@ -38,7 +38,7 @@ export default function Location({ data, theme }: Props) {
   }, [data.lat, data.lng])
 
   return (
-    <section id="location" className="theme-bg py-16 px-8" style={{ color: theme.colors.text }}>
+    <section id="location" className="theme-bg py-20 px-8" style={{ color: theme.colors.text }}>
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -69,7 +69,7 @@ export default function Location({ data, theme }: Props) {
         href={kakaoMapUrl}
         target="_blank"
         rel="noopener noreferrer"
-        className="relative block aspect-video rounded-lg overflow-hidden mb-6"
+        className="relative block aspect-video rounded-2xl overflow-hidden mb-6"
         style={{ background: theme.colors.accent + '0D' }}
       >
         {/* 실제 카카오맵 (키 설정 시) */}
@@ -78,7 +78,7 @@ export default function Location({ data, theme }: Props) {
         {/* 키 미설정 시 안내 fallback */}
         {!isKakaoConfigured && (
           <div className="absolute inset-0 flex items-center justify-center">
-            <div className="bg-white/90 theme-text px-4 py-2 rounded-lg text-xs text-center">
+            <div className="bg-white/90 theme-text px-4 py-2 rounded-2xl text-xs text-center">
               지도 표시를 위해<br />카카오 JavaScript 키가 필요합니다
             </div>
           </div>
@@ -87,19 +87,19 @@ export default function Location({ data, theme }: Props) {
 
       <div className="grid grid-cols-3 gap-3 max-w-md mx-auto">
         <a href={kakaoMapUrl} target="_blank" rel="noopener noreferrer"
-          className="flex flex-col items-center gap-2 py-3 rounded-lg text-xs"
+          className="flex flex-col items-center gap-2 py-3 rounded-2xl text-xs"
           style={{ background: theme.colors.accent + '0D', border: `1px solid ${theme.colors.border}` }}>
           <div className="w-8 h-8 rounded bg-yellow-400 flex items-center justify-center text-black">K</div>
           카카오맵
         </a>
         <a href={naverMapUrl} target="_blank" rel="noopener noreferrer"
-          className="flex flex-col items-center gap-2 py-3 rounded-lg text-xs"
+          className="flex flex-col items-center gap-2 py-3 rounded-2xl text-xs"
           style={{ background: theme.colors.accent + '0D', border: `1px solid ${theme.colors.border}` }}>
           <div className="w-8 h-8 rounded bg-green-500 flex items-center justify-center text-white">N</div>
           네이버지도
         </a>
         <a href={tmapUrl}
-          className="flex flex-col items-center gap-2 py-3 rounded-lg text-xs"
+          className="flex flex-col items-center gap-2 py-3 rounded-2xl text-xs"
           style={{ background: theme.colors.accent + '0D', border: `1px solid ${theme.colors.border}` }}>
           <div className="w-8 h-8 rounded bg-blue-500 flex items-center justify-center text-white">T</div>
           티맵
