@@ -121,9 +121,6 @@ export default function Invitation() {
           <Location data={data} theme={theme} />
         </Suspense>
         <Suspense fallback={<SectionFallback />}>
-          <Transport data={data} theme={theme} />
-        </Suspense>
-        <Suspense fallback={<SectionFallback />}>
           <Account data={data} theme={theme} />
         </Suspense>
         <Suspense fallback={<SectionFallback />}>
@@ -131,12 +128,6 @@ export default function Invitation() {
         </Suspense>
         <Suspense fallback={<SectionFallback />}>
           <Guestbook theme={theme} />
-        </Suspense>
-        <Suspense fallback={<SectionFallback />}>
-          <RSVP theme={theme} />
-        </Suspense>
-        <Suspense fallback={<SectionFallback />}>
-          <GuestUpload theme={theme} />
         </Suspense>
         <Suspense fallback={<SectionFallback />}>
           <Share data={data} theme={theme} />

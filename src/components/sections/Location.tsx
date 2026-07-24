@@ -85,7 +85,7 @@ export default function Location({ data, theme }: Props) {
         )}
       </a>
 
-      <div className="grid grid-cols-3 gap-3 max-w-md mx-auto">
+      <div className="grid grid-cols-3 gap-3 max-w-md mx-auto mb-8">
         <a href={kakaoMapUrl} target="_blank" rel="noopener noreferrer"
           className="flex flex-col items-center gap-2 py-3 rounded-2xl text-xs"
           style={{ background: theme.colors.accent + '0D', border: `1px solid ${theme.colors.border}` }}>
@@ -104,6 +104,27 @@ export default function Location({ data, theme }: Props) {
           <div className="w-8 h-8 rounded bg-blue-500 flex items-center justify-center text-white">T</div>
           티맵
         </a>
+      </div>
+
+      <div className="max-w-md mx-auto space-y-3 text-left text-xs" style={{ color: theme.colors.text }}>
+        {data.subway && (
+          <div className="p-4 rounded-xl" style={{ background: theme.colors.bgAlt, border: `1px solid ${theme.colors.border}` }}>
+            <span className="font-semibold block mb-1" style={{ color: theme.colors.accent }}>🚇 지하철</span>
+            <p className="opacity-90 leading-relaxed">{data.subway}</p>
+          </div>
+        )}
+        {data.bus && (
+          <div className="p-4 rounded-xl" style={{ background: theme.colors.bgAlt, border: `1px solid ${theme.colors.border}` }}>
+            <span className="font-semibold block mb-1" style={{ color: theme.colors.accent }}>🚌 버스</span>
+            <p className="opacity-90 leading-relaxed whitespace-pre-line">{data.bus}</p>
+          </div>
+        )}
+        {data.parking && (
+          <div className="p-4 rounded-xl" style={{ background: theme.colors.bgAlt, border: `1px solid ${theme.colors.border}` }}>
+            <span className="font-semibold block mb-1" style={{ color: theme.colors.accent }}>🚗 자가용 / 주차장</span>
+            <p className="opacity-90 leading-relaxed">{data.parking}</p>
+          </div>
+        )}
       </div>
     </section>
   )

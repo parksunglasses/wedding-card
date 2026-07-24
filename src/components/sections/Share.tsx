@@ -59,18 +59,38 @@ export default function Share({ data, theme }: Props) {
           소중한 분들에게 청첩장을 전해주세요
         </p>
 
-        <div className="grid grid-cols-3 gap-3">
-          <button onClick={handleKakaoShare} className="flex flex-col items-center gap-2 py-4 rounded-2xl text-xs" style={buttonStyle}>
-            <div className="w-10 h-10 rounded-xl bg-yellow-400 flex items-center justify-center text-black text-lg">💬</div>
-            카카오톡
+        <div className="flex justify-center items-center gap-5 my-6">
+          <button
+            type="button"
+            onClick={handleKakaoShare}
+            className="flex flex-col items-center gap-1.5"
+          >
+            <div className="w-12 h-12 rounded-xl flex items-center justify-center text-xl shadow-sm" style={{ background: '#EDD645', color: '#3C1E1E' }}>
+              💬
+            </div>
+            <span className="text-xs opacity-80 font-medium">카카오톡</span>
           </button>
-          <button onClick={handleSMS} className="flex flex-col items-center gap-2 py-4 rounded-2xl text-xs" style={buttonStyle}>
-            <div className="w-10 h-10 rounded-xl bg-green-500 flex items-center justify-center text-white text-lg">✉️</div>
-            문자
+
+          <button
+            type="button"
+            onClick={handleSMS}
+            className="flex flex-col items-center gap-1.5"
+          >
+            <div className="w-12 h-12 rounded-xl flex items-center justify-center text-xl shadow-sm text-white" style={{ background: '#48B868' }}>
+              ✉️
+            </div>
+            <span className="text-xs opacity-80 font-medium">문자전송</span>
           </button>
-          <button onClick={handleCopyLink} className="flex flex-col items-center gap-2 py-4 rounded-2xl text-xs" style={buttonStyle}>
-            <div className="w-10 h-10 rounded-xl flex items-center justify-center text-lg" style={{ background: theme.colors.accent + '1A' }}>🔗</div>
-            {copied ? '복사됨' : '링크복사'}
+
+          <button
+            type="button"
+            onClick={handleCopyLink}
+            className="flex flex-col items-center gap-1.5"
+          >
+            <div className="w-12 h-12 rounded-xl flex items-center justify-center text-xl shadow-sm text-white" style={{ background: '#7E1E28' }}>
+              🔗
+            </div>
+            <span className="text-xs opacity-80 font-medium">{copied ? '복사됨!' : '링크복사'}</span>
           </button>
         </div>
 
