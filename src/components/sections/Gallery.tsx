@@ -17,7 +17,7 @@ export default function Gallery({ data, theme }: Props) {
     : Array(6).fill('')
 
   return (
-    <section className="theme-bg-dark py-16 px-6" style={{ color: theme.colors.bg }}>
+    <section className="theme-bg py-16 px-6" style={{ color: theme.colors.text }}>
       <motion.div
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
@@ -25,7 +25,7 @@ export default function Gallery({ data, theme }: Props) {
         transition={{ duration: 0.8 }}
         className="text-center mb-10"
       >
-        <p className="font-heading text-xs tracking-[0.4em] mb-2 uppercase" style={{ color: theme.colors.accentLight }}>
+        <p className="font-heading text-xs tracking-[0.4em] mb-2 uppercase" style={{ color: theme.colors.accent }}>
           Gallery
         </p>
         <h2 className="font-heading text-2xl">우리의 순간</h2>
@@ -44,7 +44,7 @@ export default function Gallery({ data, theme }: Props) {
             style={{
               background: photo
                 ? undefined
-                : `linear-gradient(135deg, ${theme.colors.accentLight}, ${theme.colors.accent})`,
+                : `linear-gradient(135deg, ${theme.colors.bgAlt}, ${theme.colors.border})`,
             }}
           >
             {photo && (

@@ -48,6 +48,8 @@ export default function Invitation() {
       setData(d)
       setDbLoaded(true)
     })
+    // 카카오 공유 SDK 미리 로드 (버튼 클릭 시 지연 방지)
+    import('@/lib/kakao').then(({ loadKakaoShare }) => loadKakaoShare().catch(() => {}))
   }, [])
 
   const themeOverride = new URLSearchParams(window.location.search).get('theme')

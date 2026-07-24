@@ -22,7 +22,7 @@ export default function Intro({ data, theme }: Props) {
 
   const bgImage = data.mainPhoto
     ? `${overlay !== 'none' ? overlay + ',' : ''} url(${getOptimizedUrl(data.mainPhoto, { width: 480 })})`
-    : `linear-gradient(135deg, ${theme.colors.accentLight}, ${theme.colors.accent})`
+    : `linear-gradient(160deg, ${theme.colors.bgAlt}, ${theme.colors.textMuted})`
 
   const title = theme.style.introTitle
   const dateEng = formatDateEnglish(data.date, data.time)

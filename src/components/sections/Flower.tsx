@@ -11,7 +11,7 @@ export default function Flower({ data, theme }: Props) {
   if (!data.flowerLink) return null
 
   return (
-    <section className="theme-bg-dark py-12 px-8" style={{ color: theme.colors.bg }}>
+    <section className="theme-bg py-12 px-8" style={{ color: theme.colors.text }}>
       <motion.a
         href={data.flowerLink}
         target="_blank"
@@ -22,8 +22,8 @@ export default function Flower({ data, theme }: Props) {
         transition={{ duration: 0.8 }}
         className="block max-w-md mx-auto rounded-lg p-5"
         style={{
-          background: theme.colors.bg + '1A',
-          border: `1px solid ${theme.colors.bg}1A`,
+          background: theme.colors.accent + '0D',
+          border: `1px solid ${theme.colors.border}`,
         }}
       >
         <div className="flex items-center justify-between gap-4">

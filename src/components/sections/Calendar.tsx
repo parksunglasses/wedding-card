@@ -21,7 +21,7 @@ const Countdown = memo(function Countdown({
   }, [date, time])
 
   return (
-    <div className="mt-16 -mx-8 px-8 py-12 theme-bg-dark" style={{ color: theme.colors.accentLight }}>
+    <div className="mt-16 -mx-8 px-8 py-12 theme-bg-alt" style={{ color: theme.colors.text }}>
       <div className="grid grid-cols-4 gap-2 max-w-md mx-auto text-center">
         {[
           { label: 'DAY', value: countdown.days },
@@ -30,17 +30,17 @@ const Countdown = memo(function Countdown({
           { label: 'SEC', value: countdown.seconds },
         ].map((item, idx) => (
           <div key={idx}>
-            <p className="font-heading text-xs tracking-widest mb-2" style={{ color: theme.colors.accentLight }}>
+            <p className="font-heading text-xs tracking-widest mb-2" style={{ color: theme.colors.textMuted }}>
               {item.label}
             </p>
-            <p className="font-heading text-3xl" style={{ color: theme.colors.bg }}>
+            <p className="font-heading text-3xl" style={{ color: theme.colors.accent }}>
               {String(item.value).padStart(2, '0')}
             </p>
           </div>
         ))}
       </div>
-      <p className="text-center text-sm mt-8" style={{ color: theme.colors.bg + 'CC' }}>
-        결혼까지 남은 시간 · <span style={{ color: theme.colors.accentLight }}>{countdown.days}</span>일
+      <p className="text-center text-sm mt-8" style={{ color: theme.colors.textMuted }}>
+        결혼까지 남은 시간 · <span style={{ color: theme.colors.accent }}>{countdown.days}</span>일
       </p>
     </div>
   )

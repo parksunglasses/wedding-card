@@ -49,7 +49,7 @@ export default function Greeting({ data, theme }: Props) {
         </div>
       </motion.div>
 
-      <div className="mt-16 -mx-8 px-8 py-10 theme-bg-dark" style={{ color: theme.colors.accentLight }}>
+      <div className="mt-14 pt-10 border-t" style={{ borderColor: theme.colors.border, color: theme.colors.text }}>
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}

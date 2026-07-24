@@ -38,7 +38,7 @@ export default function Location({ data, theme }: Props) {
   }, [data.lat, data.lng])
 
   return (
-    <section id="location" className="theme-bg-dark py-16 px-8" style={{ color: theme.colors.bg }}>
+    <section id="location" className="theme-bg py-16 px-8" style={{ color: theme.colors.text }}>
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -46,7 +46,7 @@ export default function Location({ data, theme }: Props) {
         transition={{ duration: 0.8 }}
         className="text-center mb-10"
       >
-        <p className="font-heading text-xs tracking-[0.4em] mb-3 uppercase" style={{ color: theme.colors.accentLight }}>
+        <p className="font-heading text-xs tracking-[0.4em] mb-3 uppercase" style={{ color: theme.colors.accent }}>
           Location
         </p>
         <h2 className="font-heading text-3xl mb-4">오시는 길</h2>
@@ -59,7 +59,7 @@ export default function Location({ data, theme }: Props) {
         <a
           href={`tel:${data.venuePhone}`}
           className="inline-flex items-center gap-2 mt-6 px-5 py-2 rounded-full text-sm"
-          style={{ background: theme.colors.bg + '1A', border: `1px solid ${theme.colors.bg}33` }}
+          style={{ background: theme.colors.accent + '0D', border: `1px solid ${theme.colors.border}` }}
         >
           📞 {data.venuePhone}
         </a>
@@ -70,7 +70,7 @@ export default function Location({ data, theme }: Props) {
         target="_blank"
         rel="noopener noreferrer"
         className="relative block aspect-video rounded-lg overflow-hidden mb-6"
-        style={{ background: theme.colors.bg + '1A' }}
+        style={{ background: theme.colors.accent + '0D' }}
       >
         {/* 실제 카카오맵 (키 설정 시) */}
         <div ref={mapRef} className="w-full h-full" />
@@ -88,19 +88,19 @@ export default function Location({ data, theme }: Props) {
       <div className="grid grid-cols-3 gap-3 max-w-md mx-auto">
         <a href={kakaoMapUrl} target="_blank" rel="noopener noreferrer"
           className="flex flex-col items-center gap-2 py-3 rounded-lg text-xs"
-          style={{ background: theme.colors.bg + '1A', border: `1px solid ${theme.colors.bg}33` }}>
+          style={{ background: theme.colors.accent + '0D', border: `1px solid ${theme.colors.border}` }}>
           <div className="w-8 h-8 rounded bg-yellow-400 flex items-center justify-center text-black">K</div>
           카카오맵
         </a>
         <a href={naverMapUrl} target="_blank" rel="noopener noreferrer"
           className="flex flex-col items-center gap-2 py-3 rounded-lg text-xs"
-          style={{ background: theme.colors.bg + '1A', border: `1px solid ${theme.colors.bg}33` }}>
+          style={{ background: theme.colors.accent + '0D', border: `1px solid ${theme.colors.border}` }}>
           <div className="w-8 h-8 rounded bg-green-500 flex items-center justify-center text-white">N</div>
           네이버지도
         </a>
         <a href={tmapUrl}
           className="flex flex-col items-center gap-2 py-3 rounded-lg text-xs"
-          style={{ background: theme.colors.bg + '1A', border: `1px solid ${theme.colors.bg}33` }}>
+          style={{ background: theme.colors.accent + '0D', border: `1px solid ${theme.colors.border}` }}>
           <div className="w-8 h-8 rounded bg-blue-500 flex items-center justify-center text-white">T</div>
           티맵
         </a>

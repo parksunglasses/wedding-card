@@ -38,12 +38,12 @@ export default function Share({ data, theme }: Props) {
   }
 
   const buttonStyle = {
-    background: theme.colors.bg + '1A',
-    border: `1px solid ${theme.colors.bg}1A`,
+    background: theme.colors.accent + '0D',
+    border: `1px solid ${theme.colors.border}`,
   }
 
   return (
-    <section className="theme-bg-dark py-16 px-8" style={{ color: theme.colors.bg }}>
+    <section className="theme-bg-alt py-16 px-8" style={{ color: theme.colors.text }}>
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -51,7 +51,7 @@ export default function Share({ data, theme }: Props) {
         transition={{ duration: 0.8 }}
         className="max-w-md mx-auto text-center"
       >
-        <p className="font-heading text-xs tracking-[0.4em] mb-2 uppercase" style={{ color: theme.colors.accentLight }}>
+        <p className="font-heading text-xs tracking-[0.4em] mb-2 uppercase" style={{ color: theme.colors.accent }}>
           Share
         </p>
         <h2 className="font-heading text-2xl mb-2">청첩장 전하기</h2>
@@ -69,13 +69,13 @@ export default function Share({ data, theme }: Props) {
             문자
           </button>
           <button onClick={handleCopyLink} className="flex flex-col items-center gap-2 py-4 rounded-lg text-xs" style={buttonStyle}>
-            <div className="w-10 h-10 rounded-lg flex items-center justify-center text-lg" style={{ background: theme.colors.bg + '33' }}>🔗</div>
+            <div className="w-10 h-10 rounded-lg flex items-center justify-center text-lg" style={{ background: theme.colors.accent + '1A' }}>🔗</div>
             {copied ? '복사됨' : '링크복사'}
           </button>
         </div>
 
-        <div className="mt-16 pt-12 border-t" style={{ borderColor: theme.colors.bg + '1A' }}>
-          <p className="font-script text-3xl mb-2" style={{ color: theme.colors.accentLight }}>Thank you</p>
+        <div className="mt-16 pt-12 border-t" style={{ borderColor: theme.colors.border }}>
+          <p className="font-script text-3xl mb-2" style={{ color: theme.colors.accent }}>Thank you</p>
           <p className="text-xs opacity-60">
             {data.groom.name} · {data.bride.name}
           </p>

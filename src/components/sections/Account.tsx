@@ -31,8 +31,8 @@ export default function AccountSection({ data, theme }: Props) {
             key={key}
             className="rounded-lg p-4 text-left"
             style={{
-              background: theme.colors.bg + '1A',
-              border: `1px solid ${theme.colors.bg}1A`,
+              background: theme.colors.accent + '0D',
+              border: `1px solid ${theme.colors.border}`,
             }}
           >
             <p className="text-xs opacity-60 mb-1">{acc.bank}</p>
@@ -43,8 +43,8 @@ export default function AccountSection({ data, theme }: Props) {
                 onClick={() => handleCopy(acc.accountNumber, key)}
                 className="text-xs px-3 py-1 rounded-full"
                 style={{
-                  background: theme.colors.bg + '1A',
-                  border: `1px solid ${theme.colors.bg}33`,
+                  background: theme.colors.accent + '0D',
+                  border: `1px solid ${theme.colors.border}`,
                 }}
               >
                 {copiedIdx === key ? '복사됨' : '복사'}
@@ -57,7 +57,7 @@ export default function AccountSection({ data, theme }: Props) {
   )
 
   return (
-    <section className="theme-bg-dark py-16 px-8" style={{ color: theme.colors.bg }}>
+    <section className="theme-bg-alt py-16 px-8" style={{ color: theme.colors.text }}>
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -73,8 +73,8 @@ export default function AccountSection({ data, theme }: Props) {
           onClick={() => setOpenSide(openSide === 'groom' ? null : 'groom')}
           className="w-full px-5 py-4 rounded-lg flex items-center justify-between mb-3"
           style={{
-            background: theme.colors.bg + '1A',
-            border: `1px solid ${theme.colors.bg}1A`,
+            background: theme.colors.accent + '0D',
+            border: `1px solid ${theme.colors.border}`,
           }}
         >
           <span className="text-sm">신랑 측 계좌번호</span>
@@ -86,8 +86,8 @@ export default function AccountSection({ data, theme }: Props) {
           onClick={() => setOpenSide(openSide === 'bride' ? null : 'bride')}
           className="w-full px-5 py-4 rounded-lg flex items-center justify-between mt-3"
           style={{
-            background: theme.colors.bg + '1A',
-            border: `1px solid ${theme.colors.bg}1A`,
+            background: theme.colors.accent + '0D',
+            border: `1px solid ${theme.colors.border}`,
           }}
         >
           <span className="text-sm">신부 측 계좌번호</span>
