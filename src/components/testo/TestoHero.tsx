@@ -10,12 +10,12 @@ interface Props {
 const WEEKDAYS = ['일', '월', '화', '수', '목', '금', '토']
 
 const SCATTERED = [
-  { size: 28, left: 4, top: 26, rotate: -12, scribble: false },
-  { size: 42, left: 50, top: 2, rotate: -7, scribble: true },
-  { size: 58, left: 118, top: 12, rotate: 7, scribble: true },
-  { size: 30, left: 212, top: 0, rotate: 11, scribble: false },
-  { size: 40, left: 250, top: 28, rotate: -5, scribble: true },
-  { size: 24, left: -8, top: 58, rotate: -3, scribble: true },
+  { size: 28, left: 30, top: 42, rotate: -12, scribble: false },
+  { size: 42, left: 90, top: 12, rotate: -7, scribble: true },
+  { size: 58, left: 151, top: 16, rotate: 7, scribble: true },
+  { size: 30, left: 225, top: 10, rotate: 11, scribble: false },
+  { size: 40, left: 280, top: 38, rotate: -5, scribble: true },
+  { size: 24, left: 10, top: 68, rotate: -3, scribble: true },
 ]
 
 function Chrys({ size = 18, color = TESTO.muted }: { size?: number; color?: string }) {
@@ -41,10 +41,7 @@ export default function TestoHero({ data }: Props) {
   const ampm = Number(hh) < 12 ? 'AM' : 'PM'
 
   return (
-    <section className="testo-paper hero">
-      <Deco seed={0} tone="paper" />
-      <Snowfall distance={560} count={5} />
-
+    <section className="testo-paper hero testo-hero-intro">
       <svg className="hero-script" viewBox="0 0 430 168" aria-label="We're Getting Married!">
         <defs>
           <path id="arc1" d="M14 76 Q215 44 416 76" fill="none" />
@@ -62,12 +59,11 @@ export default function TestoHero({ data }: Props) {
         {SCATTERED.map((h, i) => (
           <Heart key={i} size={h.size} variant={h.scribble ? 'scribble' : 'outline'} rotate={h.rotate} style={{ position: 'absolute', left: h.left, top: h.top }} />
         ))}
-        <p className="hero-tag-l" style={{ ...pen(26, TESTO.red), transform: 'rotate(-6deg)' }}>{TESTO_TEXT.groom.nameEn}</p>
-        <p className="hero-tag-r" style={{ ...pen(26, TESTO.red), transform: 'rotate(6deg)' }}>{TESTO_TEXT.bride.nameEn}</p>
+        <p className="hero-tag-l" style={{ ...pen(32, TESTO.red), fontFamily: '"Nanum Brush Script", cursive', transform: 'rotate(-6deg)' }}>{TESTO_TEXT.groom.nameEn}</p>
+        <p className="hero-tag-r" style={{ ...pen(32, TESTO.red), fontFamily: '"Nanum Brush Script", cursive', transform: 'rotate(6deg)' }}>{TESTO_TEXT.bride.nameEn}</p>
         <div className="hero-pair">
-          <Photo src={photo} w={200} h={210} radius={10} alt="메인 웨딩 사진" />
+          <Photo src={photo} w={295} h={325} radius={12} alt="메인 웨딩 사진" />
         </div>
-        <p className="hero-tape" style={{ ...pen(30), background: TESTO.red, color: TESTO.paper }}>{TESTO_TEXT.tape}</p>
       </div>
 
       <div className="hero-greet">

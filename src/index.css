@@ -304,7 +304,8 @@ html, body {
 }
 
 /* 손그림 하트 스크리블 채움 — 히어로 안에서만 그려지는 연출을 적용 */
-.testo-hero-intro .testo-heart-scribble {
+.testo-hero-intro .testo-heart-scribble,
+.hero .testo-heart-scribble {
   stroke-dasharray: 340;
   animation: testoDraw 1.9s ease-out 0.5s both;
 }
@@ -360,7 +361,7 @@ html, body {
   border-radius: 999px;
   background: #7A1420;
   color: #F4ECD9;
-  font-family: 'Nanum Brush Script', cursive;
+  font-family: 'Nanum Pen Script', cursive;
   font-size: 26px;
   line-height: 1;
   transition: transform 160ms ease, opacity 160ms ease;
@@ -517,7 +518,6 @@ html, body {
 
 /* 사진 */
 .photo { position: relative; display: flex; align-items: center; justify-content: center; overflow: hidden; flex: none; }
-.photo::after { content: ""; position: absolute; inset: 0; background-image: repeating-linear-gradient(135deg, rgba(58,42,36,.035) 0 2px, transparent 2px 9px); }
 .photo-img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
 /* 헬퍼 */
@@ -532,17 +532,18 @@ html, body {
 /* 히어로 */
 .hero { padding: 52px 32px 40px; text-align: center; }
 .hero-script { display: block; width: 100%; max-width: 100%; height: auto; margin: 2px auto 0; }
-.hero-photos { position: relative; width: 300px; margin: 30px auto 0; padding-top: 78px; }
-.hero-tag-l { position: absolute; left: -6px; top: 88px; }
-.hero-tag-r { position: absolute; right: -6px; top: 88px; }
-.hero-pair { display: flex; justify-content: center; gap: 10px; padding: 0 40px; }
-.hero-tape { position: relative; margin-top: -14px; display: inline-block; padding: 4px 30px 8px; border-radius: 8px 22px 10px 26px; transform: rotate(-2deg); box-shadow: 0 6px 14px rgba(0,0,0,.2); }
-.hero-greet { margin-top: 40px; }
+.hero-photos { position: relative; width: 360px; margin: 30px auto 0; padding-top: 95px; }
+.hero-tag-l { position: absolute; left: -12px; top: 112px; z-index: 10; }
+.hero-tag-r { position: absolute; right: -12px; top: 112px; z-index: 10; }
+.hero-pair { display: flex; justify-content: center; gap: 10px; padding: 0; }
+.hero-tape { position: relative; margin-top: 14px; display: inline-block; padding: 4px 22px 6px; border-radius: 6px 18px 8px 20px; transform: rotate(-2deg); box-shadow: 0 4px 10px rgba(0,0,0,.15); z-index: 10; }
+.hero-greet { margin-top: 18px; }
 .hero-date-wrap { position: relative; display: inline-block; padding: 8px 20px 6px; }
 .hero-date { position: relative; z-index: 1; font-family: 'Nanum Pen Script', cursive; font-size: 40px; letter-spacing: .02em; line-height: 1.06; color: #7A1420; margin: 0; }
 .hero-time { display: block; font-family: 'Gaegu', cursive; font-weight: 700; font-size: 30px; letter-spacing: .06em; margin-top: -2px; }
 .hero-time .ampm { font-size: .7em; margin-left: .22em; }
-.hero-mid-tree { text-align: center; margin: 10px 0 2px; }
+.hero-mid-tree { display: flex; justify-content: center; align-items: center; text-align: center; margin: 18px auto 8px; width: 100%; }
+.hero-mid-tree svg { display: block; margin: 0 auto; }
 .hero-parents { font-family: 'Nanum Myeongjo', serif; font-size: 15px; line-height: 2; color: #3A2A24; margin-top: 22px; }
 .hero-parents p { margin: 0; }
 .hero-parents .pname { color: #234A33; font-weight: 700; }
@@ -561,10 +562,10 @@ html, body {
 .cal-head { display: flex; align-items: flex-end; justify-content: space-between; }
 .cal-grid { margin-top: 12px; display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; font-size: 14px; }
 .cal-wd { padding: 4px 0; font-weight: 700; }
-.cal-cell { position: relative; padding: 6px 0; }
+.cal-cell { position: relative; padding: 6px 0; display: flex; align-items: center; justify-content: center; }
 .cal-cell span { position: relative; z-index: 2; }
 .cal-wed { font-weight: 800; font-size: 1.3em; text-shadow: 0 1px 2px rgba(90,15,24,.45); }
-.cal-heart { position: absolute; left: 50%; top: -8px; margin-left: -23px; pointer-events: none; z-index: 1; }
+.cal-heart { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); pointer-events: none; z-index: 1; }
 .countdown { margin-top: 28px; display: inline-flex; gap: 12px; padding: 10px 22px; }
 
 /* 오시는 길 */
@@ -578,7 +579,7 @@ html, body {
 .loc-map { position: relative; height: 200px; width: 100%; background: #E9E2D4; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; color: #7A1420; }
 .loc-btns { margin-top: 22px; display: flex; justify-content: center; gap: 16px; }
 .loc-mapbtn { padding: 6px 20px; }
-.loc-routes { max-width: 360px; margin: 28px auto 0; display: flex; flex-direction: column; gap: 16px; text-align: left; font-size: 18px; line-height: 1.75; }
+.loc-routes { max-width: 360px; margin: 46px auto 0; display: flex; flex-direction: column; gap: 16px; text-align: left; font-size: 18px; line-height: 1.75; }
 .loc-route { display: flex; gap: 10px; }
 .loc-badge { height: fit-content; flex: none; border-radius: 6px; padding: 2px 0; width: 58px; text-align: center; font-size: 16px; font-weight: 700; }
 

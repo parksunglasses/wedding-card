@@ -20,12 +20,7 @@ export default function TestoLocation({ data }: Props) {
     <section className="testo-paper-green location" style={{ color: TESTO.paper }}>
       <Deco
         tone="green"
-        items={[
-          { t: 'sock', x: 8, y: 12, s: 32, r: 8 },
-          { t: 'snow', x: 91, y: 20, s: 36, r: 0 },
-          { t: 'star', x: 92, y: 72, s: 26, r: 0 },
-          { t: 'flake', x: '41px', y: '419px', s: 28, r: 0 },
-        ]}
+        items={[]}
       />
       <h2 style={pen(52)}>오시는 길</h2>
       <p className="loc-venue" style={gaegu}>{TESTO_TEXT.venue}</p>
@@ -52,10 +47,7 @@ export default function TestoLocation({ data }: Props) {
         </div>
       </a>
 
-      <div className="loc-btns">
-        <a href={kakaoMapUrl} target="_blank" rel="noopener noreferrer" className="loc-mapbtn" style={{ ...pen(22), background: TESTO.paper, color: TESTO.red, borderRadius: 999 }}>카카오맵</a>
-        <a href={naverMapUrl} target="_blank" rel="noopener noreferrer" className="loc-mapbtn" style={{ ...pen(22), background: TESTO.paper, color: TESTO.red, borderRadius: 999 }}>네이버지도</a>
-      </div>
+
 
       <div className="loc-routes" style={gaegu}>
         {routes.map((r) => (

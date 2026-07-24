@@ -84,8 +84,8 @@ export default function TestoGuestbook() {
 
   return (
     <section className="testo-paper-red guestbook" style={{ color: TESTO.paper }}>
-      <Deco tone="red" items={[{ t: 'gift', x: 8, y: 44, s: 34, r: -8 }, { t: 'flake', x: 90, y: 78, s: 30, r: 0 }]} />
-      <TestoHeading color={TESTO.paper} className="mb-38">축하 메시지 남기기</TestoHeading>
+      <Deco tone="red" items={[]} />
+      <h2 className="mb-38" style={pen(52, TESTO.paper)}>축하 메시지 남기기</h2>
       <div ref={cardRef} className="gb-card tartan-red" style={{ transform: 'rotate(-0.6deg)' }}>
         <div className="gb-inner">
           {cur ? (

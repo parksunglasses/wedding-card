@@ -16,7 +16,7 @@ const TESTO_SLIDE: SlideshowTheme = {
   ink: TESTO.ink,
   border: TESTO.tan,
   overlay: 'rgba(20,6,8,.90)',
-  font: "'Nanum Brush Script', cursive",
+  font: "'Nanum Pen Script', cursive",
   radius: 8,
 }
 
@@ -31,8 +31,8 @@ export default function TestoGallery({ data }: Props) {
 
   return (
     <section className="testo-paper gallery" style={{ color: TESTO.ink }}>
-      <Deco tone="paper" items={[{ t: 'star', x: '457px', y: '435px', s: 26, r: 0 }, { t: 'gift', x: '23px', y: '305px', s: 34, r: -8 }]} />
-      <h2 className="gallery-title" style={pen(56, TESTO.red)}>갤러리</h2>
+      <Deco tone="paper" items={[]} />
+      <h2 className="gallery-title" style={pen(52, TESTO.red)}>갤러리</h2>
       <div className="gallery-grid">
         {grid.map((p, i) => (
           <button

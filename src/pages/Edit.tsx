@@ -458,7 +458,7 @@ function ThemeMiniPreview({
   if (theme.id === 'testo') {
     return (
       <div className="absolute inset-0 flex flex-col items-center overflow-hidden px-3 pt-2.5 text-center" style={{ background: '#F4ECD9' }}>
-        <p style={{ fontFamily: '"Nanum Brush Script", cursive', fontSize: 17, lineHeight: 1, color: '#7A1420' }}>
+        <p style={{ fontFamily: '"Nanum Pen Script", cursive', fontSize: 17, lineHeight: 1, color: '#7A1420' }}>
           {groom} ♡ {bride}
           <br />
           결혼합니다!

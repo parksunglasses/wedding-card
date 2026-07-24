@@ -20,11 +20,11 @@ export const TESTO = {
   snow: '#9BB0A2',
 } as const
 
-const BRUSH = { fontFamily: '"Nanum Brush Script", cursive' } as const
+const BRUSH = { fontFamily: '"Nanum Pen Script", cursive' } as const
 
-/** 브러시 손글씨 폰트를 쓰는 문구 (제목·버튼 등) */
+/** 브러시/펜 손글씨 폰트를 쓰는 문구 (제목·버튼 등) */
 export function pen(size: number, color?: string): CSSProperties {
-  return { ...BRUSH, fontSize: size, lineHeight: 1, ...(color ? { color } : null) }
+  return { ...BRUSH, fontSize: size, fontWeight: 500, lineHeight: 1.05, ...(color ? { color } : null) }
 }
 
 const HEART_PATH =
@@ -395,12 +395,14 @@ interface DecoProps {
   items?: DecoItem[] | null
 }
 
+import { createPortal } from 'react-dom'
+
 // ── 모달 셸 (크래프트지 질감) ──────────────────────────────────────
 export function Modal({ onClose, children, title }: { onClose: () => void; children: ReactNode; title?: ReactNode }) {
-  return (
+  return createPortal(
     <div
       className="ss-overlay"
-      style={{ background: 'rgba(20,6,8,.82)', padding: 24 }}
+      style={{ background: 'rgba(20,6,8,.82)', padding: 24, zIndex: 999999 }}
       onClick={(e) => e.target === e.currentTarget && onClose()}
       role="presentation"
     >
@@ -409,7 +411,8 @@ export function Modal({ onClose, children, title }: { onClose: () => void; child
         {title && <h3 style={{ ...pen(34, TESTO.red), textAlign: 'center', margin: '0 0 18px' }}>{title}</h3>}
         {children}
       </div>
-    </div>
+    </div>,
+    document.body
   )
 }
 

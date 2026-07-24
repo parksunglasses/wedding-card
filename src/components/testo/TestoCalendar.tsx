@@ -57,13 +57,14 @@ export default function TestoCalendar() {
               </span>
             )}
             {d.isWedding && (
-              <svg viewBox="0 0 46 42" width={46} height={42} className="cal-heart" aria-hidden="true">
+              <svg viewBox="0 0 52 48" width={52} height={48} className="cal-heart" aria-hidden="true">
                 <path
-                  d="M23 39 C 23 39 4 27.5 4 15.5 C 4 9 11 6.6 16.5 10.4 C 19.6 12.6 21.6 14.6 23 17.4 C 24.4 14.6 26.4 12.6 29.5 10.4 C 35 6.6 42 9 42 15.5 C 42 27.5 23 39 23 39 Z"
-                  fill={TESTO.paper}
-                  fillOpacity="0.42"
+                  d="M26 44 C 26 44 4 30 4 17 C 4 9.5 10.5 5 17.5 5 C 21.5 5 24.5 7.2 26 9.8 C 27.5 7.2 30.5 5 34.5 5 C 41.5 5 48 9.5 48 17 C 48 30 26 44 26 44 Z"
+                  fill="none"
                   stroke={TESTO.paper}
-                  strokeWidth="2.2"
+                  strokeWidth="2.6"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                 />
               </svg>
             )}

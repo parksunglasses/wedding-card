@@ -148,9 +148,9 @@ export const themes: Record<ThemeId, Theme> = {
       border: '#D8C6A6',
     },
     fonts: {
-      heading: '"Nanum Brush Script", "Nanum Pen Script", cursive',
+      heading: '"Nanum Pen Script", cursive',
       body: '"Gaegu", "Pretendard Variable", Pretendard, sans-serif',
-      script: '"Nanum Brush Script", cursive',
+      script: '"Nanum Pen Script", cursive',
     },
     style: {
       rounded: 'sm',

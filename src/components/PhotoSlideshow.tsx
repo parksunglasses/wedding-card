@@ -1,4 +1,5 @@
 import { ReactNode, useEffect, useRef } from 'react'
+import { createPortal } from 'react-dom'
 import { getOptimizedUrl } from '@/lib/cloudinary'
 
 export interface SlideshowTheme {
@@ -48,10 +49,10 @@ export default function PhotoSlideshow({ photos, index, setIndex, onClose, theme
     if (el) el.scrollIntoView({ inline: 'center', block: 'nearest' })
   }, [index])
 
-  return (
+  return createPortal(
     <div
       className="ss-overlay"
-      style={{ background: theme.overlay }}
+      style={{ background: theme.overlay, zIndex: 999999 }}
       onClick={(e) => e.target === e.currentTarget && onClose()}
       role="dialog"
       aria-modal="true"
@@ -111,6 +112,7 @@ export default function PhotoSlideshow({ photos, index, setIndex, onClose, theme
           ))}
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   )
 }

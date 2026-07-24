@@ -24,8 +24,8 @@ export default function TestoAccount() {
 
   return (
     <section className="testo-paper account" style={{ color: TESTO.ink }}>
-      <Deco tone="paper" items={[{ t: 'bell', x: '432px', y: '113px', s: 30, r: 8 }, { t: 'mitten', x: 9, y: 90, s: 28, r: 6 }]} />
-      <h2 style={pen(46, TESTO.red)}>마음 전하실 곳</h2>
+      <Deco tone="paper" items={[]} />
+      <h2 style={pen(52, TESTO.red)}>마음 전하실 곳</h2>
       <div className="acc-list" style={{ marginTop: 34 }}>
         {sides.map(({ side, label, accounts, bg }) => {
           const isOpen = open === side
@@ -40,11 +40,6 @@ export default function TestoAccount() {
               >
                 <span>{label}</span>
                 <span style={{ fontSize: 15, fontFamily: 'sans-serif' }}>{isOpen ? '▲' : '▼'}</span>
-                {side === 'groom' && (
-                  <svg viewBox="0 0 24 24" width={40} height={40} style={{ position: 'absolute', left: '1px', top: '-30px', transform: 'translate(-50%,-50%) rotate(-8deg)', opacity: 0.72, pointerEvents: 'none' }} aria-hidden="true">
-                    <Ico t="tree" />
-                  </svg>
-                )}
               </button>
               {isOpen && (
                 <div className="acc-body">
