@@ -1,18 +1,29 @@
 import { useState } from 'react'
-import { AnimatePresence, motion } from 'framer-motion'
+import { motion } from 'framer-motion'
 import { WeddingData } from '@/types'
 import { getOptimizedUrl } from '@/lib/cloudinary'
 import { DEFAULT_WEDDING_PHOTO } from '@/data/wedding'
-import { Heart, TESTO, TestoHeading, pen } from './TestoKit'
+import { Heart, Snowfall, TESTO, pen } from './TestoKit'
+import PhotoSlideshow, { SlideshowTheme } from '@/components/PhotoSlideshow'
 
 interface Props {
   data: WeddingData
 }
 
-const TILT = [0, -1.5, 1.5, 1, -1]
+const TESTO_SLIDE: SlideshowTheme = {
+  sheet: TESTO.paper,
+  paper: TESTO.paperAlt,
+  red: TESTO.red,
+  ink: TESTO.ink,
+  border: TESTO.tan,
+  overlay: 'rgba(20,6,8,.90)',
+  font: "'Nanum Brush Script', cursive",
+  radius: 8,
+}
 
 export default function TestoGallery({ data }: Props) {
-  const [showGallery, setShowGallery] = useState(false)
+  const [open, setOpen] = useState(false)
+  const [index, setIndex] = useState(0)
 
   const photos = data.galleryPhotos.length > 0
     ? data.galleryPhotos
@@ -66,72 +77,21 @@ export default function TestoGallery({ data }: Props) {
           </div>
         </motion.div>
 
-        <button type="button" onClick={() => setShowGallery(true)} className="testo-pill mt-[26px]" style={{ background: TESTO.paper, color: TESTO.red, boxShadow: '0 6px 14px rgba(0,0,0,.25)' }}>
+        <button type="button" onClick={() => { setIndex(0); setOpen(true) }} className="testo-pill mt-[26px]" style={{ background: TESTO.paper, color: TESTO.red, boxShadow: '0 6px 14px rgba(0,0,0,.25)' }}>
           사진 더 보기
         </button>
       </section>
 
-      <AnimatePresence>
-        {showGallery && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={(event) => event.target === event.currentTarget && setShowGallery(false)}
-            className="fixed inset-0 z-[70] flex items-center justify-center p-6"
-            style={{ background: 'rgba(20,6,8,.85)' }}
-            role="dialog"
-            aria-modal="true"
-            aria-label="사진 모아보기"
-          >
-            <motion.div
-              initial={{ scale: 0.94, y: 16 }}
-              animate={{ scale: 1, y: 0 }}
-              exit={{ scale: 0.94, y: 16 }}
-              className="testo-paper relative max-h-[88vh] w-full max-w-[440px] overflow-y-auto px-[22px] pb-8 pt-7 text-center"
-              style={{ borderRadius: 10, color: TESTO.ink }}
-            >
-              <button
-                type="button"
-                onClick={() => setShowGallery(false)}
-                aria-label="닫기"
-                className="absolute right-3.5 top-3 text-[28px] leading-none"
-                style={{ color: TESTO.red }}
-              >
-                ×
-              </button>
-
-              <TestoHeading size={36} squiggleWidth={110} className="mb-[18px]">우리의 순간들</TestoHeading>
-
-              <div className="grid grid-cols-2 gap-3">
-                {photos.map((photo, index) => {
-                  const wide = index % 5 === 0
-                  return (
-                    <div
-                      key={`${photo}-${index}`}
-                      className="min-w-0 overflow-hidden px-2 pb-[22px] pt-2"
-                      style={{
-                        gridColumn: wide ? '1 / -1' : undefined,
-                        background: TESTO.paperAlt,
-                        boxShadow: '0 4px 10px rgba(0,0,0,.12)',
-                        transform: wide ? undefined : `rotate(${TILT[index % TILT.length]}deg)`,
-                      }}
-                    >
-                      <img
-                        src={getOptimizedUrl(photo, { width: 600 })}
-                        alt={`웨딩 사진 ${index + 1}`}
-                        loading="lazy"
-                        className="block w-full object-cover"
-                        style={{ height: wide ? 220 : 180 }}
-                      />
-                    </div>
-                  )
-                })}
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {open && (
+        <PhotoSlideshow
+          photos={photos}
+          index={index}
+          setIndex={setIndex}
+          onClose={() => setOpen(false)}
+          theme={TESTO_SLIDE}
+          snow={<Snowfall distance={640} color={TESTO.snow} count={4} />}
+        />
+      )}
     </>
   )
 }
