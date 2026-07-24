@@ -37,20 +37,20 @@ export interface Theme {
 
 export const themes: Record<ThemeId, Theme> = {
 
-  // 1. 샹파뉴 — 아이보리 + 딥골드, 클래식 스크립트 인트로
+  // 1. 블러쉬 — 베이지 크림 + 파스텔 핑크, 손글씨 진입 드로잉
   elegant: {
     id: 'elegant',
-    name: '샹파뉴',
-    description: '아이보리 & 딥골드 · 클래식 스크립트',
+    name: '블러쉬',
+    description: '베이지 크림 & 파스텔 핑크 · 손글씨 진입',
     colors: {
-      bg: '#FAF7F2',
-      bgAlt: '#F0E9DC',
-      bgDark: '#1C1610',
-      text: '#1C1610',
-      textMuted: '#9A8878',
-      accent: '#A67C3A',
-      accentLight: '#C9A05A',
-      border: '#E2D8C8',
+      bg: '#FCF8F2',
+      bgAlt: '#F7EFE4',
+      bgDark: '#B8929C',
+      text: '#463731',
+      textMuted: '#AD9C8C',
+      accent: '#D97E9F',
+      accentLight: '#F5DAE1',
+      border: '#EEE5D6',
     },
     fonts: {
       heading: '"Cormorant Garamond", serif',
