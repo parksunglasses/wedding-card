@@ -1,112 +1,109 @@
-import { useState, useEffect, memo } from 'react'
+import { memo, useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { WeddingData } from '@/types'
 import { Theme } from '@/themes'
-import { getCalendarData, getCountdown, formatDate, getDayOfWeek, formatTime } from '@/lib/date'
+import { formatDate, formatTime, getCalendarData, getCountdown, getDayOfWeek } from '@/lib/date'
+import SectionHeading from '@/components/ui/SectionHeading'
 
 interface Props {
   data: WeddingData
   theme: Theme
 }
 
-// 1초마다 업데이트되는 카운트다운만 분리 — Calendar 전체 리렌더 방지
 const Countdown = memo(function Countdown({
-  date, time, theme,
-}: { date: string; time: string; theme: Theme }) {
+  date,
+  time,
+  theme,
+}: {
+  date: string
+  time: string
+  theme: Theme
+}) {
   const [countdown, setCountdown] = useState(() => getCountdown(date, time))
 
   useEffect(() => {
-    const timer = setInterval(() => setCountdown(getCountdown(date, time)), 1000)
-    return () => clearInterval(timer)
+    const timer = window.setInterval(() => setCountdown(getCountdown(date, time)), 1000)
+    return () => window.clearInterval(timer)
   }, [date, time])
 
   return (
-    <div className="mt-16 -mx-8 px-8 py-16 theme-bg-alt" style={{ color: theme.colors.text }}>
-      <div className="grid grid-cols-4 gap-2 max-w-md mx-auto text-center">
-        {[
-          { label: 'DAY', value: countdown.days },
-          { label: 'HOUR', value: countdown.hours },
-          { label: 'MIN', value: countdown.minutes },
-          { label: 'SEC', value: countdown.seconds },
-        ].map((item, idx) => (
-          <div key={idx}>
-            <p className="font-heading text-xs tracking-widest mb-2" style={{ color: theme.colors.textMuted }}>
-              {item.label}
-            </p>
-            <p className="font-heading text-3xl" style={{ color: theme.colors.accent }}>
-              {String(item.value).padStart(2, '0')}
-            </p>
-          </div>
-        ))}
+    <div
+      className="mt-14 grid grid-cols-[auto_1fr] items-center gap-6 border-y px-1 py-7 text-left"
+      style={{ borderColor: theme.colors.border }}
+      aria-label={`결혼까지 ${countdown.days}일 ${countdown.hours}시간 ${countdown.minutes}분 남음`}
+    >
+      <div
+        className="flex h-14 w-14 items-center justify-center rounded-full border font-heading text-2xl"
+        style={{ borderColor: theme.colors.accent, color: theme.colors.accent }}
+      >
+        {countdown.days}
       </div>
-      <p className="text-center text-sm mt-8" style={{ color: theme.colors.textMuted }}>
-        결혼까지 남은 시간 · <span style={{ color: theme.colors.accent }}>{countdown.days}</span>일
-      </p>
+      <div>
+        <p className="mb-2 text-[11px] tracking-[0.16em]" style={{ color: theme.colors.textMuted }}>
+          UNTIL OUR WEDDING
+        </p>
+        <p className="text-[13px]">
+          <strong className="font-medium" style={{ color: theme.colors.accent }}>{countdown.days}일</strong>
+          <span className="mx-2" style={{ color: theme.colors.border }}>|</span>
+          {String(countdown.hours).padStart(2, '0')}시간
+          <span className="mx-2" style={{ color: theme.colors.border }}>|</span>
+          {String(countdown.minutes).padStart(2, '0')}분
+        </p>
+      </div>
     </div>
   )
 })
 
 export default function Calendar({ data, theme }: Props) {
   const calendar = getCalendarData(data.date)
-
-  const weekdays = ['S', 'M', 'T', 'W', 'T', 'F', 'S']
+  const weekdays = ['일', '월', '화', '수', '목', '금', '토']
 
   return (
-    <section className="theme-bg py-20 px-8">
+    <section className="invitation-section theme-bg">
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
+        initial={{ opacity: 0, y: 18 }}
         whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.8 }}
+        viewport={{ once: true, amount: 0.15 }}
+        transition={{ duration: 0.75 }}
       >
-        <div className="text-center mb-10">
-          <div className="inline-block border rounded-full px-6 py-2" style={{ borderColor: theme.colors.accent + '66' }}>
-            <p className="font-heading text-xs tracking-[0.4em] theme-accent uppercase">
-              Calendar
-            </p>
-          </div>
-        </div>
+        <SectionHeading
+          label={`${new Date(data.date).toLocaleString('en-US', { month: 'long' })} ${calendar.year}`}
+          title={`${calendar.month}월의 약속`}
+          description={`${formatDate(data.date)} ${getDayOfWeek(data.date)} · ${formatTime(data.time)}`}
+        />
 
-        <div className="text-center mb-2">
-          <h2 className="font-heading text-7xl theme-text leading-none">
-            {calendar.month}
-          </h2>
-          <p className="text-xs theme-text-muted tracking-widest mt-2 uppercase">
-            {new Date(data.date).toLocaleString('en-US', { month: 'long' })}, {calendar.year}
-          </p>
-        </div>
-
-        <div className="mt-10 max-w-xs mx-auto">
-          <div className="grid grid-cols-7 gap-1 mb-3 text-center">
-            {weekdays.map((day, idx) => (
+        <div className="mx-auto max-w-[330px] border-t pt-5" style={{ borderColor: theme.colors.border }}>
+          <div className="mb-3 grid grid-cols-7 text-center text-[11px]">
+            {weekdays.map((day, index) => (
               <div
-                key={idx}
-                className={`text-xs font-semibold py-2 ${
-                  idx === 0 ? 'text-red-400' : idx === 6 ? 'text-blue-400' : 'theme-text-muted'
-                }`}
+                key={day}
+                className="py-2 font-medium"
+                style={{ color: index === 0 ? theme.colors.accent : index === 6 ? theme.colors.bgDark : theme.colors.textMuted }}
               >
                 {day}
               </div>
             ))}
           </div>
 
-          {calendar.weeks.map((week, weekIdx) => (
-            <div key={weekIdx} className="grid grid-cols-7 gap-1 text-center">
-              {week.map((dayInfo, dayIdx) => (
-                <div key={dayIdx} className="aspect-square flex items-center justify-center">
+          {calendar.weeks.map((week, weekIndex) => (
+            <div key={weekIndex} className="grid grid-cols-7 text-center">
+              {week.map((dayInfo, dayIndex) => (
+                <div key={dayIndex} className="flex aspect-square items-center justify-center">
                   {dayInfo.day && (
-                    <div
-                      className={`w-9 h-9 flex items-center justify-center text-sm rounded-full ${
-                        dayInfo.isSunday ? 'text-red-400' : dayInfo.isSaturday ? 'text-blue-400' : 'theme-text'
-                      }`}
-                      style={dayInfo.isWedding ? {
-                        background: theme.colors.accent,
-                        color: '#FFFFFF',
-                        fontWeight: 600,
-                      } : undefined}
+                    <span
+                      className="flex h-9 w-9 items-center justify-center rounded-full text-[13px]"
+                      style={dayInfo.isWedding
+                        ? { background: theme.colors.accent, color: theme.colors.bg, fontWeight: 600 }
+                        : {
+                            color: dayInfo.isSunday
+                              ? theme.colors.accent
+                              : dayInfo.isSaturday
+                                ? theme.colors.bgDark
+                                : theme.colors.text,
+                          }}
                     >
                       {dayInfo.day}
-                    </div>
+                    </span>
                   )}
                 </div>
               ))}
@@ -114,17 +111,8 @@ export default function Calendar({ data, theme }: Props) {
           ))}
         </div>
 
-        <div className="text-center mt-10 space-y-2">
-          <p className="text-lg font-medium theme-text">
-            {formatDate(data.date)} {getDayOfWeek(data.date)}
-          </p>
-          <p className="text-base" style={{ color: theme.colors.text + 'CC' }}>
-            {formatTime(data.time)}
-          </p>
-        </div>
+        <Countdown date={data.date} time={data.time} theme={theme} />
       </motion.div>
-
-      <Countdown date={data.date} time={data.time} theme={theme} />
     </section>
   )
 }

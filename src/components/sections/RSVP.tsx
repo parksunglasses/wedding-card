@@ -1,7 +1,8 @@
 import { useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { AnimatePresence, motion } from 'framer-motion'
 import { Theme } from '@/themes'
-import { supabase, isSupabaseConfigured } from '@/lib/supabase'
+import { isSupabaseConfigured, supabase } from '@/lib/supabase'
+import { CalendarIcon, CloseIcon } from '@/components/ui/Icons'
 
 interface Props {
   theme: Theme
@@ -18,153 +19,180 @@ export default function RSVP({ theme }: Props) {
   const [submitted, setSubmitted] = useState(false)
   const [submitting, setSubmitting] = useState(false)
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault()
     if (!name.trim()) return
     setSubmitting(true)
 
     if (isSupabaseConfigured) {
       const { error } = await supabase.from('rsvps').insert({
-        name: name.trim(), phone: phone.trim(), attendance,
-        guest_count: guestCount, meal, message: message.trim(),
+        name: name.trim(),
+        phone: phone.trim(),
+        attendance,
+        guest_count: guestCount,
+        meal,
+        message: message.trim(),
       })
       if (!error) setSubmitted(true)
     } else {
       const saved = JSON.parse(localStorage.getItem('rsvp') || '[]')
-      saved.push({ name, phone, attendance, guestCount, meal, message, createdAt: new Date().toISOString() })
+      saved.push({
+        name,
+        phone,
+        attendance,
+        guestCount,
+        meal,
+        message,
+        createdAt: new Date().toISOString(),
+      })
       localStorage.setItem('rsvp', JSON.stringify(saved))
       setSubmitted(true)
     }
     setSubmitting(false)
   }
 
-  const inputStyle = {
-    background: '#F9F9F9',
-    border: `1px solid ${theme.colors.border}`,
-    color: theme.colors.text,
-  }
-  const btnActive = { background: theme.colors.accent, color: '#fff', border: `1px solid ${theme.colors.accent}` }
-  const btnInactive = { background: '#F9F9F9', color: theme.colors.text, border: `1px solid ${theme.colors.border}` }
+  const choiceStyle = (active: boolean) => ({
+    background: active ? theme.colors.bgDark : theme.colors.bg,
+    borderColor: active ? theme.colors.bgDark : theme.colors.border,
+    color: active ? theme.colors.bg : theme.colors.text,
+  })
 
   return (
     <>
-      <section className="theme-bg-alt py-20 px-8">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-          className="max-w-md mx-auto text-center"
+      <div className="flex min-w-0 flex-col items-center border-l pl-4 text-center" style={{ borderColor: theme.colors.border }}>
+        <p className="section-kicker">RSVP</p>
+        <h2 className="whitespace-nowrap font-heading text-[1.9rem] font-normal leading-tight">참석 여부</h2>
+        <span className="section-rule" aria-hidden="true" />
+        <p className="mt-6 min-h-[76px] text-[12px] leading-[1.7]" style={{ color: theme.colors.textMuted }}>
+          정성껏 준비하기 위해<br />참석 여부를 알려주세요
+        </p>
+        <button
+          type="button"
+          onClick={() => setShowModal(true)}
+          className="editorial-button mt-4 w-full px-2"
         >
-          <p className="font-heading text-xs tracking-[0.4em] theme-accent mb-2 uppercase">RSVP</p>
-          <h2 className="font-heading text-2xl theme-text mb-2">참석 여부</h2>
-          <p className="text-xs mb-8" style={{ color: theme.colors.text + '99' }}>
-            정성껏 준비하기 위해 참석 여부를 알려주세요
-          </p>
+          <CalendarIcon />
+          참석 알리기
+        </button>
+      </div>
 
-          {submitted ? (
-            <div className="py-6">
-              <div className="text-4xl mb-3">💌</div>
-              <p className="font-heading text-lg theme-text mb-1">감사합니다</p>
-              <p className="text-sm" style={{ color: theme.colors.text + 'B3' }}>참석 여부가 전달되었습니다</p>
-            </div>
-          ) : (
-            <button
-              onClick={() => setShowModal(true)}
-              className="w-full py-3 rounded-xl text-sm font-medium"
-              style={{ background: theme.colors.accent, color: '#fff' }}
-            >
-              📋 참석 여부 알리기
-            </button>
-          )}
-        </motion.div>
-      </section>
-
-      {/* RSVP 팝업 */}
       <AnimatePresence>
         {showModal && (
           <motion.div
-            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex items-end justify-center"
-            style={{ background: 'rgba(0,0,0,0.5)' }}
-            onClick={(e) => e.target === e.currentTarget && setShowModal(false)}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[80] flex items-end justify-center bg-black/45"
+            onClick={(event) => event.target === event.currentTarget && setShowModal(false)}
           >
             <motion.div
-              initial={{ y: '100%' }} animate={{ y: 0 }} exit={{ y: '100%' }}
-              transition={{ type: 'spring', damping: 28, stiffness: 300 }}
-              className="w-full max-w-[480px] rounded-t-3xl p-6 pb-10 overflow-y-auto"
-              style={{ background: '#FFFFFF', maxHeight: '90vh' }}
+              initial={{ y: '100%' }}
+              animate={{ y: 0 }}
+              exit={{ y: '100%' }}
+              transition={{ type: 'spring', damping: 30, stiffness: 320 }}
+              className="bottom-sheet max-h-[92vh] w-full max-w-[480px] overflow-y-auto px-6 pb-[max(32px,env(safe-area-inset-bottom))] pt-6"
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="rsvp-title"
             >
               {submitted ? (
                 <div className="py-10 text-center">
-                  <p className="text-4xl mb-3">💌</p>
-                  <p className="font-heading text-xl mb-1" style={{ color: theme.colors.accent }}>감사합니다!</p>
-                  <p className="text-sm" style={{ color: theme.colors.textMuted }}>참석 여부가 전달되었습니다</p>
+                  <p id="rsvp-title" className="font-heading text-3xl">감사합니다</p>
+                  <p className="mt-3 text-[13px]" style={{ color: theme.colors.textMuted }}>
+                    참석 여부가 전달되었습니다.
+                  </p>
+                  <button type="button" onClick={() => setShowModal(false)} className="editorial-button mt-7 px-10">
+                    닫기
+                  </button>
                 </div>
               ) : (
                 <>
-                  <div className="flex items-center justify-between mb-6">
-                    <h3 className="font-heading text-lg theme-text">참석 여부</h3>
-                    <button onClick={() => setShowModal(false)} className="text-2xl leading-none" style={{ color: theme.colors.textMuted }}>×</button>
+                  <div className="mb-7 flex items-center justify-between">
+                    <div>
+                      <p className="section-kicker mb-2">RSVP</p>
+                      <h3 id="rsvp-title" className="font-heading text-3xl font-normal">참석 여부</h3>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => setShowModal(false)}
+                      aria-label="참석 여부 닫기"
+                      className="flex h-11 w-11 items-center justify-center"
+                      style={{ color: theme.colors.textMuted }}
+                    >
+                      <CloseIcon className="h-6 w-6" />
+                    </button>
                   </div>
 
-                  <form onSubmit={handleSubmit} className="space-y-4">
-                    <div>
-                      <label className="text-xs mb-2 block" style={{ color: theme.colors.text + '99' }}>참석 여부</label>
+                  <form onSubmit={handleSubmit} className="space-y-5">
+                    <fieldset>
+                      <legend className="mb-2 text-[12px]" style={{ color: theme.colors.textMuted }}>참석 여부</legend>
                       <div className="grid grid-cols-2 gap-2">
-                        <button type="button" onClick={() => setAttendance('attending')}
-                          className="py-3 rounded-xl text-sm transition-all" style={attendance === 'attending' ? btnActive : btnInactive}>참석</button>
-                        <button type="button" onClick={() => setAttendance('not_attending')}
-                          className="py-3 rounded-xl text-sm transition-all" style={attendance === 'not_attending' ? btnActive : btnInactive}>불참</button>
+                        <button type="button" onClick={() => setAttendance('attending')} className="editorial-button" style={choiceStyle(attendance === 'attending')}>참석</button>
+                        <button type="button" onClick={() => setAttendance('not_attending')} className="editorial-button" style={choiceStyle(attendance === 'not_attending')}>불참</button>
                       </div>
-                    </div>
+                    </fieldset>
 
-                    <div>
-                      <label className="text-xs mb-2 block" style={{ color: theme.colors.text + '99' }}>성함</label>
-                      <input type="text" value={name} onChange={(e) => setName(e.target.value)} maxLength={10}
-                        className="w-full px-4 py-3 rounded-xl text-sm focus:outline-none" style={inputStyle} />
-                    </div>
+                    <label className="block">
+                      <span className="mb-2 block text-[12px]" style={{ color: theme.colors.textMuted }}>성함</span>
+                      <input
+                        type="text"
+                        value={name}
+                        onChange={(event) => setName(event.target.value)}
+                        maxLength={10}
+                        required
+                        className="editorial-input px-4 py-3.5"
+                      />
+                    </label>
 
-                    <div>
-                      <label className="text-xs mb-2 block" style={{ color: theme.colors.text + '99' }}>연락처</label>
-                      <input type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="010-0000-0000"
-                        className="w-full px-4 py-3 rounded-xl text-sm focus:outline-none" style={inputStyle} />
-                    </div>
+                    <label className="block">
+                      <span className="mb-2 block text-[12px]" style={{ color: theme.colors.textMuted }}>연락처</span>
+                      <input
+                        type="tel"
+                        value={phone}
+                        onChange={(event) => setPhone(event.target.value)}
+                        placeholder="010-0000-0000"
+                        className="editorial-input px-4 py-3.5"
+                      />
+                    </label>
 
                     {attendance === 'attending' && (
                       <>
-                        <div>
-                          <label className="text-xs mb-2 block" style={{ color: theme.colors.text + '99' }}>참석 인원</label>
-                          <div className="flex items-center gap-3">
-                            <button type="button" onClick={() => setGuestCount(Math.max(1, guestCount - 1))}
-                              className="w-10 h-10 rounded-xl" style={btnInactive}>-</button>
-                            <div className="flex-1 text-center py-3 rounded-xl text-sm" style={inputStyle}>{guestCount}명</div>
-                            <button type="button" onClick={() => setGuestCount(guestCount + 1)}
-                              className="w-10 h-10 rounded-xl" style={btnInactive}>+</button>
+                        <fieldset>
+                          <legend className="mb-2 text-[12px]" style={{ color: theme.colors.textMuted }}>참석 인원</legend>
+                          <div className="grid grid-cols-[50px_1fr_50px] gap-2">
+                            <button type="button" onClick={() => setGuestCount(Math.max(1, guestCount - 1))} className="editorial-button px-0" aria-label="참석 인원 줄이기">−</button>
+                            <output className="editorial-input flex items-center justify-center">{guestCount}명</output>
+                            <button type="button" onClick={() => setGuestCount(guestCount + 1)} className="editorial-button px-0" aria-label="참석 인원 늘리기">＋</button>
                           </div>
-                        </div>
-                        <div>
-                          <label className="text-xs mb-2 block" style={{ color: theme.colors.text + '99' }}>식사 여부</label>
+                        </fieldset>
+                        <fieldset>
+                          <legend className="mb-2 text-[12px]" style={{ color: theme.colors.textMuted }}>식사 여부</legend>
                           <div className="grid grid-cols-2 gap-2">
-                            <button type="button" onClick={() => setMeal(true)}
-                              className="py-3 rounded-xl text-sm transition-all" style={meal ? btnActive : btnInactive}>예정</button>
-                            <button type="button" onClick={() => setMeal(false)}
-                              className="py-3 rounded-xl text-sm transition-all" style={!meal ? btnActive : btnInactive}>안 함</button>
+                            <button type="button" onClick={() => setMeal(true)} className="editorial-button" style={choiceStyle(meal)}>식사 예정</button>
+                            <button type="button" onClick={() => setMeal(false)} className="editorial-button" style={choiceStyle(!meal)}>식사 안 함</button>
                           </div>
-                        </div>
+                        </fieldset>
                       </>
                     )}
 
-                    <div>
-                      <label className="text-xs mb-2 block" style={{ color: theme.colors.text + '99' }}>메시지 (선택)</label>
-                      <textarea value={message} onChange={(e) => setMessage(e.target.value)} maxLength={200} rows={3}
-                        className="w-full px-4 py-3 rounded-xl text-sm focus:outline-none resize-none" style={inputStyle} />
-                    </div>
+                    <label className="block">
+                      <span className="mb-2 block text-[12px]" style={{ color: theme.colors.textMuted }}>메시지 (선택)</span>
+                      <textarea
+                        value={message}
+                        onChange={(event) => setMessage(event.target.value)}
+                        maxLength={200}
+                        rows={3}
+                        className="editorial-input resize-none px-4 py-3.5"
+                      />
+                    </label>
 
-                    <button type="submit" disabled={submitting || !name.trim()}
-                      className="w-full py-3 rounded-xl text-white text-sm font-medium disabled:opacity-50"
-                      style={{ background: theme.colors.accent }}>
-                      {submitting ? '제출 중...' : '제출하기'}
+                    <button
+                      type="submit"
+                      disabled={submitting || !name.trim()}
+                      className="editorial-button w-full"
+                      style={{ background: theme.colors.bgDark, color: theme.colors.bg }}
+                    >
+                      {submitting ? '제출 중...' : '참석 여부 전달하기'}
                     </button>
                   </form>
                 </>

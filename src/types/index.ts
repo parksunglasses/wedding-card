@@ -58,7 +58,7 @@ export interface WeddingData {
   fireworks?: boolean
 
   // 테마
-  theme: 'elegant' | 'minimal' | 'flower' | 'dark' | 'natural' | 'hyundai'
+  theme: 'elegant' | 'minimal' | 'flower' | 'dark' | 'natural' | 'hyundai' | 'doodle'
 }
 
 export interface GuestbookEntry {

@@ -3,9 +3,15 @@ import { createClient } from '@supabase/supabase-js'
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || ''
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || ''
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey)
-
 export const isSupabaseConfigured = Boolean(supabaseUrl && supabaseAnonKey)
+
+// SDK는 빈 URL로 생성할 때 즉시 예외를 던진다. 실제 DB 호출은 아래
+// isSupabaseConfigured 가드가 막으므로, 로컬 미설정 환경에서는 유효한
+// 형식의 플레이스홀더로 클라이언트만 안전하게 초기화한다.
+export const supabase = createClient(
+  supabaseUrl || 'https://local-placeholder.supabase.co',
+  supabaseAnonKey || 'local-placeholder-anon-key',
+)
 
 const ROW_ID = 1
 

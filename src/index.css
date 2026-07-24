@@ -4,21 +4,27 @@
 
 /* 기본 테마 변수 (JS에서 덮어쓰여짐) */
 :root {
-  --theme-bg: #FCF8F2;
-  --theme-bg-alt: #F7EFE4;
-  --theme-bg-dark: #B8929C;
-  --theme-text: #463731;
-  --theme-text-muted: #AD9C8C;
-  --theme-accent: #D97E9F;
-  --theme-accent-light: #F5DAE1;
-  --theme-border: #EEE5D6;
+  --theme-bg: #F7F4EE;
+  --theme-bg-alt: #EFEBE4;
+  --theme-bg-dark: #35443A;
+  --theme-text: #1E211E;
+  --theme-text-muted: #77766F;
+  --theme-accent: #C48291;
+  --theme-accent-light: #E3B9C2;
+  --theme-border: #D8D1C7;
   --theme-font-heading: 'Cormorant Garamond', serif;
   --theme-font-body: 'Pretendard Variable', 'Pretendard', sans-serif;
   --theme-font-script: 'Great Vibes', cursive;
+  --page-gutter: clamp(24px, 7vw, 34px);
 }
 
 * {
+  box-sizing: border-box;
   -webkit-tap-highlight-color: transparent;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 /* 한국어 단어 중간 줄바꿈 방지 */
@@ -28,9 +34,12 @@ body, p, h1, h2, h3, span, div {
 }
 
 html, body {
+  margin: 0;
   font-family: var(--theme-font-body);
-  background: #F0E8DC;
+  background: #E7E1D8;
   color: var(--theme-text);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
 }
 
 #root {
@@ -43,11 +52,35 @@ html, body {
 
 @media (min-width: 480px) {
   #root {
-    box-shadow: 0 0 60px rgba(0,0,0,0.2);
+    box-shadow: 0 20px 80px rgba(34, 30, 24, 0.18);
   }
 }
 
 ::-webkit-scrollbar { display: none; }
+
+button,
+input,
+textarea {
+  font: inherit;
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--theme-accent);
+  outline-offset: 3px;
+}
+
+::selection {
+  color: var(--theme-bg);
+  background: var(--theme-bg-dark);
+}
 
 /* 테마 유틸 클래스 */
 .theme-bg { background: var(--theme-bg); }
@@ -62,6 +95,128 @@ html, body {
 .font-heading { font-family: var(--theme-font-heading); }
 .font-script { font-family: var(--theme-font-script); }
 
+.invitation-section {
+  padding: 96px var(--page-gutter);
+}
+
+.section-heading {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 44px;
+}
+
+.section-heading h2 {
+  margin: 0;
+  color: var(--theme-text);
+  font-family: var(--theme-font-heading);
+  font-size: clamp(2.45rem, 10vw, 3.35rem);
+  font-weight: 400;
+  line-height: 1.06;
+  letter-spacing: -0.03em;
+}
+
+.section-kicker {
+  margin: 0 0 13px;
+  color: var(--theme-accent);
+  font-family: var(--theme-font-heading);
+  font-size: 0.76rem;
+  font-weight: 600;
+  letter-spacing: 0.34em;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+.section-rule {
+  display: block;
+  width: 42px;
+  height: 1px;
+  margin-top: 20px;
+  background: var(--theme-accent);
+}
+
+.section-description {
+  max-width: 310px;
+  margin: 20px 0 0;
+  color: var(--theme-text-muted);
+  font-size: 0.84rem;
+  line-height: 1.75;
+}
+
+.editorial-button {
+  display: inline-flex;
+  min-height: 50px;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 0 18px;
+  border: 1px solid var(--theme-bg-dark);
+  border-radius: 2px;
+  background: transparent;
+  color: var(--theme-text);
+  font-size: 0.84rem;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  transition: background 180ms ease, color 180ms ease, border-color 180ms ease, opacity 180ms ease;
+}
+
+.editorial-button svg {
+  width: 19px;
+  height: 19px;
+  flex: none;
+}
+
+.editorial-button:not(:disabled):hover,
+.editorial-button:not(:disabled):active {
+  background: var(--theme-bg-dark);
+  color: var(--theme-bg);
+}
+
+.editorial-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.54;
+}
+
+.editorial-button--light {
+  border-color: rgba(247, 244, 238, 0.72);
+  color: var(--theme-bg);
+}
+
+.editorial-button--light:not(:disabled):hover,
+.editorial-button--light:not(:disabled):active {
+  background: var(--theme-bg);
+  color: var(--theme-bg-dark);
+}
+
+.editorial-input {
+  width: 100%;
+  border: 1px solid var(--theme-border);
+  border-radius: 2px;
+  background: var(--theme-bg);
+  color: var(--theme-text);
+  font-size: 0.88rem;
+  line-height: 1.5;
+}
+
+.editorial-input::placeholder {
+  color: var(--theme-text-muted);
+}
+
+.bottom-sheet {
+  border-radius: 22px 22px 0 0;
+  background: var(--theme-bg);
+  box-shadow: 0 -18px 60px rgba(20, 25, 21, 0.18);
+}
+
+.bottom-sheet::before {
+  content: '';
+  display: block;
+  width: 38px;
+  height: 3px;
+  margin: -5px auto 22px;
+  border-radius: 999px;
+  background: var(--theme-border);
+}
+
 /* 애니메이션 */
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(20px); }
@@ -70,4 +225,86 @@ html, body {
 
 .fade-in {
   animation: fadeIn 0.8s ease-out forwards;
+}
+
+/* ───────────── 레드두들 테마 전용 (다른 테마에는 영향 없음) ───────────── */
+@keyframes doodleBob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+@keyframes doodleSnowfall {
+  0% { transform: translateY(-30px); opacity: 0; }
+  10% { opacity: 0.9; }
+  100% { transform: translateY(var(--doodle-fall, 620px)); opacity: 0; }
+}
+
+@keyframes doodleTwinkle {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.25; }
+}
+
+.doodle-flake {
+  position: absolute;
+  top: 0;
+  animation-name: doodleSnowfall;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  will-change: transform;
+}
+
+.doodle-bob { animation: doodleBob 3s ease-in-out infinite; }
+.doodle-twinkle { animation: doodleTwinkle 2.5s ease-in-out infinite; }
+
+.doodle-stripe {
+  height: 8px;
+  background: repeating-linear-gradient(45deg, #8C2321 0 10px, #FAF3E4 10px 20px);
+}
+
+.doodle-field {
+  width: 100%;
+  padding: 12px 14px;
+  border: 2px dashed #C9A385;
+  border-radius: 12px;
+  background: #FFFDF8;
+  color: #3B2422;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.doodle-field::placeholder { color: #C0A08F; }
+
+.doodle-pill {
+  display: inline-flex;
+  min-height: 48px;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 0 30px;
+  border: none;
+  border-radius: 999px;
+  background: #8C2321;
+  color: #FAF3E4;
+  font-family: 'Nanum Pen Script', cursive;
+  font-size: 24px;
+  line-height: 1;
+  transition: transform 160ms ease, opacity 160ms ease;
+}
+
+.doodle-pill:not(:disabled):active { transform: scale(0.97); }
+.doodle-pill:disabled { opacity: 0.55; cursor: not-allowed; }
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

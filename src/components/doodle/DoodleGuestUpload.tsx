@@ -1,23 +1,23 @@
 import { useRef, useState } from 'react'
-import { Theme } from '@/themes'
+import { WeddingData } from '@/types'
 import { uploadGuestMedia } from '@/lib/cloudinary'
-import SectionHeading from '@/components/ui/SectionHeading'
-import { UploadIcon } from '@/components/ui/Icons'
+import { DOODLE, DoodleHeading, pen } from './DoodleKit'
 
 interface Props {
-  theme: Theme
+  data: WeddingData
 }
 
-const OPEN_DATE = new Date('2026-12-19T00:00:00')
 type Status = 'idle' | 'uploading' | 'done' | 'error'
 
-export default function GuestUpload({ theme }: Props) {
+export default function DoodleGuestUpload({ data }: Props) {
   const [status, setStatus] = useState<Status>('idle')
   const [progress, setProgress] = useState(0)
   const [doneCount, setDoneCount] = useState(0)
   const inputRef = useRef<HTMLInputElement>(null)
-  const isOpen = new Date() >= OPEN_DATE
-  const openLabel = `${OPEN_DATE.getMonth() + 1}/${OPEN_DATE.getDate()} OPEN`
+
+  const openDate = new Date(`${data.date}T00:00:00`)
+  const isOpen = new Date() >= openDate
+  const openLabel = `${openDate.getMonth() + 1}/${openDate.getDate()} OPEN`
 
   const handleFiles = async (files: FileList) => {
     if (!files.length) return
@@ -40,21 +40,29 @@ export default function GuestUpload({ theme }: Props) {
   }
 
   return (
-    <section className="invitation-section" style={{ background: theme.colors.bgDark, color: theme.colors.bg }}>
-      <SectionHeading
-        label="Guest Photo"
-        title="우리의 시선"
-        description="빛나는 순간들을 사진과 영상으로 남겨주세요."
-        inverse
-      />
+    <section className="px-10 py-14 text-center">
+      <DoodleHeading squiggleWidth={100} className="mb-5">그날의 사진, 나눠주세요!</DoodleHeading>
+
+      <div
+        className="mx-auto max-w-[340px] px-5 py-6"
+        style={{ border: `2px dashed ${DOODLE.tan}`, borderRadius: 16, background: DOODLE.cream }}
+      >
+        <p className="m-0 mb-1.5 text-[26px]">📸</p>
+        <p className="m-0 mb-1.5" style={pen(26, DOODLE.red)}>빛나는 순간들을 담아주세요!</p>
+        <p className="m-0 text-[13px] leading-[1.8]" style={{ color: DOODLE.inkSoft }}>
+          여러분이 찍어주신 사진 한 장 한 장이
+          <br />
+          우리 결혼식의 특별한 기억이 돼요.
+        </p>
+      </div>
 
       {status === 'done' && (
-        <p className="mb-4 text-center text-[13px]" style={{ color: theme.colors.accentLight }}>
+        <p className="mt-4 text-[13px]" style={{ color: DOODLE.red }}>
           {doneCount}개의 소중한 순간이 전달되었습니다.
         </p>
       )}
       {status === 'error' && (
-        <p className="mb-4 text-center text-[13px] text-red-200">
+        <p className="mt-4 text-[13px] text-red-700">
           업로드에 실패했습니다. 잠시 후 다시 시도해 주세요.
         </p>
       )}
@@ -76,20 +84,18 @@ export default function GuestUpload({ theme }: Props) {
               inputRef.current?.click()
             }}
             disabled={status === 'uploading'}
-            className="editorial-button editorial-button--light w-full"
+            className="doodle-pill mt-5"
           >
-            <UploadIcon />
             {status === 'uploading'
               ? `업로드 중 · ${progress}%`
               : status === 'done'
-                ? '사진 및 영상 더 올리기'
-                : '사진 및 영상 업로드'}
+                ? '+ 더 올리기'
+                : '사진 올리기'}
           </button>
         </>
       ) : (
-        <button type="button" disabled className="editorial-button editorial-button--light w-full">
-          <UploadIcon />
-          사진 및 영상 업로드 · {openLabel}
+        <button type="button" disabled className="doodle-pill mt-5">
+          사진 올리기 · {openLabel}
         </button>
       )}
     </section>

@@ -20,6 +20,7 @@ const RSVP        = lazy(() => import('@/components/sections/RSVP'))
 const Share       = lazy(() => import('@/components/sections/Share'))
 const GuestUpload = lazy(() => import('@/components/sections/GuestUpload'))
 const FireworksOverlay = lazy(() => import('@/components/FireworksOverlay'))
+const DoodleInvitation = lazy(() => import('@/components/doodle/DoodleInvitation'))
 
 function SectionFallback() {
   return <div className="py-16" />
@@ -69,6 +70,19 @@ export default function Invitation() {
         </div>
       )}
 
+      {/* 레드두들은 전용 레이아웃을 쓴다 — 다른 테마 구성은 그대로 유지 */}
+      {theme.id === 'doodle' ? (
+        <div className="min-h-screen theme-bg">
+          {data.doorIntro && <DoorIntro data={data} theme={theme} />}
+          <Suspense fallback={null}>
+            {data.fireworks !== false && <FireworksOverlay />}
+          </Suspense>
+          <FloatingControls data={data} theme={theme} />
+          <Suspense fallback={<SectionFallback />}>
+            <DoodleInvitation data={data} />
+          </Suspense>
+        </div>
+      ) : (
       <div className="min-h-screen theme-bg">
         {data.doorIntro && <DoorIntro data={data} theme={theme} />}
         <Suspense fallback={null}>
@@ -97,12 +111,16 @@ export default function Invitation() {
         <Suspense fallback={<SectionFallback />}>
           <Flower data={data} theme={theme} />
         </Suspense>
-        <Suspense fallback={<SectionFallback />}>
-          <Guestbook theme={theme} />
-        </Suspense>
-        <Suspense fallback={<SectionFallback />}>
-          <RSVP theme={theme} />
-        </Suspense>
+        <section className="invitation-section theme-bg">
+          <div className="grid grid-cols-2 gap-4">
+            <Suspense fallback={<SectionFallback />}>
+              <Guestbook theme={theme} />
+            </Suspense>
+            <Suspense fallback={<SectionFallback />}>
+              <RSVP theme={theme} />
+            </Suspense>
+          </div>
+        </section>
         <Suspense fallback={<SectionFallback />}>
           <GuestUpload theme={theme} />
         </Suspense>
@@ -110,6 +128,7 @@ export default function Invitation() {
           <Share data={data} theme={theme} />
         </Suspense>
       </div>
+      )}
     </ThemeProvider>
   )
 }

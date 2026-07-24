@@ -1,6 +1,8 @@
 import { motion } from 'framer-motion'
 import { WeddingData } from '@/types'
 import { Theme } from '@/themes'
+import SectionHeading from '@/components/ui/SectionHeading'
+import { BotanicalLineIcon, PhoneIcon } from '@/components/ui/Icons'
 
 interface Props {
   data: WeddingData
@@ -9,64 +11,71 @@ interface Props {
 
 export default function Greeting({ data, theme }: Props) {
   return (
-    <section className="theme-bg-alt py-20 px-8 text-center">
+    <section id="invitation" className="invitation-section theme-bg-alt relative overflow-hidden text-center">
+      <BotanicalLineIcon
+        className="pointer-events-none absolute right-[-24px] top-[265px] h-48 w-24 opacity-30"
+        style={{ color: theme.colors.accent }}
+      />
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
+        initial={{ opacity: 0, y: 18 }}
         whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.8 }}
+        viewport={{ once: true, amount: 0.2 }}
+        transition={{ duration: 0.75 }}
       >
-        <p className="font-heading text-xs tracking-[0.4em] theme-accent mb-12 uppercase">
-          Invitation
-        </p>
+        <SectionHeading label="Invitation" title="서로의 계절이 되어" />
 
-        <div className="flex items-center justify-center gap-4 mb-12">
-          <div className="w-12 h-px" style={{ background: theme.colors.accent + '66' }} />
-          <h2 className="font-heading text-3xl theme-text leading-relaxed tracking-widest">
-            {data.groom.name}<br />
+        <div className="mb-12 flex items-center justify-center gap-4">
+          <span className="h-px w-8" style={{ background: theme.colors.border }} />
+          <p className="font-heading text-[2rem] tracking-[0.08em]">
+            {data.groom.name}
+            <span className="mx-3 text-lg" style={{ color: theme.colors.accent }}>&amp;</span>
             {data.bride.name}
-          </h2>
-          <div className="w-12 h-px" style={{ background: theme.colors.accent + '66' }} />
+          </p>
+          <span className="h-px w-8" style={{ background: theme.colors.border }} />
         </div>
 
-        <div className="text-base leading-[2.2] theme-text space-y-6 mb-12">
-          {data.greetingTitle.split('\n').map((line, idx) => {
-            const firstChar = line.charAt(0)
-            const rest = line.slice(1)
-            return (
-              <p key={idx}>
-                <span className="font-bold theme-accent">{firstChar}</span>
-                <span>{rest}</span>
-              </p>
-            )
-          })}
-        </div>
-
-        <div className="text-sm leading-[2]" style={{ color: theme.colors.text + 'CC' }}>
-          {data.greetingMessage.split('\n').map((line, idx) => (
-            <p key={idx}>{line}</p>
-          ))}
+        <div className="relative z-10 mx-auto max-w-[310px] space-y-7">
+          <div className="space-y-2 text-[15px] leading-[2.05]">
+            {data.greetingTitle.split('\n').map((line) => <p key={line}>{line}</p>)}
+          </div>
+          <div className="space-y-1 text-[13px] leading-[1.95]" style={{ color: theme.colors.textMuted }}>
+            {data.greetingMessage.split('\n').map((line) => <p key={line}>{line}</p>)}
+          </div>
         </div>
       </motion.div>
 
-      <div className="mt-14 pt-10 border-t" style={{ borderColor: theme.colors.border, color: theme.colors.text }}>
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8, delay: 0.3 }}
-          className="space-y-4 text-sm leading-loose"
-        >
-          <div className="flex items-center justify-center gap-3">
-            <span>{data.groom.father} · {data.groom.mother}의 아들 {data.groom.name}</span>
-            <a href={`tel:${data.groom.phone}`}>📞</a>
+      <motion.div
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.7, delay: 0.12 }}
+        className="mt-16 border-y text-[13px]"
+        style={{ borderColor: theme.colors.border }}
+      >
+        {[
+          { person: data.groom, label: '아들' },
+          { person: data.bride, label: '딸' },
+        ].map(({ person, label }, index) => (
+          <div
+            key={person.name}
+            className={`flex min-h-[70px] items-center justify-between gap-3 py-4 ${index === 0 ? 'border-b' : ''}`}
+            style={{ borderColor: theme.colors.border }}
+          >
+            <p className="text-left leading-relaxed">
+              <span style={{ color: theme.colors.textMuted }}>{person.father} · {person.mother}의 {label}</span>
+              <strong className="ml-2 font-medium">{person.name}</strong>
+            </p>
+            <a
+              href={`tel:${person.phone}`}
+              aria-label={`${person.name}에게 전화`}
+              className="flex h-10 w-10 shrink-0 items-center justify-center"
+              style={{ color: theme.colors.accent }}
+            >
+              <PhoneIcon className="h-[19px] w-[19px]" />
+            </a>
           </div>
-          <div className="flex items-center justify-center gap-3">
-            <span>{data.bride.father} · {data.bride.mother}의 딸 {data.bride.name}</span>
-            <a href={`tel:${data.bride.phone}`}>📞</a>
-          </div>
-        </motion.div>
-      </div>
+        ))}
+      </motion.div>
     </section>
   )
 }

@@ -1,7 +1,12 @@
 import { WeddingData } from '@/types'
-import { loadWeddingDataFromDB, saveWeddingDataToDB, isSupabaseConfigured } from '@/lib/supabase'
 
 const STORAGE_KEY = 'wedding_data'
+const isSupabaseConfigured = Boolean(
+  import.meta.env.VITE_SUPABASE_URL && import.meta.env.VITE_SUPABASE_ANON_KEY,
+)
+
+export const DEFAULT_WEDDING_PHOTO =
+  'https://res.cloudinary.com/dgpszvzrb/image/upload/v1780475781/qzzxh6ujx3p7tgzfzqc9.jpg'
 
 export const defaultWeddingData: WeddingData = {
   groom: {
@@ -67,6 +72,7 @@ export function loadWeddingData(): WeddingData {
 export async function loadWeddingDataAsync(): Promise<WeddingData> {
   if (isSupabaseConfigured) {
     try {
+      const { loadWeddingDataFromDB } = await import('@/lib/supabase')
       const remote = await loadWeddingDataFromDB()
       if (remote) {
         const merged = { ...defaultWeddingData, ...remote } as WeddingData
@@ -89,6 +95,8 @@ export async function saveWeddingData(data: WeddingData): Promise<void> {
     console.error('Failed to save to localStorage', e)
   }
   try {
+    if (!isSupabaseConfigured) return
+    const { saveWeddingDataToDB } = await import('@/lib/supabase')
     await saveWeddingDataToDB(data as unknown as Record<string, unknown>)
   } catch (e) {
     console.error('Failed to save to Supabase', e)

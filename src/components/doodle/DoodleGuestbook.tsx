@@ -2,16 +2,11 @@ import { useEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import confetti from 'canvas-confetti'
 import { GuestbookEntry } from '@/types'
-import { Theme } from '@/themes'
 import { isSupabaseConfigured, supabase } from '@/lib/supabase'
 import { isAuthenticated } from '@/pages/EditLogin'
-import { CloseIcon, PenIcon } from '@/components/ui/Icons'
+import { DOODLE, DoodleHeading, pen } from './DoodleKit'
 
-interface Props {
-  theme: Theme
-}
-
-export default function Guestbook({ theme }: Props) {
+export default function DoodleGuestbook() {
   const [entries, setEntries] = useState<GuestbookEntry[]>([])
   const [currentIndex, setCurrentIndex] = useState(0)
   const [showModal, setShowModal] = useState(false)
@@ -58,17 +53,17 @@ export default function Guestbook({ theme }: Props) {
     if (!cardRef.current || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
     const rect = cardRef.current.getBoundingClientRect()
     confetti({
-      particleCount: 18,
-      spread: 45,
-      startVelocity: 13,
+      particleCount: 22,
+      spread: 50,
+      startVelocity: 14,
       decay: 0.92,
-      scalar: 0.45,
-      ticks: 70,
+      scalar: 0.5,
+      ticks: 80,
       origin: {
         x: (rect.left + rect.width / 2) / window.innerWidth,
         y: (rect.top + rect.height / 2) / window.innerHeight,
       },
-      colors: [theme.colors.accent, theme.colors.accentLight, theme.colors.bg],
+      colors: [DOODLE.red, DOODLE.gold, DOODLE.greenLine],
       gravity: 0.65,
     })
   }
@@ -125,21 +120,32 @@ export default function Guestbook({ theme }: Props) {
 
   return (
     <>
-      <div ref={cardRef} className="flex min-w-0 flex-col items-center text-center">
-        <p className="section-kicker">Guestbook</p>
-        <h2 className="whitespace-nowrap font-heading text-[1.9rem] font-normal leading-tight">방명록</h2>
-        <span className="section-rule" aria-hidden="true" />
-        <div className="mt-6 min-h-[76px] text-[12px] leading-[1.7]" style={{ color: theme.colors.textMuted }}>
+      <section className="px-10 py-14 text-center" style={{ background: DOODLE.creamAlt }}>
+        <DoodleHeading squiggleWidth={100} className="mb-6">한마디 남겨주세요!</DoodleHeading>
+
+        <div
+          ref={cardRef}
+          className="mx-auto flex min-h-[110px] max-w-[340px] flex-col items-center justify-center px-5 py-6"
+          style={{ background: DOODLE.paper, border: `2px solid ${DOODLE.border}`, borderRadius: 16 }}
+        >
           {currentEntry ? (
             <AnimatePresence mode="wait">
               <motion.div
                 key={currentEntry.id}
-                initial={{ opacity: 0, y: 5 }}
+                initial={{ opacity: 0, y: 6 }}
                 animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -5 }}
+                exit={{ opacity: 0, y: -6 }}
               >
-                <p className="mb-1 font-medium" style={{ color: theme.colors.accent }}>{currentEntry.name}</p>
-                <p className="line-clamp-2">{currentEntry.message}</p>
+                <p className="m-0 mb-2" style={pen(24, DOODLE.red)}>{currentEntry.name}</p>
+                <p
+                  className="m-0 whitespace-pre-line text-[13.5px] leading-[1.8]"
+                  style={{ color: '#6E5247' }}
+                >
+                  {currentEntry.message}
+                </p>
+                <p className="mt-3 text-[11px]" style={{ color: DOODLE.tan }}>
+                  {currentIndex + 1} / {entries.length}
+                </p>
                 {isAdmin && (
                   <button
                     type="button"
@@ -152,18 +158,16 @@ export default function Guestbook({ theme }: Props) {
               </motion.div>
             </AnimatePresence>
           ) : (
-            <p>축하의 마음을<br />글로 남겨주세요</p>
+            <p className="m-0 text-[13.5px]" style={{ color: DOODLE.muted }}>
+              첫 번째 축하 메시지를 남겨주세요 💌
+            </p>
           )}
         </div>
-        <button
-          type="button"
-          onClick={() => setShowModal(true)}
-          className="editorial-button mt-4 w-full px-2"
-        >
-          <PenIcon />
-          메시지 남기기
+
+        <button type="button" onClick={() => setShowModal(true)} className="doodle-pill mt-5">
+          ✏️ 축하 메시지 남기기
         </button>
-      </div>
+      </section>
 
       <AnimatePresence>
         {showModal && (
@@ -171,45 +175,46 @@ export default function Guestbook({ theme }: Props) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[80] flex items-end justify-center bg-black/45"
             onClick={(event) => event.target === event.currentTarget && setShowModal(false)}
+            className="fixed inset-0 z-[80] flex items-center justify-center p-6"
+            style={{ background: 'rgba(30,10,8,.82)' }}
             role="presentation"
           >
             <motion.div
-              initial={{ y: '100%' }}
-              animate={{ y: 0 }}
-              exit={{ y: '100%' }}
-              transition={{ type: 'spring', damping: 30, stiffness: 320 }}
-              className="bottom-sheet w-full max-w-[480px] px-6 pb-[max(32px,env(safe-area-inset-bottom))] pt-6"
+              initial={{ scale: 0.94, y: 16 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.94, y: 16 }}
+              className="relative w-full max-w-[400px] px-6 pb-7 pt-7 text-center"
+              style={{ background: DOODLE.cream, borderRadius: 20, color: DOODLE.ink }}
               role="dialog"
               aria-modal="true"
-              aria-labelledby="guestbook-title"
+              aria-labelledby="doodle-guestbook-title"
             >
+              <button
+                type="button"
+                onClick={() => setShowModal(false)}
+                aria-label="방명록 닫기"
+                className="absolute right-3 top-2 h-9 w-9 text-[28px] leading-none"
+                style={{ color: DOODLE.red }}
+              >
+                ×
+              </button>
+
               {submitted ? (
-                <div className="py-10 text-center">
-                  <p id="guestbook-title" className="font-heading text-3xl">감사합니다</p>
-                  <p className="mt-3 text-[13px]" style={{ color: theme.colors.textMuted }}>
+                <div className="py-8">
+                  <p id="doodle-guestbook-title" className="m-0" style={pen(34, DOODLE.red)}>
+                    고마워요! 💌
+                  </p>
+                  <p className="mt-2 text-[13px]" style={{ color: DOODLE.muted }}>
                     소중한 메시지가 전달됐어요.
                   </p>
                 </div>
               ) : (
                 <>
-                  <div className="mb-7 flex items-center justify-between">
-                    <div>
-                      <p className="section-kicker mb-2">Guestbook</p>
-                      <h3 id="guestbook-title" className="font-heading text-3xl font-normal">축하 메시지</h3>
-                    </div>
-                    <button
-                      type="button"
-                      onClick={() => setShowModal(false)}
-                      aria-label="방명록 닫기"
-                      className="flex h-11 w-11 items-center justify-center"
-                      style={{ color: theme.colors.textMuted }}
-                    >
-                      <CloseIcon className="h-6 w-6" />
-                    </button>
-                  </div>
-                  <form onSubmit={handleSubmit} className="space-y-3">
+                  <h3 id="doodle-guestbook-title" className="m-0 mb-4" style={pen(34, DOODLE.red)}>
+                    축하 메시지
+                  </h3>
+                  <form onSubmit={handleSubmit} className="flex flex-col gap-2.5">
                     <label className="block">
                       <span className="sr-only">이름</span>
                       <input
@@ -219,7 +224,7 @@ export default function Guestbook({ theme }: Props) {
                         placeholder="이름"
                         maxLength={10}
                         required
-                        className="editorial-input px-4 py-3.5"
+                        className="doodle-field"
                       />
                     </label>
                     <label className="block">
@@ -227,18 +232,18 @@ export default function Guestbook({ theme }: Props) {
                       <textarea
                         value={message}
                         onChange={(event) => setMessage(event.target.value)}
-                        placeholder="축하 메시지를 남겨주세요"
+                        placeholder="따뜻한 한마디를 남겨주세요"
                         maxLength={200}
                         rows={4}
                         required
-                        className="editorial-input resize-none px-4 py-3.5"
+                        className="doodle-field resize-none"
                       />
                     </label>
                     <button
                       type="submit"
                       disabled={submitting || !name.trim() || !message.trim()}
-                      className="editorial-button w-full"
-                      style={{ background: theme.colors.bgDark, color: theme.colors.bg }}
+                      className="doodle-pill w-full"
+                      style={{ borderRadius: 12 }}
                     >
                       {submitting ? '전송 중...' : '메시지 남기기'}
                     </button>

@@ -1,6 +1,6 @@
 // 테마 시스템
 
-export type ThemeId = 'elegant' | 'minimal' | 'flower' | 'dark' | 'natural' | 'hyundai'
+export type ThemeId = 'elegant' | 'minimal' | 'flower' | 'dark' | 'natural' | 'hyundai' | 'doodle'
 
 export interface Theme {
   id: ThemeId
@@ -68,20 +68,20 @@ export const themes: Record<ThemeId, Theme> = {
     },
   },
 
-  // 2. 블러쉬 — 파스텔 핑크 로맨틱
+  // 2. 에디토리얼 — 아이보리 + 잉크 그린 + 더스티 로즈
   minimal: {
     id: 'minimal',
-    name: '블러쉬',
-    description: '아이보리 크림 & 더스티로즈 · 로맨틱 클래식',
+    name: '에디토리얼',
+    description: '아이보리 & 잉크 그린 · 모던 웨딩 에디토리얼',
     colors: {
-      bg: '#FCF8F2',
-      bgAlt: '#F7EFE4',
-      bgDark: '#B8929C',
-      text: '#463731',
-      textMuted: '#AD9C8C',
-      accent: '#D97E9F',
-      accentLight: '#F5DAE1',
-      border: '#EEE5D6',
+      bg: '#F7F4EE',
+      bgAlt: '#EFEBE4',
+      bgDark: '#35443A',
+      text: '#1E211E',
+      textMuted: '#77766F',
+      accent: '#C48291',
+      accentLight: '#E3B9C2',
+      border: '#D8D1C7',
     },
     fonts: {
       heading: '"Cormorant Garamond", serif',
@@ -220,6 +220,38 @@ export const themes: Record<ThemeId, Theme> = {
       introTitle: 'WEDDING INVITATION',
       sectionDivider: 'line',
       accentDecoration: 'bold',
+    },
+  },
+
+  // 7. 레드두들 — 크림 + 딥레드, 손그림 겨울 두들
+  //    다른 테마와 달리 전용 레이아웃(src/components/doodle)을 사용한다.
+  doodle: {
+    id: 'doodle',
+    name: '레드두들',
+    description: '크림 & 딥레드 · 손그림 겨울 두들',
+    colors: {
+      bg: '#FAF3E4',
+      bgAlt: '#F2E7D2',
+      bgDark: '#8C2321',
+      text: '#3B2422',
+      textMuted: '#A8867A',
+      accent: '#8C2321',
+      accentLight: '#C9A385',
+      border: '#E2CBAF',
+    },
+    fonts: {
+      heading: '"Nanum Pen Script", cursive',
+      body: '"Pretendard Variable", Pretendard, sans-serif',
+      script: '"Nanum Pen Script", cursive',
+    },
+    style: {
+      rounded: 'lg',
+      introOverlay: 'light',
+      introTextStyle: 'script',
+      introLayout: 'classic',
+      introTitle: '결혼합니다!',
+      sectionDivider: 'dots',
+      accentDecoration: 'floral',
     },
   },
 }
