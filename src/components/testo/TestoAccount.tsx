@@ -63,6 +63,27 @@ export default function TestoAccount() {
           )
         })}
       </div>
+      {copied && (
+        <div style={{
+          position: 'fixed',
+          bottom: 24,
+          left: '50%',
+          transform: 'translateX(-50%)',
+          backgroundColor: '#7A1420',
+          color: '#F4ECD9',
+          padding: '10px 22px',
+          borderRadius: 999,
+          fontFamily: '"Nanum Pen Script", cursive',
+          fontSize: 20,
+          boxShadow: '0 8px 20px rgba(0,0,0,0.25)',
+          zIndex: 100,
+          display: 'flex',
+          alignItems: 'center',
+          gap: 6,
+        }}>
+          <span>✓ 계좌번호가 복사되었습니다!</span>
+        </div>
+      )}
     </section>
   )
 }

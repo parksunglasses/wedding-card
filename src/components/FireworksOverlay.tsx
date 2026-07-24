@@ -183,14 +183,14 @@ export default function FireworksOverlay() {
             transform: translateY(-50px) rotate(0deg) translateX(0);
             opacity: 0;
           }
-          10% {
-            opacity: 0.85;
+          15% {
+            opacity: 0.72;
           }
           50% {
             transform: translateY(50vh) rotate(180deg) translateX(20px);
           }
-          90% {
-            opacity: 0.85;
+          85% {
+            opacity: 0.72;
           }
           100% {
             transform: translateY(105vh) rotate(360deg) translateX(-15px);
@@ -201,7 +201,7 @@ export default function FireworksOverlay() {
           position: absolute;
           top: 0;
           animation: ornamentShower linear infinite;
-          filter: drop-shadow(0 3px 5px rgba(0,0,0,0.18));
+          filter: drop-shadow(0 3px 5px rgba(0,0,0,0.12));
         }
       `}</style>
       {items.map((item) => (

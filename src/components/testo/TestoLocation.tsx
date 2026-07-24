@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { WeddingData } from '@/types'
 import { TESTO, pen, gaegu, Deco } from './TestoKit'
 import { TESTO_TEXT } from './testoData'
@@ -7,8 +8,18 @@ interface Props {
 }
 
 export default function TestoLocation({ data }: Props) {
+  const [copied, setCopied] = useState(false)
   const kakaoMapUrl = `https://map.kakao.com/link/map/${encodeURIComponent(TESTO_TEXT.venue)},${data.lat},${data.lng}`
-  const naverMapUrl = `https://map.naver.com/v5/search/${encodeURIComponent(TESTO_TEXT.venue)}`
+
+  const copyAddr = async () => {
+    try {
+      await navigator.clipboard.writeText(TESTO_TEXT.address)
+      setCopied(true)
+      setTimeout(() => setCopied(false), 1800)
+    } catch (e) {
+      // ignore
+    }
+  }
 
   const routes = [
     { label: '지하철', value: TESTO_TEXT.subway },
@@ -24,7 +35,9 @@ export default function TestoLocation({ data }: Props) {
       />
       <h2 style={pen(52)}>오시는 길</h2>
       <p className="loc-venue" style={gaegu}>{TESTO_TEXT.venue}</p>
-      <p className="loc-addr" style={gaegu}>{TESTO_TEXT.address}</p>
+      <p className="loc-addr" style={{ ...gaegu, cursor: 'pointer' }} onClick={copyAddr} title="클릭하여 주소 복사">
+        {TESTO_TEXT.address}
+      </p>
       <a href={`tel:${TESTO_TEXT.venuePhone}`} className="loc-tel"><span className="loc-tel-ico">☎</span>{TESTO_TEXT.venuePhone}</a>
 
       <a
@@ -57,6 +70,27 @@ export default function TestoLocation({ data }: Props) {
           </div>
         ))}
       </div>
+      {copied && (
+        <div style={{
+          position: 'fixed',
+          bottom: 24,
+          left: '50%',
+          transform: 'translateX(-50%)',
+          backgroundColor: '#234A33',
+          color: '#F4ECD9',
+          padding: '10px 22px',
+          borderRadius: 999,
+          fontFamily: '"Nanum Pen Script", cursive',
+          fontSize: 20,
+          boxShadow: '0 8px 20px rgba(0,0,0,0.25)',
+          zIndex: 100,
+          display: 'flex',
+          alignItems: 'center',
+          gap: 6,
+        }}>
+          <span>✓ 예식장 주소가 복사되었습니다!</span>
+        </div>
+      )}
     </section>
   )
 }

@@ -48,7 +48,7 @@ export const defaultWeddingData: WeddingData = {
   ],
 
   flowerLink: '',
-  bgmUrl: '',
+  bgmUrl: '/audio/bgm.mp3',
   doorIntro: true,
   lottieUrl: '',
   fireworks: true,
