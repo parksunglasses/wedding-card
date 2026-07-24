@@ -38,7 +38,7 @@ export default function TestoHero({ data }: Props) {
   const [y, m, d] = TESTO_TEXT.date.split('-').map(Number)
   const dow = WEEKDAYS[new Date(y, m - 1, d).getDay()]
   const [hh, mi] = TESTO_TEXT.time.split(':')
-  const ampm = Number(hh) < 12 ? 'AM' : 'PM'
+  const ampm = Number(hh) < 12 ? 'am' : 'pm'
 
   return (
     <section className="testo-paper hero testo-hero-intro">
