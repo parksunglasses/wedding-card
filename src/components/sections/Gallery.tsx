@@ -10,7 +10,8 @@ interface Props {
 }
 
 export default function Gallery({ data, theme }: Props) {
-  const [selectedIdx, setSelectedIdx] = useState<number | null>(null)
+  const [albumOpen, setAlbumOpen] = useState(false)
+  const [selectedPhotoIdx, setSelectedPhotoIdx] = useState<number | null>(null)
   const [index, setIndex] = useState(0)
   const [dir, setDir] = useState(0)
 
@@ -41,7 +42,7 @@ export default function Gallery({ data, theme }: Props) {
       <div className="max-w-md mx-auto">
         {/* 슬라이더 */}
         <div
-          className="relative aspect-[3/4] rounded-2xl overflow-hidden"
+          className="relative aspect-[3/4] rounded-2xl overflow-hidden cursor-pointer"
           style={{ background: `linear-gradient(135deg, ${theme.colors.bgAlt}, ${theme.colors.border})` }}
         >
           <AnimatePresence initial={false} custom={dir} mode="popLayout">
@@ -60,7 +61,11 @@ export default function Gallery({ data, theme }: Props) {
                 if (info.offset.x < -60) go(index + 1)
                 else if (info.offset.x > 60) go(index - 1)
               }}
-              onClick={() => hasPhotos && setSelectedIdx(index)}
+              onClick={() => {
+                if (hasPhotos) {
+                  setAlbumOpen(true)
+                }
+              }}
             >
               {photos[index] && (
                 <img
@@ -79,7 +84,10 @@ export default function Gallery({ data, theme }: Props) {
           {total > 1 && (
             <>
               <button
-                onClick={() => go(index - 1)}
+                onClick={(e) => {
+                  e.stopPropagation()
+                  go(index - 1)
+                }}
                 aria-label="이전 사진"
                 className="absolute left-2 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full flex items-center justify-center text-lg z-10"
                 style={{ background: 'rgba(255,255,255,0.55)', color: theme.colors.text }}
@@ -87,7 +95,10 @@ export default function Gallery({ data, theme }: Props) {
                 ‹
               </button>
               <button
-                onClick={() => go(index + 1)}
+                onClick={(e) => {
+                  e.stopPropagation()
+                  go(index + 1)
+                }}
                 aria-label="다음 사진"
                 className="absolute right-2 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full flex items-center justify-center text-lg z-10"
                 style={{ background: 'rgba(255,255,255,0.55)', color: theme.colors.text }}
@@ -98,10 +109,21 @@ export default function Gallery({ data, theme }: Props) {
           )}
         </div>
 
-        {/* 카운터 */}
-        <p className="text-center text-xs tracking-widest mt-4" style={{ color: theme.colors.textMuted }}>
-          <span style={{ color: theme.colors.accent }}>{index + 1}</span> / {total}
-        </p>
+        {/* 카운터 및 사진첩 열기 버튼 */}
+        <div className="flex items-center justify-between mt-4 px-1">
+          <p className="text-xs tracking-widest" style={{ color: theme.colors.textMuted }}>
+            <span style={{ color: theme.colors.accent }}>{index + 1}</span> / {total}
+          </p>
+          {hasPhotos && (
+            <button
+              onClick={() => setAlbumOpen(true)}
+              className="text-xs px-3 py-1 rounded-full border transition-opacity hover:opacity-80"
+              style={{ borderColor: theme.colors.accent, color: theme.colors.accent }}
+            >
+              사진첩 열기
+            </button>
+          )}
+        </div>
 
         {/* 도트 */}
         {total > 1 && (
@@ -122,25 +144,88 @@ export default function Gallery({ data, theme }: Props) {
         )}
       </div>
 
+      {/* 3x5 사진첩 그리드 모달 */}
       <AnimatePresence>
-        {selectedIdx !== null && (
+        {albumOpen && hasPhotos && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            onClick={() => setSelectedIdx(null)}
-            className="fixed inset-0 bg-black/95 z-50 flex items-center justify-center p-4"
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4"
+            onClick={(e) => {
+              if (e.target === e.currentTarget) setAlbumOpen(false)
+            }}
+          >
+            <motion.div
+              initial={{ scale: 0.95, y: 15 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.95, y: 15 }}
+              className="relative w-full max-w-lg max-h-[85vh] rounded-2xl p-6 overflow-y-auto shadow-2xl"
+              style={{ background: '#FCFBF7', color: theme.colors.text }}
+            >
+              {/* 모달 헤더 */}
+              <div className="flex items-center justify-between mb-5 border-b pb-3" style={{ borderColor: theme.colors.border }}>
+                <div>
+                  <h3 className="font-heading text-xl font-medium" style={{ color: theme.colors.accent }}>
+                    갤러리 사진첩
+                  </h3>
+                  <p className="text-xs text-gray-500 mt-0.5">사진을 누르면 크게 볼 수 있습니다</p>
+                </div>
+                <button
+                  onClick={() => setAlbumOpen(false)}
+                  className="w-8 h-8 rounded-full flex items-center justify-center text-xl transition-colors hover:bg-black/5"
+                  style={{ color: theme.colors.text }}
+                >
+                  ×
+                </button>
+              </div>
+
+              {/* 3열 (3x5) 그리드 사진첩 */}
+              <div className="grid grid-cols-3 gap-2.5">
+                {data.galleryPhotos.map((p, idx) => (
+                  <button
+                    key={`${p}-${idx}`}
+                    onClick={() => setSelectedPhotoIdx(idx)}
+                    className="relative aspect-square rounded-xl overflow-hidden group border transition-transform active:scale-95"
+                    style={{ borderColor: theme.colors.border }}
+                  >
+                    <img
+                      src={getOptimizedUrl(p, { width: 300 })}
+                      alt={`웨딩 사진첩 ${idx + 1}`}
+                      className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                    />
+                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors" />
+                  </button>
+                ))}
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* 3x5 사진첩 안에서 눌렀을 때 특정 사진 크게보기 팝업 모달 */}
+      <AnimatePresence>
+        {selectedPhotoIdx !== null && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setSelectedPhotoIdx(null)}
+            className="fixed inset-0 z-[60] bg-black/95 flex items-center justify-center p-4"
           >
             <button
-              onClick={() => setSelectedIdx(null)}
-              className="absolute top-6 right-6 text-white text-3xl z-10"
+              onClick={() => setSelectedPhotoIdx(null)}
+              className="absolute top-6 right-6 text-white text-3xl z-10 w-10 h-10 flex items-center justify-center rounded-full bg-white/10"
             >
               ×
             </button>
-            <img
-              src={getOptimizedUrl(photos[selectedIdx], { width: 800 })}
-              alt={`웨딩 사진 ${selectedIdx + 1} 확대`}
-              className="max-w-full max-h-full object-contain"
+            <motion.img
+              initial={{ scale: 0.9 }}
+              animate={{ scale: 1 }}
+              exit={{ scale: 0.9 }}
+              src={getOptimizedUrl(data.galleryPhotos[selectedPhotoIdx], { width: 1000 })}
+              alt={`웨딩 사진 ${selectedPhotoIdx + 1} 원본 확대`}
+              className="max-w-full max-h-[90vh] object-contain rounded-lg shadow-2xl"
             />
           </motion.div>
         )}
