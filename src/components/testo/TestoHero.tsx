@@ -80,10 +80,10 @@ export default function TestoHero({ data }: Props) {
         <div className="hero-mid-tree">
           <svg viewBox="0 0 24 24" width={47} height={47} aria-hidden="true"><Ico t="santa" /></svg>
         </div>
-        <p className="hero-intro">
-          {TESTO_TEXT.intro[0]}<br />
-          {TESTO_TEXT.intro[1]}
-        </p>
+        <div className="hero-intro">
+          <span className="hero-intro-line">{data.greetingTitle || TESTO_TEXT.intro[0]}</span>
+          <span className="hero-intro-line">{data.greetingMessage || TESTO_TEXT.intro[1]}</span>
+        </div>
       </div>
     </section>
   )

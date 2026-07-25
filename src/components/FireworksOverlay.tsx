@@ -331,19 +331,19 @@ export default function FireworksOverlay({ themeName }: { themeName?: string }) 
 
   const items = useMemo(() => {
     if (isTestoTheme) {
-      return Array.from({ length: 12 }, (_, i) => {
+      return Array.from({ length: 7 }, (_, i) => {
         const type = CHRISTMAS_ORNAMENTS[i % CHRISTMAS_ORNAMENTS.length]
-        const left = Math.floor(i * 8 + Math.random() * 5) + 2
-        const size = Math.floor(Math.random() * 12) + 24
-        const duration = (Math.random() * 6 + 12).toFixed(1)
+        const left = Math.floor(i * 13 + Math.random() * 6) + 3
+        const size = Math.floor(Math.random() * 10) + 26
+        const duration = (Math.random() * 6 + 13).toFixed(1)
         const negativeDelay = (Math.random() * 10).toFixed(1)
         return { id: i, type, left, size, duration, negativeDelay }
       })
     } else {
-      return Array.from({ length: 15 }, (_, i) => {
+      return Array.from({ length: 8 }, (_, i) => {
         const type = LOVE_ORNAMENTS[i % LOVE_ORNAMENTS.length]
-        const left = Math.floor(i * 6 + Math.random() * 4) + 2
-        const size = Math.floor(Math.random() * 10) + 18
+        const left = Math.floor(i * 11 + Math.random() * 5) + 3
+        const size = Math.floor(Math.random() * 10) + 20
         const duration = (Math.random() * 8 + 14).toFixed(1)
         const negativeDelay = (Math.random() * 12).toFixed(1)
         return { id: i, type, left, size, duration, negativeDelay }
@@ -360,13 +360,13 @@ export default function FireworksOverlay({ themeName }: { themeName?: string }) 
             opacity: 0;
           }
           15% {
-            opacity: 0.95;
+            opacity: 0.98;
           }
           50% {
             transform: translateY(50vh) rotate(180deg) translateX(15px);
           }
           85% {
-            opacity: 0.95;
+            opacity: 0.98;
           }
           100% {
             transform: translateY(105vh) rotate(360deg) translateX(-12px);

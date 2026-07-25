@@ -17,8 +17,21 @@ export default function Intro({ data, theme }: Props) {
     : `linear-gradient(160deg, ${theme.colors.bgAlt}, ${theme.colors.border})`
 
   return (
-    <section className="relative h-screen min-h-[600px] overflow-hidden" style={{ color: theme.colors.text }}>
-      <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: bgImage }} />
+    <section className="relative h-[100dvh] min-h-[560px] max-h-[880px] overflow-hidden" style={{ color: theme.colors.text }}>
+      {photo ? (
+        <img
+          src={photo}
+          alt="메인 웨딩 사진"
+          decoding="async"
+          loading="eager"
+          className="w-full h-full object-cover object-[center_25%]"
+        />
+      ) : (
+        <div
+          className="absolute inset-0"
+          style={{ background: `linear-gradient(160deg, ${theme.colors.bgAlt}, ${theme.colors.border})` }}
+        />
+      )}
 
       {/* 하단 스크립트 가독성용 은은한 밝은 그라데이션 */}
       {photo && (

@@ -44,7 +44,7 @@ export default function TestoInvitation({ data }: Props) {
       <TornDivider variant={1} flip color={GREEN} />
 
       <Suspense fallback={<SectionFallback />}>
-        <TestoAccount />
+        <TestoAccount data={data} />
       </Suspense>
       <TornDivider variant={2} />
 

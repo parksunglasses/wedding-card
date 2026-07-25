@@ -64,6 +64,7 @@ export default function Invitation() {
 
   return (
     <ThemeProvider theme={theme}>
+      {/* 상단 테마 변경 스위처 */}
       <div className="fixed top-3 left-1/2 z-[1000000] flex -translate-x-1/2 rounded-full border border-black/10 bg-white/90 p-1 shadow-lg backdrop-blur">
         <button
           type="button"
@@ -126,37 +127,37 @@ export default function Invitation() {
           </Suspense>
         </div>
       ) : (
-      <div className="min-h-screen theme-bg">
-        <Suspense fallback={null}>
-          {data.fireworks !== false && <FireworksOverlay themeName={theme.id} />}
-        </Suspense>
-        <FloatingControls data={data} theme={theme} />
-        <Intro data={data} theme={theme} />
-        <Suspense fallback={<SectionFallback />}>
-          <Greeting data={data} theme={theme} />
-        </Suspense>
-        <Suspense fallback={<SectionFallback />}>
-          <Calendar data={data} theme={theme} />
-        </Suspense>
-        <Suspense fallback={<SectionFallback />}>
-          <Gallery data={data} theme={theme} />
-        </Suspense>
-        <Suspense fallback={<SectionFallback />}>
-          <Location data={data} theme={theme} />
-        </Suspense>
-        <Suspense fallback={<SectionFallback />}>
-          <Account data={data} theme={theme} />
-        </Suspense>
-        <Suspense fallback={<SectionFallback />}>
-          <Flower data={data} theme={theme} />
-        </Suspense>
-        <Suspense fallback={<SectionFallback />}>
-          <Guestbook theme={theme} />
-        </Suspense>
-        <Suspense fallback={<SectionFallback />}>
-          <Share data={data} theme={theme} />
-        </Suspense>
-      </div>
+        <div className="min-h-screen theme-bg">
+          <Suspense fallback={null}>
+            {data.fireworks !== false && <FireworksOverlay themeName={theme.id} />}
+          </Suspense>
+          <FloatingControls data={data} theme={theme} />
+          <Intro data={data} theme={theme} />
+          <Suspense fallback={<SectionFallback />}>
+            <Greeting data={data} theme={theme} />
+          </Suspense>
+          <Suspense fallback={<SectionFallback />}>
+            <Calendar data={data} theme={theme} />
+          </Suspense>
+          <Suspense fallback={<SectionFallback />}>
+            <Gallery data={data} theme={theme} />
+          </Suspense>
+          <Suspense fallback={<SectionFallback />}>
+            <Location data={data} theme={theme} />
+          </Suspense>
+          <Suspense fallback={<SectionFallback />}>
+            <Account data={data} theme={theme} />
+          </Suspense>
+          <Suspense fallback={<SectionFallback />}>
+            <Flower data={data} theme={theme} />
+          </Suspense>
+          <Suspense fallback={<SectionFallback />}>
+            <Guestbook theme={theme} />
+          </Suspense>
+          <Suspense fallback={<SectionFallback />}>
+            <Share data={data} theme={theme} />
+          </Suspense>
+        </div>
       )}
     </ThemeProvider>
   )

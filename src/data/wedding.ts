@@ -33,8 +33,11 @@ export const defaultWeddingData: WeddingData = {
   greetingTitle: '서로를 향한 믿음으로 시작해 이제 평생을 약속하려 합니다.',
   greetingMessage: '저희들의 첫 시작을 함께해 주세요.',
 
-  mainPhoto: '',
-  galleryPhotos: [],
+  mainPhoto: DEFAULT_WEDDING_PHOTO,
+  galleryPhotos: [
+    DEFAULT_WEDDING_PHOTO,
+    'https://res.cloudinary.com/dgpszvzrb/image/upload/v1780475781/qzzxh6ujx3p7tgzfzqc9.jpg',
+  ],
 
   subway: '3·8호선 가락시장역 2번 출구 도보 3분',
   bus: '가락시장 · 가락시장역 · 가락몰 하차',

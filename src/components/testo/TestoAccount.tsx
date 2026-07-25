@@ -1,9 +1,13 @@
 import { useState } from 'react'
-import { Account } from '@/types'
-import { TESTO, pen, gaegu, Deco, Ico } from './TestoKit'
+import { WeddingData, Account } from '@/types'
+import { TESTO, pen, gaegu, Deco } from './TestoKit'
 import { TESTO_TEXT } from './testoData'
 
-export default function TestoAccount() {
+interface Props {
+  data: WeddingData
+}
+
+export default function TestoAccount({ data }: Props) {
   const [open, setOpen] = useState<'groom' | 'bride' | null>(null)
   const [copied, setCopied] = useState<string | null>(null)
 
@@ -17,9 +21,14 @@ export default function TestoAccount() {
     }
   }
 
+  const groomAccounts: Account[] =
+    data.groomAccounts && data.groomAccounts.length > 0 ? data.groomAccounts : TESTO_TEXT.groom.accounts
+  const brideAccounts: Account[] =
+    data.brideAccounts && data.brideAccounts.length > 0 ? data.brideAccounts : TESTO_TEXT.bride.accounts
+
   const sides: Array<{ side: 'groom' | 'bride'; label: string; accounts: Account[]; bg: string }> = [
-    { side: 'groom', label: '신랑 측 계좌번호', accounts: TESTO_TEXT.groom.accounts, bg: TESTO.red },
-    { side: 'bride', label: '신부 측 계좌번호', accounts: TESTO_TEXT.bride.accounts, bg: '#234A33' },
+    { side: 'groom', label: '신랑 측 계좌번호', accounts: groomAccounts, bg: TESTO.red },
+    { side: 'bride', label: '신부 측 계좌번호', accounts: brideAccounts, bg: '#234A33' },
   ]
 
   return (
@@ -48,8 +57,8 @@ export default function TestoAccount() {
                     return (
                       <div key={key} className="acc-item" style={{ background: TESTO.paperAlt, border: `1px solid ${TESTO.tan}`, borderRadius: 12 }}>
                         <div style={{ ...gaegu, minWidth: 0 }}>
-                          <div style={{ fontSize: 12, color: TESTO.muted }}>{a.holder}</div>
-                          <div style={{ fontSize: 15, fontWeight: 700, marginTop: 2 }}>{a.bank} {a.accountNumber}</div>
+                          <div style={{ fontSize: 13, color: TESTO.muted }}>예금주 · {a.holder}</div>
+                          <div style={{ fontSize: 16, fontWeight: 700, marginTop: 2 }}>{a.bank} {a.accountNumber}</div>
                         </div>
                         <button type="button" onClick={() => copy(a.accountNumber, key)} className="acc-copy" style={{ background: TESTO.red, color: TESTO.paper }}>
                           {copied === key ? '복사됨!' : '복사'}

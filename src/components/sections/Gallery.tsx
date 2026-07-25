@@ -92,44 +92,18 @@ export default function Gallery({ data, theme }: Props) {
             </motion.div>
           </AnimatePresence>
 
-          {/* 좌우 화살표 */}
-          {total > 1 && (
-            <>
-              <button
-                onClick={(e) => {
-                  e.stopPropagation()
-                  go(index - 1)
-                }}
-                aria-label="이전 사진"
-                className="absolute left-2 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full flex items-center justify-center text-lg z-10"
-                style={{ background: 'rgba(255,255,255,0.55)', color: theme.colors.text }}
-              >
-                ‹
-              </button>
-              <button
-                onClick={(e) => {
-                  e.stopPropagation()
-                  go(index + 1)
-                }}
-                aria-label="다음 사진"
-                className="absolute right-2 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full flex items-center justify-center text-lg z-10"
-                style={{ background: 'rgba(255,255,255,0.55)', color: theme.colors.text }}
-              >
-                ›
-              </button>
-            </>
-          )}
+
         </div>
 
         {/* 카운터 및 사진첩 열기 버튼 */}
         <div className="flex items-center justify-between mt-4 px-1">
           <p className="text-xs tracking-widest" style={{ color: theme.colors.textMuted }}>
-            <span style={{ color: theme.colors.accent }}>{index + 1}</span> / {total}
+            <span style={{ color: theme.colors.accent, fontWeight: 600 }}>{index + 1}</span> / {total}
           </p>
           {hasPhotos && (
             <button
               onClick={() => setAlbumOpen(true)}
-              className="text-xs px-3 py-1 rounded-full border transition-opacity hover:opacity-80"
+              className="text-xs px-3.5 py-1.5 rounded-full border transition-opacity hover:opacity-80 font-medium"
               style={{ borderColor: theme.colors.accent, color: theme.colors.accent }}
             >
               사진첩 열기

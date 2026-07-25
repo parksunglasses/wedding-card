@@ -54,10 +54,14 @@ export default function Greeting({ data, theme }: Props) {
           </p>
         </div>
 
-        {/* 3. 테스토와 100% 동일한 인사말 */}
-        <div className="text-sm leading-relaxed space-y-2" style={{ color: theme.colors.text + 'DD' }}>
-          <p>서로를 향한 믿음으로 시작해<br />이제 평생을 약속하려 합니다.</p>
-          <p>저희들의 첫 시작을 함께해 주세요.</p>
+        {/* 3. 인사말 멘트 (DB 값이 변경되면 동적 반영, 기본은 디폴트 멘트) */}
+        <div className="text-sm leading-relaxed space-y-1.5" style={{ color: theme.colors.text + 'DD' }}>
+          <span className="greeting-line block whitespace-nowrap">
+            {data.greetingTitle || '서로를 향한 믿음으로 시작해 이제 평생을 약속하려 합니다.'}
+          </span>
+          <span className="greeting-line block whitespace-nowrap">
+            {data.greetingMessage || '저희들의 첫 시작을 함께해 주세요.'}
+          </span>
         </div>
       </motion.div>
     </section>
