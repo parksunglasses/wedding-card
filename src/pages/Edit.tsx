@@ -6,9 +6,10 @@ import { isAuthenticated } from './EditLogin'
 import { themeList, Theme, ThemeId } from '@/themes'
 import ImageUploader from '@/components/ImageUploader'
 import MultiImageUploader from '@/components/MultiImageUploader'
+import GuestbookAdmin from '@/components/GuestbookAdmin'
 import { uploadAudio } from '@/lib/cloudinary'
 
-type Tab = 'basic' | 'theme' | 'content'
+type Tab = 'basic' | 'theme' | 'content' | 'guestbook'
 
 export default function Edit() {
   const navigate = useNavigate()
@@ -103,7 +104,7 @@ export default function Edit() {
 
       {/* 탭 */}
       <div className="sticky top-[60px] z-30 bg-[#EDE6D8] border-b border-black/10 flex">
-        {(['basic', 'theme', 'content'] as Tab[]).map((t) => (
+        {(['basic', 'theme', 'content', 'guestbook'] as Tab[]).map((t) => (
           <button
             key={t}
             onClick={() => setTab(t)}
@@ -116,7 +117,7 @@ export default function Edit() {
               color: '#8B7E6E',
             }}
           >
-            {t === 'basic' ? '기본정보' : t === 'theme' ? '테마' : '컨텐츠'}
+            {t === 'basic' ? '기본정보' : t === 'theme' ? '테마' : t === 'content' ? '컨텐츠' : '방명록'}
           </button>
         ))}
       </div>
@@ -375,6 +376,13 @@ export default function Edit() {
                 placeholder="https://... (비워두면 표시 안됨)" />
             </Section>
           </div>
+        )}
+
+        {/* 4. 방명록 관리 탭 */}
+        {tab === 'guestbook' && (
+          <Section title="방명록 관리">
+            <GuestbookAdmin />
+          </Section>
         )}
       </div>
     </div>
