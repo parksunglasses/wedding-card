@@ -26,7 +26,10 @@
       "Bash(curl -s \"http://www.swtower.com/kor/company/location.php\" -o /tmp/swt.html)",
       "Read(//tmp/**)",
       "Bash(git commit -m ' *)",
-      "Bash(git checkout *)"
+      "Bash(git checkout *)",
+      "Bash(git fetch *)",
+      "Bash(node .tmp-update-parents.mjs)",
+      "Bash(rm -f .tmp-update-parents.mjs)"
     ]
   }
 }
