@@ -17,10 +17,11 @@ type ChristmasIcoType =
 
 type LoveIcoType =
   | 'heartPink'
-  | 'heartGold'
   | 'heartRose'
+  | 'heartDeep'
   | 'ribbonPink'
   | 'ribbonLilac'
+  | 'ribbonRose'
   | 'starSparkle'
   | 'flowerPetal'
   | 'maltese'
@@ -43,18 +44,22 @@ const CHRISTMAS_ORNAMENTS: ChristmasIcoType[] = [
 ]
 
 const LOVE_ORNAMENTS: LoveIcoType[] = [
-  'heartPink',
-  'ribbonPink',
   'maltese',
+  'heartPink',
+  'maltese',
+  'ribbonPink',
   'cloudSky',
+  'maltese',
   'heartRose',
-  'starSparkle',
-  'ribbonLilac',
-  'flowerPetal',
+  'ribbonRose',
   'maltese',
+  'starSparkle',
   'cloudSky',
-  'heartPink',
-  'ribbonPink',
+  'maltese',
+  'flowerPetal',
+  'ribbonLilac',
+  'heartDeep',
+  'maltese',
 ]
 
 const CHRISTMAS_COLORS = {
@@ -66,13 +71,15 @@ const CHRISTMAS_COLORS = {
 }
 
 const LOVE_COLORS = {
-  gold: '#E8B84B',
-  pink: '#E87A90',
-  softPink: '#F4A7B9',
-  rose: '#D97E9F',
-  lilac: '#C7B3E5',
+  pink: '#E87A90',       // 러블리 핑크
+  softPink: '#F4A7B9',   // 베이비 핑크
+  rose: '#D97E9F',       // 로즈 핑크
+  deepPink: '#D85A7F',   // 라즈베리 핑크
+  dustyPink: '#E098AD',  // 인디 핑크
+  peachPink: '#FAD4C0',  // 피치 핑크
+  lilac: '#C7B3E5',      // 라일락 핑크
   cream: '#FFF9F2',
-  sky: '#B4E1F5',
+  sky: '#B4E1F5',        // 연하늘
   sparkle: '#F7D6E0',
 }
 
@@ -210,21 +217,21 @@ function LoveIcon({ type }: { type: LoveIcoType }) {
           />
         </svg>
       )
-    case 'heartGold':
-      return (
-        <svg viewBox="0 0 24 24" width="100%" height="100%">
-          <path
-            d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
-            fill={LOVE_COLORS.gold}
-          />
-        </svg>
-      )
     case 'heartRose':
       return (
         <svg viewBox="0 0 24 24" width="100%" height="100%">
           <path
             d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
             fill={LOVE_COLORS.rose}
+          />
+        </svg>
+      )
+    case 'heartDeep':
+      return (
+        <svg viewBox="0 0 24 24" width="100%" height="100%">
+          <path
+            d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
+            fill={LOVE_COLORS.deepPink}
           />
         </svg>
       )
@@ -237,9 +244,9 @@ function LoveIcon({ type }: { type: LoveIcoType }) {
           {/* 얼굴 둥근 쉐입 */}
           <ellipse cx="12" cy="13" rx="7" ry="5.8" fill="#FFFFFF" />
           {/* 머리 윗털 핀/리본 */}
-          <path d="M12 6.8 C10.2 5 8.2 6.5 10.2 7.8 Z" fill={LOVE_COLORS.pink} />
-          <path d="M12 6.8 C13.8 5 15.8 6.5 13.8 7.8 Z" fill={LOVE_COLORS.pink} />
-          <circle cx="12" cy="6.8" r="0.8" fill={LOVE_COLORS.rose} />
+          <path d="M12 6.8 C10.2 5 8.2 6.5 10.2 7.8 Z" fill={LOVE_COLORS.deepPink} />
+          <path d="M12 6.8 C13.8 5 15.8 6.5 13.8 7.8 Z" fill={LOVE_COLORS.deepPink} />
+          <circle cx="12" cy="6.8" r="0.8" fill={LOVE_COLORS.peachPink} />
           {/* 눈 코 */}
           <circle cx="9.5" cy="12" r="1.1" fill="#222222" />
           <circle cx="14.5" cy="12" r="1.1" fill="#222222" />
@@ -261,9 +268,19 @@ function LoveIcon({ type }: { type: LoveIcoType }) {
         <svg viewBox="0 0 24 24" width="100%" height="100%">
           <path d="M12 10 C7.5 4.5 1.5 7.5 4 12 C6.5 15 11 11.5 12 10 Z" fill={LOVE_COLORS.pink} />
           <path d="M12 10 C16.5 4.5 22.5 7.5 20 12 C17.5 15 13 11.5 12 10 Z" fill={LOVE_COLORS.pink} />
-          <circle cx="12" cy="10.5" r="1.8" fill={LOVE_COLORS.rose} />
+          <circle cx="12" cy="10.5" r="1.8" fill={LOVE_COLORS.deepPink} />
           <path d="M11.2 11.2 C9 15 6.5 18.5 5 21.5 C7.2 20 9.2 17 11.6 12 Z" fill={LOVE_COLORS.pink} />
           <path d="M12.8 11.2 C15 15 17.5 18.5 19 21.5 C16.8 20 14.8 17 12.4 12 Z" fill={LOVE_COLORS.pink} />
+        </svg>
+      )
+    case 'ribbonRose':
+      return (
+        <svg viewBox="0 0 24 24" width="100%" height="100%">
+          <path d="M12 10 C7.5 4.5 1.5 7.5 4 12 C6.5 15 11 11.5 12 10 Z" fill={LOVE_COLORS.rose} />
+          <path d="M12 10 C16.5 4.5 22.5 7.5 20 12 C17.5 15 13 11.5 12 10 Z" fill={LOVE_COLORS.rose} />
+          <circle cx="12" cy="10.5" r="1.8" fill={LOVE_COLORS.dustyPink} />
+          <path d="M11.2 11.2 C9 15 6.5 18.5 5 21.5 C7.2 20 9.2 17 11.6 12 Z" fill={LOVE_COLORS.rose} />
+          <path d="M12.8 11.2 C15 15 17.5 18.5 19 21.5 C16.8 20 14.8 17 12.4 12 Z" fill={LOVE_COLORS.rose} />
         </svg>
       )
     case 'ribbonLilac':

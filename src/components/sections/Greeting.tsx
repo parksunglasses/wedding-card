@@ -31,7 +31,7 @@ export default function Greeting({ data, theme }: Props) {
         viewport={{ once: true }}
         transition={{ duration: 0.8 }}
       >
-        <p className="font-heading text-xs tracking-[0.4em] theme-accent mb-12 uppercase">
+        <p className="font-heading text-xs tracking-[0.4em] theme-accent mb-10 uppercase">
           Invitation
         </p>
 
@@ -45,7 +45,7 @@ export default function Greeting({ data, theme }: Props) {
         </div>
 
         {/* 2. 부모님 성함 및 장남 성환 / 장녀 지영 */}
-        <div className="space-y-2.5 text-sm sm:text-base leading-relaxed mb-14" style={{ color: theme.colors.text }}>
+        <div className="space-y-2.5 text-sm sm:text-base leading-relaxed mb-10" style={{ color: theme.colors.text }}>
           <p>
             {data.groom.father} · <span className="relative inline-block"><Chrys color={theme.colors.accent} />{data.groom.mother}</span>의 장남 <span className="font-semibold" style={{ color: theme.colors.accent }}>성환</span>
           </p>

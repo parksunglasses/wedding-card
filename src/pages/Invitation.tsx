@@ -127,7 +127,6 @@ export default function Invitation() {
         </div>
       ) : (
       <div className="min-h-screen theme-bg">
-        {data.doorIntro && <DoorIntro data={data} theme={theme} />}
         <Suspense fallback={null}>
           {data.fireworks !== false && <FireworksOverlay themeName={theme.id} />}
         </Suspense>

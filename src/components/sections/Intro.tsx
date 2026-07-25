@@ -28,10 +28,10 @@ export default function Intro({ data, theme }: Props) {
         />
       )}
 
-      {/* 손글씨 SVG (DoorIntro가 그린 뒤 그대로 유지되는 위치) */}
+      {/* 메인 사진 위에서 직접 써지는 손글씨 */}
       <div className="absolute left-0 right-0 z-10 flex justify-center px-6" style={{ bottom: '28%' }}>
-        <div style={{ width: '96%' }}>
-          <Handwriting color="#D97E9F" strokeWidth={13} animate={false} />
+        <div style={{ width: '106%' }}>
+          <Handwriting color="#D97E9F" strokeWidth={13} durationMs={2800} />
         </div>
       </div>
 
