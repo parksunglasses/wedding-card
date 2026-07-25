@@ -31,7 +31,7 @@ export default function Greeting({ data, theme }: Props) {
         viewport={{ once: true }}
         transition={{ duration: 0.8 }}
       >
-        <p className="font-heading text-xs tracking-[0.4em] theme-accent mb-10 uppercase">
+        <p className="font-heading text-xs tracking-[0.4em] mb-10 uppercase opacity-75" style={{ color: theme.colors.text }}>
           Invitation
         </p>
 

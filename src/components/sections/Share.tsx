@@ -161,32 +161,23 @@ export default function Share({ data, theme }: Props) {
           transition={{ duration: 0.8 }}
           className="max-w-md mx-auto"
         >
-          <div className="relative inline-block mb-6 px-4">
+          <div className="relative inline-block mb-4 px-6">
             <p
-              className="text-4xl sm:text-5xl font-normal relative z-10"
+              className="font-heading text-3xl sm:text-4xl font-normal relative z-10 tracking-wider"
               style={{
-                fontFamily: "'Dancing Script', cursive",
                 color: theme.colors.accent,
-                filter: 'drop-shadow(0px 2px 3px rgba(217, 126, 159, 0.35))',
-                letterSpacing: '0.04em',
+                filter: 'drop-shadow(0px 1px 2px rgba(217, 126, 159, 0.25))',
               }}
             >
               Thank you!
             </p>
-            {/* 수채화 브러시 stroke 밑줄 질감 */}
-            <svg
-              className="absolute -bottom-1 left-0 w-full h-3 pointer-events-none opacity-60"
-              viewBox="0 0 100 20"
-              preserveAspectRatio="none"
-            >
-              <path
-                d="M 5,12 Q 30,4 60,11 T 95,7"
-                fill="none"
-                stroke={theme.colors.accent}
-                strokeWidth="4"
-                strokeLinecap="round"
-              />
-            </svg>
+          </div>
+
+          {/* 은은한 핑크 라인 & 미니 하트 데코 */}
+          <div className="flex items-center justify-center gap-3 mb-4 opacity-60">
+            <span className="h-[1px] w-10" style={{ background: theme.colors.accent }} />
+            <span className="text-xs" style={{ color: theme.colors.accent }}>♥</span>
+            <span className="h-[1px] w-10" style={{ background: theme.colors.accent }} />
           </div>
           <p className="font-heading text-sm opacity-80 font-medium tracking-widest">
             박성환 &nbsp;·&nbsp; 이지영 올림

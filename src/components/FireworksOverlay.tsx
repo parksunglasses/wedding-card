@@ -40,25 +40,18 @@ const CHRISTMAS_ORNAMENTS: ChristmasIcoType[] = [
   'santa',
   'rudolph',
   'snowman',
-  'ribbon',
 ]
 
 const LOVE_ORNAMENTS: LoveIcoType[] = [
   'maltese',
   'heartPink',
+  'cloudSky',
   'maltese',
   'ribbonPink',
-  'cloudSky',
-  'maltese',
   'heartRose',
-  'ribbonRose',
   'maltese',
   'starSparkle',
-  'cloudSky',
-  'maltese',
   'flowerPetal',
-  'ribbonLilac',
-  'heartDeep',
   'maltese',
 ]
 
@@ -238,29 +231,34 @@ function LoveIcon({ type }: { type: LoveIcoType }) {
     case 'maltese':
       return (
         <svg viewBox="0 0 24 24" width="100%" height="100%">
-          {/* 말티즈 몽실몽실 귀 */}
-          <path d="M4.5 9.5 C2.5 11.5 3.5 16.5 6.5 15.5 C8.5 14.5 9 11.5 7 9.5 Z" fill="#FFFFFF" />
-          <path d="M19.5 9.5 C21.5 11.5 20.5 16.5 17.5 15.5 C15.5 14.5 15 11.5 17 9.5 Z" fill="#FFFFFF" />
-          {/* 얼굴 둥근 쉐입 */}
-          <ellipse cx="12" cy="13" rx="7" ry="5.8" fill="#FFFFFF" />
-          {/* 머리 윗털 핀/리본 */}
-          <path d="M12 6.8 C10.2 5 8.2 6.5 10.2 7.8 Z" fill={LOVE_COLORS.deepPink} />
-          <path d="M12 6.8 C13.8 5 15.8 6.5 13.8 7.8 Z" fill={LOVE_COLORS.deepPink} />
-          <circle cx="12" cy="6.8" r="0.8" fill={LOVE_COLORS.peachPink} />
-          {/* 눈 코 */}
-          <circle cx="9.5" cy="12" r="1.1" fill="#222222" />
-          <circle cx="14.5" cy="12" r="1.1" fill="#222222" />
-          <ellipse cx="12" cy="13.8" rx="1.2" ry="0.9" fill="#111111" />
+          {/* 옆으로 살짝 튀어나오되 크기를 아담하게 줄인 말티즈 귀 */}
+          <ellipse cx="5.6" cy="12.2" rx="2.0" ry="3.0" fill="#FFFFFF" />
+          <ellipse cx="18.4" cy="12.2" rx="2.0" ry="3.0" fill="#FFFFFF" />
+          {/* 동글동글 몽실하게 예쁜 두상 */}
+          <circle cx="12" cy="12.3" r="6.6" fill="#FFFFFF" />
+          {/* 머리 상단 앙증맞은 핑크 리본 */}
+          <path d="M12 5.5 C10.4 4 8.8 5.3 10.4 6.5 Z" fill={LOVE_COLORS.deepPink} />
+          <path d="M12 5.5 C13.6 4 15.2 5.3 13.6 6.5 Z" fill={LOVE_COLORS.deepPink} />
+          <circle cx="12" cy="5.5" r="0.8" fill={LOVE_COLORS.peachPink} />
+          {/* 까만 눈과 반짝이 하이라이트 */}
+          <circle cx="9.4" cy="11.8" r="1.1" fill="#1C1C1C" />
+          <circle cx="14.6" cy="11.8" r="1.1" fill="#1C1C1C" />
+          <circle cx="9.7" cy="11.5" r="0.38" fill="#FFFFFF" />
+          <circle cx="14.9" cy="11.5" r="0.38" fill="#FFFFFF" />
+          {/* 둥근 코 */}
+          <ellipse cx="12" cy="13.5" rx="1.0" ry="0.75" fill="#1A1A1A" />
         </svg>
       )
     case 'cloudSky':
       return (
         <svg viewBox="0 0 24 24" width="100%" height="100%">
-          <path
-            d="M6.5 17.5 C 4 17.5 2.5 15.5 3 13.5 C 2.5 11 4.5 9 7 9.3 C 8.5 6.5 12 6 14.5 7.5 C 17 6.3 20.5 8 20.5 11 C 22.5 12 22.5 15.5 20 17 C 18.5 17.8 8 17.8 6.5 17.5 Z"
-            fill={LOVE_COLORS.sky}
-            opacity="0.95"
-          />
+          {/* 아담하고 귀여운 뭉게구름 */}
+          <g transform="translate(1.2, 1.8) scale(0.9)">
+            <path
+              d="M19.35 10.04C18.67 6.59 15.64 4 12 4C9.11 4 6.6 5.64 5.35 8.04C2.34 8.36 0 10.91 0 14C0 17.31 2.69 20 6 20H19C21.76 20 24 17.76 24 15C24 12.36 21.95 10.22 19.35 10.04Z"
+              fill={LOVE_COLORS.sky}
+            />
+          </g>
         </svg>
       )
     case 'ribbonPink':
@@ -331,21 +329,21 @@ export default function FireworksOverlay({ themeName }: { themeName?: string }) 
 
   const items = useMemo(() => {
     if (isTestoTheme) {
-      return Array.from({ length: 7 }, (_, i) => {
+      return Array.from({ length: 9 }, (_, i) => {
         const type = CHRISTMAS_ORNAMENTS[i % CHRISTMAS_ORNAMENTS.length]
-        const left = Math.floor(i * 13 + Math.random() * 6) + 3
-        const size = Math.floor(Math.random() * 10) + 26
-        const duration = (Math.random() * 6 + 13).toFixed(1)
-        const negativeDelay = (Math.random() * 10).toFixed(1)
+        const left = Math.floor((i * 10.5) + (Math.random() * 4)) % 92 + 3
+        const size = Math.floor(Math.random() * 4) + 14
+        const duration = (Math.random() * 5 + 13).toFixed(1)
+        const negativeDelay = (i * 2.1 + Math.random() * 1.5).toFixed(1)
         return { id: i, type, left, size, duration, negativeDelay }
       })
     } else {
-      return Array.from({ length: 8 }, (_, i) => {
+      return Array.from({ length: 9 }, (_, i) => {
         const type = LOVE_ORNAMENTS[i % LOVE_ORNAMENTS.length]
-        const left = Math.floor(i * 11 + Math.random() * 5) + 3
-        const size = Math.floor(Math.random() * 10) + 20
-        const duration = (Math.random() * 8 + 14).toFixed(1)
-        const negativeDelay = (Math.random() * 12).toFixed(1)
+        const left = Math.floor((i * 10.5) + (Math.random() * 4)) % 92 + 3
+        const size = Math.floor(Math.random() * 4) + 14
+        const duration = (Math.random() * 5 + 13).toFixed(1)
+        const negativeDelay = (i * 2.1 + Math.random() * 1.5).toFixed(1)
         return { id: i, type, left, size, duration, negativeDelay }
       })
     }
@@ -359,14 +357,15 @@ export default function FireworksOverlay({ themeName }: { themeName?: string }) 
             transform: translateY(-50px) rotate(0deg) translateX(0);
             opacity: 0;
           }
-          15% {
-            opacity: 0.98;
+          12% {
+            opacity: 0.75;
           }
           50% {
             transform: translateY(50vh) rotate(180deg) translateX(15px);
+            opacity: 0.85;
           }
-          85% {
-            opacity: 0.98;
+          88% {
+            opacity: 0.75;
           }
           100% {
             transform: translateY(105vh) rotate(360deg) translateX(-12px);
@@ -377,7 +376,7 @@ export default function FireworksOverlay({ themeName }: { themeName?: string }) 
           position: absolute;
           top: 0;
           animation: ornamentShower linear infinite;
-          filter: drop-shadow(0 3px 6px rgba(0,0,0,0.14));
+          filter: drop-shadow(0 2px 5px rgba(0,0,0,0.11));
         }
       `}</style>
       {items.map((item) => (

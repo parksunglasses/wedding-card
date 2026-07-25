@@ -17,14 +17,14 @@ export default function Intro({ data, theme }: Props) {
     : `linear-gradient(160deg, ${theme.colors.bgAlt}, ${theme.colors.border})`
 
   return (
-    <section className="relative h-[100dvh] min-h-[560px] max-h-[880px] overflow-hidden" style={{ color: theme.colors.text }}>
+    <section className="relative h-[100dvh] min-h-[520px] max-h-[780px] sm:max-h-[840px] overflow-hidden" style={{ color: theme.colors.text }}>
       {photo ? (
         <img
           src={photo}
           alt="메인 웨딩 사진"
           decoding="async"
           loading="eager"
-          className="w-full h-full object-cover object-[center_25%]"
+          className="w-full h-full object-cover object-[center_20%]"
         />
       ) : (
         <div
@@ -41,10 +41,10 @@ export default function Intro({ data, theme }: Props) {
         />
       )}
 
-      {/* 메인 사진 위에서 직접 써지는 손글씨 */}
-      <div className="absolute left-0 right-0 z-10 flex justify-center px-6" style={{ bottom: '28%' }}>
-        <div style={{ width: '106%' }}>
-          <Handwriting color="#D97E9F" strokeWidth={13} durationMs={2800} />
+      {/* 메인 사진 위에서 직접 써지는 손글씨 - 가로 최대 파노라마 스케일 */}
+      <div className="absolute left-0 right-0 z-10 flex justify-center px-1" style={{ bottom: '23%' }}>
+        <div style={{ width: '160%' }}>
+          <Handwriting color="#D97E9F" strokeWidth={12} durationMs={2800} />
         </div>
       </div>
 

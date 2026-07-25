@@ -557,8 +557,8 @@ html, body {
 .hero { padding: 52px 32px 40px; text-align: center; }
 .hero-script { display: block; width: 100%; max-width: 100%; height: auto; margin: 2px auto 0; }
 .hero-photos { position: relative; width: 360px; max-width: 100%; margin: 30px auto 0; padding-top: 95px; }
-.hero-tag-l { position: absolute; left: -12px; top: 112px; z-index: 10; }
-.hero-tag-r { position: absolute; right: -12px; top: 112px; z-index: 10; }
+.hero-tag-l { position: absolute; left: -12px; top: 215px; z-index: 10; }
+.hero-tag-r { position: absolute; right: -12px; top: 260px; z-index: 10; }
 
 /* =========================================================
    모든 모바일 기기(작은 스마트폰 <= 389px) 반응형 텍스트 방어막
@@ -595,10 +595,12 @@ html, body {
   }
   .hero-tag-l {
     left: 2px !important;
+    top: 200px !important;
     font-size: 26px !important;
   }
   .hero-tag-r {
     right: 2px !important;
+    top: 245px !important;
     font-size: 26px !important;
   }
   .hero-date {

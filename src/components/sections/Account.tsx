@@ -23,16 +23,17 @@ export default function AccountSection({ data, theme }: Props) {
   }
 
   const renderAccounts = (accounts: Account[], side: 'groom' | 'bride') => (
-    <div className="space-y-3 mt-4">
+    <div className="space-y-3 mt-3 mb-4">
       {accounts.map((acc, idx) => {
         const key = `${side}-${idx}`
+        const isPink = idx % 2 === 0
         return (
           <div
             key={key}
-            className="rounded-2xl p-4 text-center"
+            className="rounded-2xl p-4 text-center transition-colors shadow-xs"
             style={{
-              background: theme.colors.accent + '0D',
-              border: `1px solid ${theme.colors.border}`,
+              background: isPink ? '#FDF6F8' : '#FBF8F2',
+              border: `1px solid ${isPink ? '#F8E8EC' : '#EFE8DE'}`,
             }}
           >
             <p className="text-xs opacity-60 mb-1">{acc.bank}</p>
@@ -41,9 +42,9 @@ export default function AccountSection({ data, theme }: Props) {
               <p className="text-xs opacity-70">예금주 · {acc.holder}</p>
               <button
                 onClick={() => handleCopy(acc.accountNumber, key)}
-                className="text-xs px-3 py-1 rounded-full font-medium"
+                className="text-xs px-3 py-1 rounded-full font-medium transition-all active:scale-95"
                 style={{
-                  background: theme.colors.accent + '14',
+                  background: isPink ? theme.colors.accent + '20' : '#EBE0D2',
                   border: `1px solid ${theme.colors.border}`,
                 }}
               >
@@ -69,29 +70,33 @@ export default function AccountSection({ data, theme }: Props) {
           <h2 className="font-heading text-2xl">마음 전하실 곳</h2>
         </div>
 
+        {/* 신랑 측 버튼: 열렸을 때 진한 핑크색으로 변화 */}
         <button
           onClick={() => setOpenSide(openSide === 'groom' ? null : 'groom')}
-          className="w-full px-5 py-4 rounded-2xl flex items-center justify-center gap-2 mb-3"
+          className="w-full px-5 py-4 rounded-2xl flex items-center justify-center gap-2 mb-2 transition-all duration-300 shadow-sm"
           style={{
-            background: theme.colors.accent + '0D',
-            border: `1px solid ${theme.colors.border}`,
+            background: openSide === 'groom' ? theme.colors.accent : theme.colors.accent + '12',
+            color: openSide === 'groom' ? '#FFFFFF' : theme.colors.text,
+            border: `1px solid ${openSide === 'groom' ? theme.colors.accent : theme.colors.border}`,
           }}
         >
-          <span className="text-sm font-medium">신랑 측 계좌번호</span>
-          <span className={`text-xs transition-transform ${openSide === 'groom' ? 'rotate-180' : ''}`}>▾</span>
+          <span className="text-sm font-semibold">신랑 측 계좌번호</span>
+          <span className={`text-xs transition-transform duration-300 ${openSide === 'groom' ? 'rotate-180' : ''}`}>▾</span>
         </button>
         {openSide === 'groom' && renderAccounts(data.groomAccounts, 'groom')}
 
+        {/* 신부 측 버튼: 열렸을 때 진한 핑크색으로 변화 */}
         <button
           onClick={() => setOpenSide(openSide === 'bride' ? null : 'bride')}
-          className="w-full px-5 py-4 rounded-2xl flex items-center justify-center gap-2 mt-3"
+          className="w-full px-5 py-4 rounded-2xl flex items-center justify-center gap-2 mt-3 mb-2 transition-all duration-300 shadow-sm"
           style={{
-            background: theme.colors.accent + '0D',
-            border: `1px solid ${theme.colors.border}`,
+            background: openSide === 'bride' ? theme.colors.accent : theme.colors.accent + '12',
+            color: openSide === 'bride' ? '#FFFFFF' : theme.colors.text,
+            border: `1px solid ${openSide === 'bride' ? theme.colors.accent : theme.colors.border}`,
           }}
         >
-          <span className="text-sm font-medium">신부 측 계좌번호</span>
-          <span className={`text-xs transition-transform ${openSide === 'bride' ? 'rotate-180' : ''}`}>▾</span>
+          <span className="text-sm font-semibold">신부 측 계좌번호</span>
+          <span className={`text-xs transition-transform duration-300 ${openSide === 'bride' ? 'rotate-180' : ''}`}>▾</span>
         </button>
         {openSide === 'bride' && renderAccounts(data.brideAccounts, 'bride')}
       </motion.div>

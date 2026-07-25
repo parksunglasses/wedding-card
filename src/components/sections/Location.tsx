@@ -58,10 +58,14 @@ export default function Location({ data, theme }: Props) {
 
         <a
           href={`tel:${data.venuePhone}`}
-          className="inline-flex items-center gap-1.5 mt-3 px-4 py-1.5 rounded-full text-xs"
-          style={{ background: theme.colors.accent + '0D', border: `1px solid ${theme.colors.border}` }}
+          className="inline-flex items-center gap-1.5 mt-2.5 px-3 py-1 rounded-full text-[11px] font-medium transition-transform active:scale-95 shadow-2xs"
+          style={{ background: theme.colors.accent + '12', border: `1px solid ${theme.colors.border}` }}
         >
-          📞 {data.venuePhone}
+          {/* 회색 반투명 전화 수화기 누끼 SVG */}
+          <svg className="w-3 h-3 flex-shrink-0 opacity-60" viewBox="0 0 24 24" fill="currentColor" style={{ color: '#555555' }}>
+            <path d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56a.977.977 0 00-1.01.24l-2.2 2.2a15.053 15.053 0 01-6.59-6.59l2.2-2.21a.96.96 0 00.25-1C8.76 6.35 8.56 5.16 8.56 3.99c0-.55-.45-1-1-1H4.03c-.55 0-1 .45-1 1C3.03 13.57 10.46 21 19.99 21c.55 0 1-.45 1-1v-3.62c0-.55-.45-1-.98-1z" />
+          </svg>
+          <span style={{ color: theme.colors.text }}>{data.venuePhone}</span>
         </a>
       </motion.div>
 
@@ -75,10 +79,10 @@ export default function Location({ data, theme }: Props) {
         {/* 실제 카카오맵 (키 설정 시) */}
         <div ref={mapRef} className="w-full h-full pointer-events-none" />
 
-        {/* 지도 정중앙 오버레이 핀 뱃지 */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 pointer-events-none whitespace-nowrap">
+        {/* 지도 내 하단 핀 뱃지 */}
+        <div className="absolute bottom-3 left-1/2 -translate-x-1/2 z-10 pointer-events-none whitespace-nowrap">
           <div
-            className="px-4 py-2 rounded-2xl text-xs font-semibold shadow-md flex flex-col items-center justify-center gap-0.5 border transition-transform group-hover:scale-105"
+            className="px-4 py-1.5 rounded-2xl text-xs font-semibold shadow-md flex items-center justify-center gap-1.5 border transition-transform group-hover:scale-105"
             style={{
               background: 'rgba(255, 255, 255, 0.95)',
               color: theme.colors.text,
@@ -87,7 +91,7 @@ export default function Location({ data, theme }: Props) {
             }}
           >
             <span className="font-semibold text-xs" style={{ color: theme.colors.accent }}>{data.venue}</span>
-            <span className="text-[10px] opacity-65 font-normal">눌러서 지도 열기</span>
+            <span className="text-[11px] opacity-65 font-normal">· 눌러서 지도 열기</span>
           </div>
         </div>
 
