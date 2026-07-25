@@ -1,5 +1,6 @@
 import { useState, useRef } from 'react'
 import { uploadImage, getOptimizedUrl, isCloudinaryConfigured } from '@/lib/cloudinary'
+import { compressImage } from '@/lib/image'
 
 interface Props {
   value: string
@@ -17,9 +18,9 @@ export default function ImageUploader({ value, onChange, label, aspectRatio = '3
     const file = e.target.files?.[0]
     if (!file) return
 
-    // 파일 크기 체크 (10MB 제한)
-    if (file.size > 10 * 1024 * 1024) {
-      setError('10MB 이하 파일만 업로드 가능합니다')
+    // 원본 방어선 (업로드 전 자동 리사이즈/압축하므로 여유롭게)
+    if (file.size > 40 * 1024 * 1024) {
+      setError('40MB 이하 파일만 업로드 가능합니다')
       return
     }
 
@@ -32,7 +33,9 @@ export default function ImageUploader({ value, onChange, label, aspectRatio = '3
     setUploading(true)
 
     try {
-      const result = await uploadImage(file)
+      // 큰 사진은 업로드 전에 줄여 Cloudinary 한도 안으로 맞춘다.
+      const optimized = await compressImage(file)
+      const result = await uploadImage(optimized)
       onChange(result.url)
     } catch (err) {
       setError('업로드 실패. 다시 시도해주세요')

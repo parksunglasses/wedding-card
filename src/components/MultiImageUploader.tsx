@@ -1,5 +1,6 @@
 import { useState, useRef } from 'react'
 import { uploadImage, getOptimizedUrl, isCloudinaryConfigured } from '@/lib/cloudinary'
+import { compressImage } from '@/lib/image'
 
 interface Props {
   value: string[]
@@ -42,12 +43,14 @@ export default function MultiImageUploader({
     try {
       for (let i = 0; i < files.length; i++) {
         const file = files[i]
-        if (file.size > 10 * 1024 * 1024) {
-          setError(`${file.name}: 10MB 초과로 제외됨`)
+        if (file.size > 40 * 1024 * 1024) {
+          setError(`${file.name}: 40MB 초과로 제외됨`)
           continue
         }
 
-        const result = await uploadImage(file)
+        // 큰 사진은 업로드 전에 줄여 Cloudinary 한도 안으로 맞춘다.
+        const optimized = await compressImage(file)
+        const result = await uploadImage(optimized)
         uploadedUrls.push(result.url)
         setProgress(Math.round(((i + 1) / files.length) * 100))
       }
