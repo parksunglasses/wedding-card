@@ -56,7 +56,7 @@ export default function Greeting({ data, theme }: Props) {
 
         {/* 3. 테스토와 100% 동일한 인사말 */}
         <div className="text-sm leading-relaxed space-y-2" style={{ color: theme.colors.text + 'DD' }}>
-          <p>서로를 향한 믿음으로 시작해 이제 평생을 약속하려 합니다.</p>
+          <p>서로를 향한 믿음으로 시작해<br />이제 평생을 약속하려 합니다.</p>
           <p>저희들의 첫 시작을 함께해 주세요.</p>
         </div>
       </motion.div>

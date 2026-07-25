@@ -92,7 +92,14 @@ export default function Guestbook({ theme }: Props) {
 
     if (isSupabaseConfigured) {
       const { error } = await supabase.from('guestbooks').insert({ name: name.trim(), message: message.trim() })
-      if (!error) await fetchEntries()
+      if (error) {
+        // 실패를 성공으로 위장하지 않는다 — 사용자에게 알리고 로그를 남긴다.
+        console.error('Guestbook insert failed:', error)
+        alert(`메시지 저장에 실패했어요. 잠시 후 다시 시도해 주세요.\n(${error.message})`)
+        setSubmitting(false)
+        return
+      }
+      await fetchEntries()
     } else {
       const newEntry: GuestbookEntry = { id: Date.now().toString(), name: name.trim(), message: message.trim(), createdAt: new Date().toISOString() }
       const updated = [newEntry, ...entries]
