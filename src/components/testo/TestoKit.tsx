@@ -252,7 +252,7 @@ export function Photo({ src, w, h, i = 0, fill, radius = 0, alt = '' }: PhotoPro
   if (src) {
     return (
       <div className="photo" style={style}>
-        <img src={getOptimizedUrl(src, { width: 800 })} alt={alt} loading="lazy" className="photo-img" />
+        <img src={getOptimizedUrl(src, { width: 640 })} alt={alt} loading="lazy" decoding="async" className="photo-img" />
       </div>
     )
   }

@@ -1,5 +1,6 @@
 import { ReactNode, useEffect, useRef } from 'react'
 import { createPortal } from 'react-dom'
+import { AnimatePresence, motion, Variants } from 'framer-motion'
 import { getOptimizedUrl } from '@/lib/cloudinary'
 
 export interface SlideshowTheme {
@@ -26,19 +27,34 @@ interface Props {
 
 const DEFAULT_TILTS = [-4, 3, -2.5, 2, -3, 3.5]
 
+const slideVariants: Variants = {
+  enter: (direction: number) => ({ opacity: 0, x: direction > 0 ? 48 : -48 }),
+  center: { opacity: 1, x: 0 },
+  exit: (direction: number) => ({ opacity: 0, x: direction > 0 ? -48 : 48 }),
+}
+
 // 사진 더보기 슬라이드쇼 오버레이 — 큰 폴라로이드 + 화살표/스와이프 + 썸네일 스트립
 export default function PhotoSlideshow({ photos, index, setIndex, onClose, theme, title, snow, tilts = DEFAULT_TILTS }: Props) {
   const total = photos.length
   const startX = useRef<number | null>(null)
   const stripRef = useRef<HTMLDivElement>(null)
+  const direction = useRef(1)
 
-  const nav = (d: number) => setIndex((prev) => (prev + d + total) % total)
+  const nav = (d: number) => {
+    direction.current = d
+    setIndex((prev) => (prev + d + total) % total)
+  }
+
+  const select = (next: number) => {
+    direction.current = next === index ? 1 : next > index ? 1 : -1
+    setIndex(next)
+  }
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose()
-      else if (e.key === 'ArrowLeft') setIndex((prev) => (prev - 1 + total) % total)
-      else if (e.key === 'ArrowRight') setIndex((prev) => (prev + 1) % total)
+      else if (e.key === 'ArrowLeft') nav(-1)
+      else if (e.key === 'ArrowRight') nav(1)
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
@@ -84,8 +100,22 @@ export default function PhotoSlideshow({ photos, index, setIndex, onClose, theme
             ‹
           </button>
 
-          <div className="ss-polaroid" key={index} style={{ background: theme.paper, transform: `rotate(${tilts[index % tilts.length] * 0.5}deg)` }}>
-            <img className="ss-photo" src={getOptimizedUrl(photos[index], { width: 900, quality: 'auto:best' })} alt={`웨딩 사진 ${index + 1}`} />
+          <div className="ss-frame">
+            <AnimatePresence initial={false} custom={direction.current}>
+              <motion.div
+                key={index}
+                className="ss-polaroid"
+                custom={direction.current}
+                variants={slideVariants}
+                initial="enter"
+                animate="center"
+                exit="exit"
+                transition={{ duration: 0.32, ease: 'easeOut' }}
+                style={{ background: theme.paper, transform: `rotate(${tilts[index % tilts.length] * 0.5}deg)` }}
+              >
+                <img className="ss-photo" src={getOptimizedUrl(photos[index], { width: 640 })} alt={`웨딩 사진 ${index + 1}`} decoding="async" />
+              </motion.div>
+            </AnimatePresence>
           </div>
 
           <button className="ss-arrow ss-arrow--next" onClick={() => nav(1)} aria-label="다음 사진" style={{ background: theme.red, color: theme.sheet }}>
@@ -102,7 +132,7 @@ export default function PhotoSlideshow({ photos, index, setIndex, onClose, theme
             <button
               key={`${p}-${i}`}
               data-active={i === index}
-              onClick={() => setIndex(i)}
+              onClick={() => select(i)}
               className={'ss-thumb' + (i === index ? ' is-active' : '')}
               aria-label={`${i + 1}번째 사진`}
               style={{ borderColor: i === index ? theme.red : 'transparent', transform: `rotate(${tilts[i % tilts.length] * 0.6}deg)` }}
