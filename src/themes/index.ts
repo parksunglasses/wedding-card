@@ -54,7 +54,7 @@ export const themes: Record<ThemeId, Theme> = {
     },
     fonts: {
       heading: '"Cormorant Garamond", serif',
-      body: '"Pretendard Variable", Pretendard, sans-serif',
+      body: '"SUIT Variable", SUIT, "Pretendard Variable", Pretendard, sans-serif',
       script: '"Great Vibes", cursive',
     },
     style: {
@@ -85,7 +85,7 @@ export const themes: Record<ThemeId, Theme> = {
     },
     fonts: {
       heading: '"Cormorant Garamond", serif',
-      body: '"Pretendard Variable", Pretendard, sans-serif',
+      body: '"SUIT Variable", SUIT, "Pretendard Variable", Pretendard, sans-serif',
       script: '"Great Vibes", cursive',
     },
     style: {
@@ -117,7 +117,7 @@ export const themes: Record<ThemeId, Theme> = {
     },
     fonts: {
       heading: '"Nanum Pen Script", cursive',
-      body: '"Pretendard Variable", Pretendard, sans-serif',
+      body: '"SUIT Variable", SUIT, "Pretendard Variable", Pretendard, sans-serif',
       script: '"Nanum Pen Script", cursive',
     },
     style: {

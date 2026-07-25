@@ -21,7 +21,7 @@ const Countdown = memo(function Countdown({
   }, [date, time])
 
   return (
-    <div className="mt-8 -mx-8 px-8 pt-8 pb-10 text-center" style={{ background: '#F3E8DC', color: theme.colors.text }}>
+    <div className="mt-8 -mx-8 px-8 pt-8 pb-10 text-center" style={{ width: 'calc(100% + 4rem)', maxWidth: 'none', background: '#F3E8DC', color: theme.colors.text }}>
       <div className="grid grid-cols-4 gap-2 max-w-md mx-auto text-center">
         {[
           { label: 'DAY', value: countdown.days },

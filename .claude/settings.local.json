@@ -29,7 +29,12 @@
       "Bash(git checkout *)",
       "Bash(git fetch *)",
       "Bash(node .tmp-update-parents.mjs)",
-      "Bash(rm -f .tmp-update-parents.mjs)"
+      "Bash(rm -f .tmp-update-parents.mjs)",
+      "Bash(git --no-pager diff HEAD -- src/components/testo/TestoKit.tsx)",
+      "Bash(git --no-pager diff HEAD)",
+      "Bash(git --no-pager diff HEAD -- src/components/testo/TestoLocation.tsx)",
+      "Bash(git --no-pager diff HEAD -- index.html)",
+      "Bash(awk '/function Chrys/,/^}/' src/components/sections/Greeting.tsx)"
     ]
   }
 }

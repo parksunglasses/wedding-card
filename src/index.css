@@ -13,7 +13,7 @@
   --theme-accent-light: #E3B9C2;
   --theme-border: #D8D1C7;
   --theme-font-heading: 'Cormorant Garamond', serif;
-  --theme-font-body: 'Pretendard Variable', 'Pretendard', sans-serif;
+  --theme-font-body: 'SUIT Variable', 'SUIT', 'Pretendard Variable', 'Pretendard', sans-serif;
   --theme-font-script: 'Great Vibes', cursive;
   --page-gutter: clamp(24px, 7vw, 34px);
 }
@@ -648,6 +648,7 @@ html, body {
 .hero-parents p { margin: 0; }
 .hero-parents .pname { color: #234A33; font-weight: 700; }
 .hero-parents .chrys-wrap { position: relative; display: inline-block; }
+.hero-parents .chrys { position: absolute; left: -5px; top: -5px; opacity: 0.35; pointer-events: none; }
 .hero-intro { font-family: 'Nanum Myeongjo', serif; font-size: 14.5px; line-height: 1.95; color: #5A3A32; margin: 20px 0 0; }
 .hero-intro-line { display: block; white-space: nowrap; }
 
