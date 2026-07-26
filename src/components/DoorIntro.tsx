@@ -1,10 +1,12 @@
-import { useEffect, useState } from 'react'
+import { lazy, Suspense, useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
-import Lottie from 'lottie-react'
 import { WeddingData } from '@/types'
 import { Theme } from '@/themes'
 import { getOptimizedUrl } from '@/lib/cloudinary'
 import Handwriting from '@/components/Handwriting'
+
+// Lottie는 lottieUrl이 있을 때만 필요 — 별도 청크로 지연 로드(초기 번들에서 제외)
+const Lottie = lazy(() => import('lottie-react'))
 
 interface Props {
   data: WeddingData
@@ -56,14 +58,16 @@ export default function DoorIntro({ data, theme }: Props) {
       {/* ===== Lottie 모드 ===== */}
       {useLottie && anim && (
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-          <Lottie
-            animationData={anim}
-            loop={false}
-            autoplay
-            onComplete={startLeaving}
-            style={{ width: '100%', height: '100%' }}
-            rendererSettings={{ preserveAspectRatio: 'xMidYMid slice' }}
-          />
+          <Suspense fallback={null}>
+            <Lottie
+              animationData={anim}
+              loop={false}
+              autoplay
+              onComplete={startLeaving}
+              style={{ width: '100%', height: '100%' }}
+              rendererSettings={{ preserveAspectRatio: 'xMidYMid slice' }}
+            />
+          </Suspense>
         </div>
       )}
 
