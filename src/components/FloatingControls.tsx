@@ -58,6 +58,20 @@ export default function FloatingControls({ data, theme }: Props) {
     }
   }
 
+  const [showTopBtn, setShowTopBtn] = useState(false)
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowTopBtn(window.scrollY > 280)
+    }
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
   // 희미하게 + 테마색에 묻는 스타일 (배경 살짝, 아이콘 반투명)
   const btnStyle: React.CSSProperties = {
     background: theme.colors.bgDark + '26', // ~15% 불투명
@@ -111,6 +125,29 @@ export default function FloatingControls({ data, theme }: Props) {
           </button>
         )}
       </div>
+
+      {/* 맨 위로 가기 (Top 스크롤 플로팅 버튼) */}
+      {showTopBtn && (
+        <button
+          type="button"
+          onClick={scrollToTop}
+          aria-label="맨 위로 이동"
+          className="fixed bottom-6 z-40 w-9 h-9 rounded-full flex items-center justify-center transition-all duration-300 active:scale-90 opacity-40 hover:opacity-100"
+          style={{
+            right: 'max(1rem, calc(50vw - 240px + 1rem))',
+            background: 'rgba(0, 0, 0, 0.2)',
+            color: '#FFFFFF',
+            backdropFilter: 'blur(4px)',
+            WebkitBackdropFilter: 'blur(4px)',
+            border: '1px solid rgba(255, 255, 255, 0.15)',
+            boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+          }}
+        >
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M18 15l-6-6-6 6" />
+          </svg>
+        </button>
+      )}
 
       {/* 플로팅 컨트롤 종합 토스트 알림 오버레이 */}
       {toastMsg && (

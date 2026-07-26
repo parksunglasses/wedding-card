@@ -48,6 +48,20 @@ export default function FloatingControls({ data, theme }: Props) {
     }
   }
 
+  const [showTopBtn, setShowTopBtn] = useState(false)
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowTopBtn(window.scrollY > 280)
+    }
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
   const buttonStyle: React.CSSProperties = {
     background: `${theme.colors.bg}EA`,
     color: theme.colors.bgDark,
@@ -84,6 +98,27 @@ export default function FloatingControls({ data, theme }: Props) {
           </button>
         )}
       </div>
+
+      {/* 맨 위로 가기 (Top 스크롤 플로팅 버튼) */}
+      {showTopBtn && (
+        <button
+          type="button"
+          onClick={scrollToTop}
+          aria-label="맨 위로 이동"
+          className="fixed bottom-6 z-40 flex h-9 w-9 items-center justify-center rounded-full transition-all duration-300 active:scale-90 opacity-40 hover:opacity-100"
+          style={{
+            right: 'max(1rem, calc(50vw - 240px + 1rem))',
+            background: 'rgba(0, 0, 0, 0.2)',
+            color: '#FFFFFF',
+            backdropFilter: 'blur(4px)',
+            WebkitBackdropFilter: 'blur(4px)',
+            border: '1px solid rgba(255, 255, 255, 0.15)',
+            boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+          }}
+        >
+          <span className="text-sm font-bold leading-none">↑</span>
+        </button>
+      )}
     </>
   )
 }
