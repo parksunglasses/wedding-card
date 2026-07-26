@@ -23,6 +23,7 @@ interface Props {
   title?: ReactNode
   snow?: ReactNode
   tilts?: number[]
+  showArrows?: boolean
 }
 
 const DEFAULT_TILTS = [-4, 3, -2.5, 2, -3, 3.5]
@@ -34,7 +35,7 @@ const slideVariants: Variants = {
 }
 
 // 사진 더보기 슬라이드쇼 오버레이 — 큰 폴라로이드 + 화살표/스와이프 + 썸네일 스트립
-export default function PhotoSlideshow({ photos, index, setIndex, onClose, theme, title, snow, tilts = DEFAULT_TILTS }: Props) {
+export default function PhotoSlideshow({ photos, index, setIndex, onClose, theme, title, snow, tilts = DEFAULT_TILTS, showArrows = true }: Props) {
   const total = photos.length
   const startX = useRef<number | null>(null)
   const stripRef = useRef<HTMLDivElement>(null)
@@ -96,9 +97,11 @@ export default function PhotoSlideshow({ photos, index, setIndex, onClose, theme
             startX.current = null
           }}
         >
-          <button className="ss-arrow ss-arrow--prev" onClick={() => nav(-1)} aria-label="이전 사진" style={{ background: theme.red, color: theme.sheet }}>
-            ‹
-          </button>
+          {showArrows && (
+            <button className="ss-arrow ss-arrow--prev" onClick={() => nav(-1)} aria-label="이전 사진" style={{ background: theme.red, color: theme.sheet }}>
+              ‹
+            </button>
+          )}
 
           <div className="ss-frame">
             <AnimatePresence initial={false} custom={direction.current}>
@@ -118,9 +121,11 @@ export default function PhotoSlideshow({ photos, index, setIndex, onClose, theme
             </AnimatePresence>
           </div>
 
-          <button className="ss-arrow ss-arrow--next" onClick={() => nav(1)} aria-label="다음 사진" style={{ background: theme.red, color: theme.sheet }}>
-            ›
-          </button>
+          {showArrows && (
+            <button className="ss-arrow ss-arrow--next" onClick={() => nav(1)} aria-label="다음 사진" style={{ background: theme.red, color: theme.sheet }}>
+              ›
+            </button>
+          )}
         </div>
 
         <p className="ss-count" style={{ fontFamily: theme.font, color: theme.red, fontSize: 24 }}>

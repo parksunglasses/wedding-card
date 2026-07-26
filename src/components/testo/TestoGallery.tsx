@@ -55,6 +55,7 @@ export default function TestoGallery({ data }: Props) {
           setIndex={setIndex}
           onClose={() => setOpen(false)}
           theme={TESTO_SLIDE}
+          showArrows={false}
           snow={<Snowfall distance={640} color={TESTO.snow} count={4} />}
         />
       )}

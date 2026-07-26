@@ -411,7 +411,7 @@ html, body {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 20px;
+  padding: 8px;
   animation: ssIn 0.28s ease both;
 }
 @keyframes ssIn { from { opacity: 0; } to { opacity: 1; } }
@@ -419,12 +419,12 @@ html, body {
 .ss-sheet {
   position: relative;
   width: 100%;
-  max-width: 430px;
-  max-height: 94%;
+  max-width: 460px;
+  max-height: 98%;
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  padding: 44px 18px 16px;
+  padding: 28px 8px 10px;
   box-shadow: 0 24px 60px rgba(0, 0, 0, 0.4);
   animation: ssSheetIn 0.3s cubic-bezier(0.22, 0.61, 0.36, 1) both;
 }
@@ -459,8 +459,8 @@ html, body {
 
 .ss-frame {
   position: relative;
-  width: min(318px, calc(80vw + 18px));
-  height: min(408px, calc(88vw + 18px));
+  width: min(410px, 92vw);
+  height: min(520px, 66vh);
 }
 .ss-polaroid {
   position: absolute;
