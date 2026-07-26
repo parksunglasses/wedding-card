@@ -28,10 +28,15 @@ body, p, h1, h2, h3, span, div {
   overflow-wrap: break-word;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 html, body {
   font-family: var(--theme-font-body);
   background: #F0E8DC;
   color: var(--theme-text);
+  -webkit-overflow-scrolling: touch;
 }
 
 #root {
