@@ -165,21 +165,6 @@ export default function Guestbook({ theme }: Props) {
                   <p className="text-sm leading-relaxed whitespace-pre-line" style={{ color: theme.colors.text + 'CC' }}>
                     {entry.message}
                   </p>
-                  {entries.length > 1 && (
-                    <div className="flex justify-center gap-1.5 mt-5">
-                      {entries.map((_, i) => (
-                        <button
-                          key={i}
-                          onClick={() => goTo(i)}
-                          className="w-1.5 h-1.5 rounded-full transition-all"
-                          style={{
-                            background: i === currentIdx ? theme.colors.accent : theme.colors.border,
-                            transform: i === currentIdx ? 'scale(1.4)' : 'scale(1)',
-                          }}
-                        />
-                      ))}
-                    </div>
-                  )}
                 </motion.div>
               </AnimatePresence>
             )}

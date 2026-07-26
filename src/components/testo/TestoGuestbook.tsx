@@ -92,7 +92,6 @@ export default function TestoGuestbook() {
             <div key={cur.id}>
               <p style={{ ...pen(24, TESTO.red), margin: '0 0 6px' }}>{cur.name}</p>
               <p style={{ ...gaegu, fontSize: 15, lineHeight: 1.7, color: TESTO.inkSoft, margin: 0, whiteSpace: 'pre-line' }}>{cur.message}</p>
-              <p style={{ ...gaegu, fontSize: 12, color: '#B89A8E', marginTop: 10 }}>{idx + 1} / {entries.length}</p>
               {isAdmin && (
                 <button type="button" onClick={() => deleteEntry(cur.id)} style={{ ...gaegu, fontSize: 11, color: TESTO.red, marginTop: 4 }}>삭제</button>
               )}
