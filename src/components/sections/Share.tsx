@@ -184,6 +184,13 @@ export default function Share({ data, theme }: Props) {
           </p>
         </motion.div>
       </section>
+
+      {/* 링크 복사 완료 토스트 알림 오버레이 */}
+      {copied && (
+        <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-[100001] px-5 py-2.5 rounded-full bg-stone-900/90 text-white text-xs font-medium shadow-xl backdrop-blur flex items-center gap-1.5 animate-bounce-once">
+          <span>✨ 청첩장 링크가 복사되었습니다.</span>
+        </div>
+      )}
     </>
   )
 }

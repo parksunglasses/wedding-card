@@ -110,21 +110,9 @@ export default function TestoShare({ data }: Props) {
 
       {copied && (
         <div
-          style={{
-            position: 'absolute',
-            bottom: 18,
-            left: '50%',
-            transform: 'translateX(-50%)',
-            background: 'rgba(58, 42, 36, 0.88)',
-            color: '#F4ECD9',
-            padding: '6px 16px',
-            borderRadius: 14,
-            fontSize: 13,
-            fontWeight: 500,
-            whiteSpace: 'nowrap',
-          }}
+          className="fixed bottom-8 left-1/2 -translate-x-1/2 z-[100001] px-5 py-2.5 rounded-full bg-stone-900/90 text-white text-xs font-medium shadow-xl backdrop-blur flex items-center gap-1.5 animate-bounce-once"
         >
-          링크가 복사되었습니다 ✨
+          <span>✨ 청첩장 링크가 복사되었습니다!</span>
         </div>
       )}
     </section>

@@ -100,6 +100,13 @@ export default function AccountSection({ data, theme }: Props) {
         </button>
         {openSide === 'bride' && renderAccounts(data.brideAccounts, 'bride')}
       </motion.div>
+
+      {/* 계좌번호 복사 완료 토스트 알림 */}
+      {copiedIdx && (
+        <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-[100001] px-5 py-2.5 rounded-full bg-stone-900/90 text-white text-xs font-medium shadow-xl backdrop-blur flex items-center gap-1.5 animate-bounce-once">
+          <span>✓ 계좌번호가 복사되었습니다.</span>
+        </div>
+      )}
     </section>
   )
 }

@@ -10,13 +10,17 @@ export default defineConfig({
     },
   },
   build: {
+    target: 'es2020',
+    cssCodeSplit: true,
+    minify: 'esbuild',
     rollupOptions: {
       output: {
-        // 큰 벤더 라이브러리를 별도 청크로 분리 — 메인 번들 축소 + 배포 간 캐싱 향상
+        // 주요 라이브러리를 별도 청크로 분리하여 메인 JS 번들 크기 최소화 및 브라우저 캐싱 향상
         manualChunks: {
           'react-vendor': ['react', 'react-dom', 'react-router-dom'],
           'motion-vendor': ['framer-motion'],
           'lottie-vendor': ['lottie-react'],
+          'supabase-vendor': ['@supabase/supabase-js'],
         },
       },
     },

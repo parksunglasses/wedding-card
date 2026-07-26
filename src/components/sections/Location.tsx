@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { motion } from 'framer-motion'
 import { WeddingData } from '@/types'
 import { Theme } from '@/themes'
@@ -37,8 +37,20 @@ export default function Location({ data, theme }: Props) {
     }
   }, [data.lat, data.lng])
 
+  const [copiedAddr, setCopiedAddr] = useState(false)
+
+  const copyAddress = async () => {
+    try {
+      await navigator.clipboard.writeText(`${data.address} ${data.venue}`)
+      setCopiedAddr(true)
+      setTimeout(() => setCopiedAddr(false), 2000)
+    } catch {
+      /* ignore */
+    }
+  }
+
   return (
-    <section id="location" className="py-9 px-6" style={{ background: '#FAF5ED', color: theme.colors.text }}>
+    <section id="location" className="py-9 px-6 relative" style={{ background: '#FAF5ED', color: theme.colors.text }}>
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -51,18 +63,17 @@ export default function Location({ data, theme }: Props) {
         </p>
         <h2 className="font-heading text-2xl mb-5">오시는 길</h2>
 
-        <div className="space-y-1.5">
-          <p className="text-sm font-medium opacity-85">{data.address}</p>
-          <p className="text-base font-bold tracking-wide">{data.venue}</p>
+        <div onClick={copyAddress} className="space-y-1.5 cursor-pointer group active:scale-98 transition-transform" title="주소 복사">
+          <p className="text-sm font-medium opacity-85 group-hover:text-stone-900">{data.address}</p>
+          <p className="text-base font-bold tracking-wide">{data.venue} <span className="text-[11px] font-normal text-stone-500 underline ml-1">주소복사</span></p>
         </div>
 
         <a
           href={`tel:${data.venuePhone}`}
-          className="inline-flex items-center gap-1.5 mt-2.5 px-3 py-1 rounded-full text-[11px] font-medium transition-transform active:scale-95 shadow-2xs"
+          className="inline-flex items-center gap-1.5 mt-2.5 px-3 py-1.5 min-h-[44px] rounded-full text-[11px] font-medium transition-transform active:scale-95 shadow-2xs"
           style={{ background: theme.colors.accent + '12', border: `1px solid ${theme.colors.border}` }}
         >
-          {/* 회색 반투명 전화 수화기 누끼 SVG */}
-          <svg className="w-3 h-3 flex-shrink-0 opacity-60" viewBox="0 0 24 24" fill="currentColor" style={{ color: '#555555' }}>
+          <svg className="w-3.5 h-3.5 flex-shrink-0 opacity-60" viewBox="0 0 24 24" fill="currentColor" style={{ color: '#555555' }}>
             <path d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56a.977.977 0 00-1.01.24l-2.2 2.2a15.053 15.053 0 01-6.59-6.59l2.2-2.21a.96.96 0 00.25-1C8.76 6.35 8.56 5.16 8.56 3.99c0-.55-.45-1-1-1H4.03c-.55 0-1 .45-1 1C3.03 13.57 10.46 21 19.99 21c.55 0 1-.45 1-1v-3.62c0-.55-.45-1-.98-1z" />
           </svg>
           <span style={{ color: theme.colors.text }}>{data.venuePhone}</span>
@@ -147,6 +158,13 @@ export default function Location({ data, theme }: Props) {
           </div>
         )}
       </div>
+
+      {/* 주소 복사 안내 토스트 팝업 */}
+      {copiedAddr && (
+        <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-[100001] px-5 py-2.5 rounded-full bg-stone-900/90 text-white text-xs font-medium shadow-xl backdrop-blur flex items-center gap-1.5 animate-bounce-once">
+          <span>✓ 예식장 주소가 복사되었습니다.</span>
+        </div>
+      )}
     </section>
   )
 }
