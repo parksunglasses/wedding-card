@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { WeddingData, Account } from '@/types'
 import { Theme } from '@/themes'
+import { copyToClipboard } from '@/lib/clipboard'
 
 interface Props {
   data: WeddingData
@@ -13,12 +14,10 @@ export default function AccountSection({ data, theme }: Props) {
   const [copiedIdx, setCopiedIdx] = useState<string | null>(null)
 
   const handleCopy = async (accountNumber: string, key: string) => {
-    try {
-      await navigator.clipboard.writeText(accountNumber)
+    const success = await copyToClipboard(accountNumber)
+    if (success) {
       setCopiedIdx(key)
       setTimeout(() => setCopiedIdx(null), 2000)
-    } catch (e) {
-      console.error('Copy failed', e)
     }
   }
 

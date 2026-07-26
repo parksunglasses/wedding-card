@@ -4,6 +4,7 @@ import { Account, WeddingData } from '@/types'
 import { Theme } from '@/themes'
 import SectionHeading from '@/components/ui/SectionHeading'
 import { BankIcon, ChevronDownIcon } from '@/components/ui/Icons'
+import { copyToClipboard } from '@/lib/clipboard'
 
 interface Props {
   data: WeddingData
@@ -15,12 +16,10 @@ export default function AccountSection({ data, theme }: Props) {
   const [copiedKey, setCopiedKey] = useState<string | null>(null)
 
   const copyAccount = async (accountNumber: string, key: string) => {
-    try {
-      await navigator.clipboard.writeText(accountNumber)
+    const success = await copyToClipboard(accountNumber)
+    if (success) {
       setCopiedKey(key)
       window.setTimeout(() => setCopiedKey(null), 1800)
-    } catch (error) {
-      console.error('Copy failed', error)
     }
   }
 

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { WeddingData } from '@/types'
 import { Theme } from '@/themes'
@@ -22,6 +22,16 @@ export default function Gallery({ data, theme }: Props) {
     : [data.mainPhoto || DEFAULT_WEDDING_PHOTO]
   const total = photos.length
 
+  useEffect(() => {
+    if (selectedIdx !== null) {
+      const orig = document.body.style.overflow
+      document.body.style.overflow = 'hidden'
+      return () => {
+        document.body.style.overflow = orig
+      }
+    }
+  }, [selectedIdx])
+
   const go = (next: number) => {
     setDirection(next > index ? 1 : -1)
     setIndex((next + total) % total)
@@ -42,14 +52,14 @@ export default function Gallery({ data, theme }: Props) {
             className="relative aspect-[3/4] overflow-hidden bg-white"
             style={{ borderRadius: '3px' }}
           >
-            <AnimatePresence initial={false} custom={direction} mode="popLayout">
+            <AnimatePresence initial={false} custom={direction}>
               <motion.button
                 type="button"
                 key={index}
                 custom={direction}
-                initial={{ opacity: 0, x: direction >= 0 ? 40 : -40 }}
+                initial={{ opacity: 0, x: direction > 0 ? 40 : direction < 0 ? -40 : 0 }}
                 animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: direction >= 0 ? -40 : 40 }}
+                exit={{ opacity: 0, x: direction > 0 ? -40 : direction < 0 ? 40 : 0 }}
                 transition={{ duration: 0.42, ease: 'easeOut' }}
                 className="absolute inset-0 block h-full w-full"
                 onClick={() => setSelectedIdx(index)}

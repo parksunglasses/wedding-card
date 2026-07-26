@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { Account, WeddingData } from '@/types'
 import { DOODLE, pen } from './DoodleKit'
+import { copyToClipboard } from '@/lib/clipboard'
 
 interface Props {
   data: WeddingData
@@ -12,12 +13,10 @@ export default function DoodleAccount({ data }: Props) {
   const [copiedKey, setCopiedKey] = useState<string | null>(null)
 
   const copyAccount = async (accountNumber: string, key: string) => {
-    try {
-      await navigator.clipboard.writeText(accountNumber)
+    const success = await copyToClipboard(accountNumber)
+    if (success) {
       setCopiedKey(key)
       window.setTimeout(() => setCopiedKey(null), 1800)
-    } catch (error) {
-      console.error('Copy failed', error)
     }
   }
 

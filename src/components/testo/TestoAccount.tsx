@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { WeddingData, Account } from '@/types'
 import { TESTO, pen, gaegu, Deco } from './TestoKit'
 import { TESTO_TEXT } from './testoData'
+import { copyToClipboard } from '@/lib/clipboard'
 
 interface Props {
   data: WeddingData
@@ -12,12 +13,10 @@ export default function TestoAccount({ data }: Props) {
   const [copied, setCopied] = useState<string | null>(null)
 
   const copy = async (num: string, key: string) => {
-    try {
-      await navigator.clipboard.writeText(num)
+    const success = await copyToClipboard(num)
+    if (success) {
       setCopied(key)
       setTimeout(() => setCopied(null), 1800)
-    } catch (e) {
-      // clipboard 미지원 무시
     }
   }
 
