@@ -25,7 +25,7 @@ export const defaultWeddingData: WeddingData = {
   date: '2026-12-19',
   time: '11:00',
   venue: '서울웨딩타워',
-  address: '서울 송파구 양재대로 932 2층',
+  address: '서울 송파구 양재대로 932 서울웨딩타워 2층',
   venuePhone: '02-463-5000',
   lat: 37.495096,
   lng: 127.115506,
@@ -41,7 +41,7 @@ export const defaultWeddingData: WeddingData = {
 
   subway: '3·8호선 가락시장역 2번 출구 도보 3분',
   bus: '가락시장 · 가락시장역 · 가락몰 하차',
-  parking: '가락몰 동문 지하주차장, 지하3층',
+  parking: '가락몰 업무동(SAFF타워) 동문주차장 · 3시간 무료',
 
   groomAccounts: [
     { bank: '국민은행', accountNumber: '000-00-0000-000', holder: '박성환' },

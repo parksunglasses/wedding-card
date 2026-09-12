@@ -28,10 +28,9 @@ function SectionFallback() {
   return <div className="py-16" />
 }
 
-export default function Invitation() {
+export default function Invitation({ forcedTheme }: { forcedTheme?: ThemeId } = {}) {
   const [data, setData] = useState<WeddingData>(() => loadWeddingData())
   const [dbLoaded, setDbLoaded] = useState(false)
-  const [previewTheme, setPreviewTheme] = useState<ThemeId | null>(null)
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search)
@@ -56,38 +55,15 @@ export default function Invitation() {
     import('@/lib/kakao').then(({ loadKakaoShare }) => loadKakaoShare().catch(() => {}))
   }, [])
 
+  // 테마 우선순위: URL 경로(/testo 등) > ?theme= 쿼리 > DB/기본값
   const themeOverride = new URLSearchParams(window.location.search).get('theme')
-  const configuredTheme: ThemeId =
-    themeOverride && themeOverride in themes ? (themeOverride as ThemeId) : data.theme
-  const effectiveTheme = previewTheme ?? configuredTheme
+  const effectiveTheme: ThemeId =
+    forcedTheme ??
+    (themeOverride && themeOverride in themes ? (themeOverride as ThemeId) : data.theme)
   const theme = getTheme(effectiveTheme)
 
   return (
     <ThemeProvider theme={theme}>
-      {/* 상단 테마 변경 스위처 */}
-      <div className="fixed top-3 left-1/2 z-[1000000] flex -translate-x-1/2 rounded-full border border-black/10 bg-white/90 p-1 shadow-lg backdrop-blur">
-        <button
-          type="button"
-          onClick={() => setPreviewTheme('elegant')}
-          aria-pressed={effectiveTheme === 'elegant'}
-          className={`rounded-full px-3 py-1.5 text-xs font-semibold transition ${
-            effectiveTheme === 'elegant' ? 'bg-stone-800 text-white' : 'text-stone-600'
-          }`}
-        >
-          기본 테마
-        </button>
-        <button
-          type="button"
-          onClick={() => setPreviewTheme('testo')}
-          aria-pressed={effectiveTheme === 'testo'}
-          className={`rounded-full px-3 py-1.5 text-xs font-semibold transition ${
-            effectiveTheme === 'testo' ? 'bg-red-900 text-white' : 'text-stone-600'
-          }`}
-        >
-          testo 테마
-        </button>
-      </div>
-
       {/* DB 갱신 중 상단 얇은 로딩 바 */}
       {!dbLoaded && (
         <div className="fixed top-0 left-0 right-0 z-50 h-0.5 overflow-hidden">

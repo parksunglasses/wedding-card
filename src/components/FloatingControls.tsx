@@ -13,6 +13,9 @@ export default function FloatingControls({ data, theme }: Props) {
   const [playing, setPlaying] = useState(false)
   const [toastMsg, setToastMsg] = useState<string | null>(null)
   const src = data.bgmUrl
+  // 사용자가 BGM 버튼을 직접 누른 뒤로는 자동재생 로직이 끼어들지 않게 한다
+  const userControlledRef = useRef(false)
+  const cancelAutoStartRef = useRef<() => void>(() => {})
 
   const showToast = (msg: string) => {
     setToastMsg(msg)
@@ -24,8 +27,10 @@ export default function FloatingControls({ data, theme }: Props) {
     if (!audio || !src) return
     audio.volume = 0.5
 
-    const tryPlay = () =>
+    const tryPlay = () => {
+      if (userControlledRef.current) return
       audio.play().then(() => setPlaying(true)).catch(() => setPlaying(false))
+    }
     tryPlay()
 
     const startOnInteract = () => {
@@ -40,12 +45,16 @@ export default function FloatingControls({ data, theme }: Props) {
     window.addEventListener('touchstart', startOnInteract, { once: true, passive: true })
     window.addEventListener('click', startOnInteract, { once: true })
     window.addEventListener('scroll', startOnInteract, { once: true, passive: true })
+    cancelAutoStartRef.current = cleanup
     return cleanup
   }, [src])
 
   const toggleBgm = () => {
     const audio = audioRef.current
     if (!audio) return
+    // 이 클릭이 window까지 버블링돼서 자동재생이 다시 걸리는 걸 막는다
+    userControlledRef.current = true
+    cancelAutoStartRef.current()
     if (audio.paused) {
       audio.play().then(() => {
         setPlaying(true)
