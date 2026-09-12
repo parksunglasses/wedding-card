@@ -37,11 +37,11 @@ export default function Greeting({ data, theme }: Props) {
 
         {/* 1. 날짜 및 시간 */}
         <div className="mb-10 text-center">
-          <h3 className="font-heading text-4xl tracking-wide mb-1.5 flex items-center justify-center gap-2" style={{ color: theme.colors.accent }}>
+          <h3 className="font-heading num-cormorant text-[1.65rem] tracking-wide mb-1.5 flex items-center justify-center gap-2" style={{ color: theme.colors.accent }}>
             <span>2026.12.19</span>
             <span className="text-2xl font-normal opacity-90">(토)</span>
           </h3>
-          <p className="font-heading text-2xl font-medium tracking-widest" style={{ color: theme.colors.accent }}>11:00 am</p>
+          <p className="font-heading num-cormorant text-2xl font-medium tracking-widest" style={{ color: theme.colors.accent }}>11:00 am</p>
         </div>
 
         {/* 2. 부모님 성함 및 장남 성환 / 장녀 지영 */}

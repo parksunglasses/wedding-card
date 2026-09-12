@@ -33,7 +33,7 @@ const Countdown = memo(function Countdown({
             <p className="font-heading text-xs tracking-widest mb-2" style={{ color: theme.colors.textMuted }}>
               {item.label}
             </p>
-            <p className="font-heading text-3xl" style={{ color: theme.colors.accent }}>
+            <p className="font-heading num-cormorant text-3xl" style={{ color: theme.colors.accent }}>
               {String(item.value).padStart(2, '0')}
             </p>
           </div>
@@ -68,7 +68,7 @@ export default function Calendar({ data, theme }: Props) {
         </div>
 
         <div className="text-center mb-2">
-          <h2 className="font-heading text-7xl theme-text leading-none">
+          <h2 className="font-heading num-cormorant text-7xl theme-text leading-none">
             {calendar.month}
           </h2>
           <p className="text-xs theme-text-muted tracking-widest mt-2 uppercase">

@@ -92,6 +92,21 @@ html, body {
 .font-heading { font-family: var(--theme-font-heading); }
 .font-script { font-family: var(--theme-font-script); }
 
+/* 숫자 전용 Cormorant Infant.
+   unicode-range로 0~9 에만 적용되므로, 이 클래스를 붙인 요소 안의
+   한글·영문·기호는 원래 폰트 그대로 유지된다.
+   (.font-heading 보다 뒤에 와야 덮어쓸 수 있으므로 위치 고정) */
+@font-face {
+  font-family: 'CormorantInfantNum';
+  src: url('/fonts/cormorant-infant-latin.woff2') format('woff2');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0030-0039;
+}
+
+.num-cormorant { font-family: 'CormorantInfantNum', var(--theme-font-heading); }
+
 .invitation-section {
   padding: 96px var(--page-gutter);
 }
