@@ -17,14 +17,19 @@ export default function Intro({ data, theme }: Props) {
     : `linear-gradient(160deg, ${theme.colors.bgAlt}, ${theme.colors.border})`
 
   return (
-    <section className="relative w-full aspect-[0.53] max-h-[840px] overflow-hidden" style={{ color: theme.colors.text }}>
+    <section
+      // 사진이 있으면 높이를 사진 원본 비율이 정한다 (자르지 않음).
+      // 뷰포트 높이가 계산에 들어가지 않으므로 주소창이 접혀도 크기가 변하지 않는다.
+      className={`relative w-full overflow-hidden ${photo ? '' : 'aspect-[0.53]'}`}
+      style={{ color: theme.colors.text }}
+    >
       {photo ? (
         <img
           src={photo}
           alt="메인 웨딩 사진"
           decoding="async"
           loading="eager"
-          className="w-full h-full object-cover object-[center_20%]"
+          className="block w-full h-auto"
         />
       ) : (
         <div
