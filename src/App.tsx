@@ -1,5 +1,5 @@
 import { lazy, Suspense } from 'react'
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route, Navigate } from 'react-router-dom'
 import Invitation from '@/pages/Invitation'
 
 const EditLogin = lazy(() => import('@/pages/EditLogin'))
@@ -15,6 +15,8 @@ export default function App() {
         <Route path="/testo" element={<Invitation forcedTheme="testo" />} />
         <Route path="/edit/login" element={<EditLogin />} />
         <Route path="/edit" element={<Edit />} />
+        {/* 오타·잘린 링크로 들어와도 빈 화면 대신 청첩장을 보여준다 */}
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </Suspense>
   )

@@ -93,7 +93,8 @@ export default function FloatingControls({ data, theme }: Props) {
 
   return (
     <>
-      {src && <audio ref={audioRef} src={src} loop preload="auto" />}
+      {/* 4MB대 음원이라 preload는 끈다 — 자동재생/버튼 클릭 시점에 받는다 */}
+      {src && <audio ref={audioRef} src={src} loop preload="none" />}
 
       <div
         className="fixed top-4 z-50 flex items-center gap-2"

@@ -323,9 +323,7 @@ function LoveIcon({ type }: { type: LoveIcoType }) {
 }
 
 export default function FireworksOverlay({ themeName }: { themeName?: string }) {
-  const isTestoTheme =
-    themeName === 'testo' ||
-    (typeof window !== 'undefined' && window.location.search.includes('theme=testo'))
+  const isTestoTheme = themeName === 'testo'
 
   const items = useMemo(() => {
     if (isTestoTheme) {
