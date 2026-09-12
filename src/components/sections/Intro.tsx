@@ -17,7 +17,7 @@ export default function Intro({ data, theme }: Props) {
     : `linear-gradient(160deg, ${theme.colors.bgAlt}, ${theme.colors.border})`
 
   return (
-    <section className="relative h-[100dvh] min-h-[520px] max-h-[780px] sm:max-h-[840px] overflow-hidden" style={{ color: theme.colors.text }}>
+    <section className="relative hero-viewport min-h-[520px] max-h-[780px] sm:max-h-[840px] overflow-hidden" style={{ color: theme.colors.text }}>
       {photo ? (
         <img
           src={photo}
