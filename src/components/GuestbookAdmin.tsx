@@ -7,6 +7,10 @@ export default function GuestbookAdmin() {
   const [entries, setEntries] = useState<GuestbookEntry[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
+  // confirm()/alert()는 미리보기 패널·일부 인앱 브라우저에서 차단되므로
+  // 브라우저 대화상자 대신 화면 안에서 확인받고 오류도 화면에 띄운다.
+  const [confirmId, setConfirmId] = useState<string | null>(null)
+  const [actionError, setActionError] = useState('')
 
   const fetchEntries = async () => {
     setLoading(true)
@@ -29,14 +33,21 @@ export default function GuestbookAdmin() {
   useEffect(() => { fetchEntries() }, [])
 
   const remove = async (id: string) => {
-    if (!confirm('이 방명록을 삭제할까요?')) return
+    setActionError('')
     if (isSupabaseConfigured) {
-      const { error: err } = await supabase.from('guestbooks').delete().eq('id', id)
-      if (err) { alert('삭제 실패: ' + err.message); return }
+      // .select()를 붙여야 '실제로 지워진 행'이 돌아온다.
+      // 권한(RLS)에 막히면 에러 없이 0건이 오므로 그 경우를 따로 잡는다.
+      const { data, error: err } = await supabase.from('guestbooks').delete().eq('id', id).select()
+      if (err) { setActionError('삭제 실패: ' + err.message); return }
+      if (!data || data.length === 0) {
+        setActionError('삭제되지 않았습니다. DB 삭제 권한(RLS) 설정을 확인해 주세요.')
+        return
+      }
     } else {
       const updated = entries.filter((e) => e.id !== id)
       localStorage.setItem('guestbook', JSON.stringify(updated))
     }
+    setConfirmId(null)
     setEntries((prev) => prev.filter((e) => e.id !== id))
   }
 
@@ -53,6 +64,7 @@ export default function GuestbookAdmin() {
       <div className="flex items-center justify-between">
         <p className="text-sm" style={{ color: '#8B7E6E' }}>총 {entries.length}개</p>
         <button
+          type="button"
           onClick={fetchEntries}
           className="text-xs px-3 py-1.5 rounded-lg border"
           style={{ borderColor: '#D9CFBE', color: '#A68B5B' }}
@@ -60,6 +72,10 @@ export default function GuestbookAdmin() {
           새로고침
         </button>
       </div>
+
+      {actionError && (
+        <p className="text-xs rounded-lg px-3 py-2 bg-red-50 text-red-600 border border-red-200">{actionError}</p>
+      )}
 
       {loading ? (
         <p className="text-sm text-center py-12" style={{ color: '#8B7E6E' }}>불러오는 중...</p>
@@ -75,7 +91,33 @@ export default function GuestbookAdmin() {
                 <p className="text-sm font-medium" style={{ color: '#2A2520' }}>{e.name}</p>
                 {e.createdAt && <p className="text-[11px] mt-0.5" style={{ color: '#B0A491' }}>{fmt(e.createdAt)}</p>}
               </div>
-              <button onClick={() => remove(e.id)} className="text-xs text-red-500 shrink-0">삭제</button>
+              {confirmId === e.id ? (
+                <div className="flex items-center gap-1.5 shrink-0">
+                  <button
+                    type="button"
+                    onClick={() => remove(e.id)}
+                    className="text-xs px-2 py-1 rounded-md bg-red-500 text-white"
+                  >
+                    확인
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setConfirmId(null)}
+                    className="text-xs px-2 py-1 rounded-md border"
+                    style={{ borderColor: '#D9CFBE', color: '#8B7E6E' }}
+                  >
+                    취소
+                  </button>
+                </div>
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => { setActionError(''); setConfirmId(e.id) }}
+                  className="text-xs text-red-500 shrink-0"
+                >
+                  삭제
+                </button>
+              )}
             </div>
             <p className="text-sm mt-2 whitespace-pre-line leading-relaxed" style={{ color: '#4A4238' }}>{e.message}</p>
           </div>

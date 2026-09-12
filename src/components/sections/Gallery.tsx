@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { createPortal } from 'react-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { WeddingData } from '@/types'
@@ -10,10 +10,21 @@ interface Props {
   theme: Theme
 }
 
+// 사진이 화면 폭만큼 통째로 밀려나간다. 투명도를 건드리지 않아
+// 두 장이 반투명하게 겹치는 구간이 없고, 그래서 잔상이 남지 않는다.
+const slideVariants = {
+  enter: (dir: number) => ({ x: dir >= 0 ? '100%' : '-100%' }),
+  center: { x: '0%' },
+  exit: (dir: number) => ({ x: dir >= 0 ? '-100%' : '100%' }),
+}
+
 export default function Gallery({ data, theme }: Props) {
   const [albumOpen, setAlbumOpen] = useState(false)
   const [index, setIndex] = useState(0)
   const [dir, setDir] = useState(0)
+  // 드래그로 넘긴 직후에도 click 이벤트가 이어서 발생한다.
+  // 그 클릭이 사진첩 모달을 여는 걸 막기 위한 플래그.
+  const draggedRef = useRef(false)
 
   const photos = data.galleryPhotos.length > 0 ? data.galleryPhotos : Array(5).fill('')
   const total = photos.length
@@ -80,20 +91,29 @@ export default function Gallery({ data, theme }: Props) {
             <motion.div
               key={index}
               custom={dir}
-              initial={{ opacity: 0, x: dir > 0 ? 60 : dir < 0 ? -60 : 0 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: dir > 0 ? -60 : dir < 0 ? 60 : 0 }}
-              transition={{ duration: 0.45, ease: 'easeOut' }}
+              variants={slideVariants}
+              initial="enter"
+              animate="center"
+              exit="exit"
+              transition={{ duration: 0.4, ease: [0.32, 0.72, 0, 1] }}
               className="absolute inset-0"
               drag={total > 1 ? 'x' : false}
               dragConstraints={{ left: 0, right: 0 }}
               dragElastic={0.15}
               dragSnapToOrigin
+              onDragStart={() => {
+                draggedRef.current = true
+              }}
               onDragEnd={(_, info) => {
                 if (info.offset.x < -60) go(index + 1)
                 else if (info.offset.x > 60) go(index - 1)
+                // click은 pointerup 뒤에 오므로 한 틱 넘긴 뒤에 푼다
+                setTimeout(() => {
+                  draggedRef.current = false
+                }, 0)
               }}
               onClick={() => {
+                if (draggedRef.current) return
                 if (hasPhotos) {
                   setAlbumOpen(true)
                 }
