@@ -107,15 +107,6 @@ html, body {
 
 .num-cormorant { font-family: 'CormorantInfantNum', var(--theme-font-heading); }
 
-/* 히어로 높이.
-   dvh는 모바일에서 주소창이 접히면 값이 커져서, object-cover 사진이
-   다시 잘리며 확대되는 것처럼 보인다. svh는 주소창이 보이는 상태의
-   값으로 고정돼 스크롤 중에 변하지 않는다. */
-.hero-viewport {
-  height: 100vh;  /* svh 미지원 구형 브라우저 폴백 */
-  height: 100svh;
-}
-
 .invitation-section {
   padding: 96px var(--page-gutter);
 }
